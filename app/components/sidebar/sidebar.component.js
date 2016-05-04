@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var jsonforms_adapter_1 = require('../../adapters/jsonforms.adapter');
-console.log(jsonforms_adapter_1.JsonFormsAdapter);
 var SidebarComponent = (function () {
     function SidebarComponent() {
         this.schema = {
@@ -24,10 +23,11 @@ var SidebarComponent = (function () {
                 }
             }
         };
-        this.uiSchema = {
+        this.uischema = {
             "type": "HorizontalLayout",
             "elements": [
                 {
+                    "label": "Name",
                     "type": "Control",
                     "scope": {
                         "$ref": "#/properties/firstName"
@@ -48,7 +48,7 @@ var SidebarComponent = (function () {
     SidebarComponent = __decorate([
         core_1.Component({
             selector: 'sidebar',
-            template: '<div><ul><li>Hi</li><li>Ho</li></ul><jsonforms [schema]="schema" [ui-schema]="uiSchema" [data]="data"></jsonforms></div>',
+            template: '<jsonforms class="jsf" [schema]="schema" [uischema]="uischema" [data]="data"></jsonforms>',
             directives: [jsonforms_adapter_1.JsonFormsAdapter]
         }), 
         __metadata('design:paramtypes', [])

@@ -3,7 +3,7 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
 
 @Component({
     selector: 'app',
-    template: '<h1>Testing angular 2</h1><sidebar></sidebar>',
+    template: '<div><sidebar></sidebar></div>',
     directives: [SidebarComponent]
 })
 export class AppComponent{}

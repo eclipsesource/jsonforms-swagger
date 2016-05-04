@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {JsonFormsAdapter} from '../../adapters/jsonforms.adapter';
 
-console.log(JsonFormsAdapter);
 @Component({
     selector: 'sidebar',
-    template: '<div><ul><li>Hi</li><li>Ho</li></ul><jsonforms [schema]="schema" [ui-schema]="uiSchema" [data]="data"></jsonforms></div>',
+    template: '<jsonforms class="jsf" [schema]="schema" [uischema]="uischema" [data]="data"></jsonforms>',
     directives: [JsonFormsAdapter]
 })
 export class SidebarComponent {
@@ -20,10 +19,11 @@ export class SidebarComponent {
         }
     };
 
-    uiSchema = {
+    uischema = {
         "type": "HorizontalLayout",
         "elements": [
             {
+                "label": "Name",
                 "type": "Control",
                 "scope": {
                     "$ref": "#/properties/firstName"
