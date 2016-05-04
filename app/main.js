@@ -1,4 +1,3 @@
-"use strict";
 console.log('importing main');
 var app_component_1 = require('./app.component');
 var upgrade_adapter_1 = require('./adapters/upgrade_adapter');

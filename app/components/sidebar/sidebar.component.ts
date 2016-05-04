@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
 import {JsonFormsAdapter} from '../../adapters/jsonforms.adapter';
+import {Button} from 'primeng/primeng';
+
 
 @Component({
     selector: 'sidebar',
-    template: '<jsonforms class="jsf" [schema]="schema" [uischema]="uischema" [data]="data"></jsonforms>',
-    directives: [JsonFormsAdapter]
+    template: '<button pButton type="button" label="click"></button><jsonforms class="jsf" [schema]="schema" [uischema]="uischema" [data]="data"></jsonforms>',
+    directives: [JsonFormsAdapter, Button]
 })
 export class SidebarComponent {
     schema = {
