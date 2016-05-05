@@ -14,44 +14,14 @@ var jsonforms_adapter_1 = require('../../adapters/jsonforms.adapter');
 var primeng_1 = require('primeng/primeng');
 var SidebarComponent = (function () {
     function SidebarComponent() {
-        this.schema = {
-            "type": "object",
-            "properties": {
-                "firstName": {
-                    "type": "string"
-                },
-                "lastName": {
-                    "type": "string"
-                }
-            }
-        };
-        this.uischema = {
-            "type": "HorizontalLayout",
-            "elements": [
-                {
-                    "label": "Name",
-                    "type": "Control",
-                    "scope": {
-                        "$ref": "#/properties/firstName"
-                    }
-                },
-                {
-                    "type": "Control",
-                    "scope": {
-                        "$ref": "#/properties/lastName"
-                    }
-                }
-            ]
-        };
-        this.data = {
-            "firstName": "Johny"
-        };
     }
     SidebarComponent = __decorate([
         core_1.Component({
             selector: 'sidebar',
-            template: '<button pButton type="button" label="click"></button><jsonforms class="jsf" [schema]="schema" [uischema]="uischema" [data]="data"></jsonforms>',
-            directives: [jsonforms_adapter_1.JsonFormsAdapter, primeng_1.Button]
+            moduleId: module.id,
+            templateUrl: 'sidebar.html',
+            directives: [jsonforms_adapter_1.JsonFormsAdapter, primeng_1.PanelMenu],
+            styleUrls: ['sidebar.css']
         }), 
         __metadata('design:paramtypes', [])
     ], SidebarComponent);

@@ -1,0 +1,17 @@
+.center{
+    margin-top: 100px;
+}
+
+sidebar {
+    width: 300px;
+    height: 100%;
+    position:fixed;
+}
+
+header {
+    top:0;
+    position:fixed;
+    height: 100px;
+    width: 100%;
+    background-color: #c1ff97;
+}

@@ -27,6 +27,7 @@
     "angular2-in-memory-web-api": "0.0.7",
     "bootstrap": "^3.3.6",
     "es6-shim": "^0.35.0",
+    "jquery": "^2.2.3",
     "primeng": "^0.9.1",
     "primeui": "^4.1.9",
     "reflect-metadata": "^0.1.3",

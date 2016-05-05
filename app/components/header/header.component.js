@@ -10,22 +10,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var sidebar_component_1 = require('./components/sidebar/sidebar.component');
-var header_component_1 = require('./components/header/header.component');
-var AppComponent = (function () {
-    function AppComponent() {
+var HeaderComponent = (function () {
+    function HeaderComponent() {
     }
-    AppComponent = __decorate([
+    HeaderComponent = __decorate([
         core_1.Component({
-            selector: 'app',
+            selector: 'header',
             moduleId: module.id,
-            templateUrl: 'app.html',
-            styleUrls: ['app.css'],
-            directives: [sidebar_component_1.SidebarComponent, header_component_1.HeaderComponent]
+            templateUrl: 'header.html',
+            styleUrls: ['header.css']
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], HeaderComponent);
+    return HeaderComponent;
 })();
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.HeaderComponent = HeaderComponent;
+//# sourceMappingURL=header.component.js.map
