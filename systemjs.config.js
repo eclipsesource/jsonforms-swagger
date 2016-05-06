@@ -9,6 +9,7 @@
   var map = {
     'app':                        'app', // 'dist',
     'rxjs':                       'node_modules/rxjs',
+    'lodash':                     'node_modules/lodash/lodash.js',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     '@angular':                   'node_modules/@angular'
   };
@@ -40,7 +41,7 @@
   var config = {
     map: map,
     packages: packages
-  }
+  };
 
   System.config(config);
 
