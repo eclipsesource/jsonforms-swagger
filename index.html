@@ -1,25 +1,38 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Angular 2 QuickStart</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="styles.css">
+<head>
+  <title>Swagger-JsonForms Example</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="app/styles.css">
+  <link rel="stylesheet" href="node_modules/primeui/primeui-ng-all.min.css">
+  <link rel="stylesheet" href="node_modules/primeui/themes/bootstrap/theme.css">
+  <!-- 1. Load libraries -->
+  <!-- Polyfill(s) for older browsers -->
+  <script src="node_modules/es6-shim/es6-shim.min.js"></script>
+  <script src="node_modules/zone.js/dist/zone.js"></script>
+  <script src="node_modules/reflect-metadata/Reflect.js"></script>
+  <script src="node_modules/systemjs/dist/system.src.js"></script>
+  <script src="node_modules/jquery/dist/jquery.js"></script>
+  <script src="app/startup/fixes.js"></script>
+  <script src="node_modules/angular/angular.js"></script>
+  <script src="app/assets/lib/jsonforms/jsonforms.js"></script>
+  <script src="/node_modules/primeui/primeui-ng-all.min.js"></script>
+  <!-- 2. Configure SystemJS -->
+  <script src="systemjs.config.js"></script>
+  <script>
+    console.log('starting init script');
+    System.import('app/main').then(function(src){
+      src.main();
+    }).catch(function(err){
+      console.error(err);
+    });
+  </script>
+</head>
 
-    <!-- Polyfill(s) for older browsers -->
-    <script src="node_modules/es6-shim/es6-shim.min.js"></script>
+<!-- 3. Display the application -->
+<body>
+<app>Loading...</app>
 
-    <script src="node_modules/zone.js/dist/zone.js"></script>
-    <script src="node_modules/reflect-metadata/Reflect.js"></script>
-    <script src="node_modules/systemjs/dist/system.src.js"></script>
-
-    <script src="systemjs.config.js"></script>
-    <script>
-      System.import('app').catch(function(err){ console.error(err);  });
-    </script>
-  </head>
-
-  <body>
-    <my-app>Loading...</my-app>
-  </body>
+</body>
 </html>

@@ -5,10 +5,16 @@ import { IObserver } from '../../helpers/observer/observer.interface';
 import { APIGeneratorService } from '../core/api-generator/api-generator.service';
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
 import { API } from '../core/model/api';
+import {JsonFormsAdapter} from '../../adapters/jsonforms.adapter';
+import {PanelMenu} from 'primeng/primeng';
+
 
 @Component({
-  selector: 'my-sidebar',
-  templateUrl: 'app/components/sidebar/sidebar.component.html'
+  selector: 'sidebar',
+  moduleId: module.id,
+  templateUrl: 'sidebar.html',
+  directives: [JsonFormsAdapter, PanelMenu],
+  styleUrls: ['sidebar.css']
 })
 export class SidebarComponent implements IObserver {
 

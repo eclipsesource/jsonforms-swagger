@@ -1,0 +1,19 @@
+<input #url />
+<button (click)="generateAPI(url.value)">
+  Resolve
+</button>
+<div *ngIf="errorMessage">{{errorMessage}}</div>
+
+<p-panelMenu *ngIf="api">
+  <div *ngFor="let tag of api.tags">
+    <div><a><span>{{tag.getName()}}</span></a></div>
+    <div>
+      <ul>
+        <li *ngFor="let operation of tag.operations">
+          <a (click)="activeOperationService.setActiveOperation(operation)">{{operation.getType()}} - {{operation.getPath()}}</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</p-panelMenu>

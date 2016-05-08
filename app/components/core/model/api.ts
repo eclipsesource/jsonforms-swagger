@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-
 import { Tag } from './tag';
 
 export class API {

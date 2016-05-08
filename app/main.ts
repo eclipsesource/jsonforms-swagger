@@ -1,7 +1,18 @@
-import {bootstrap}    from '@angular/platform-browser-dynamic';
 import {AppComponent} from './app.component';
-
-// Add all operators to Observable
+import {upgradeAdapter} from './adapters/upgrade_adapter';
 import 'rxjs/Rx';
 
-bootstrap(AppComponent);
+declare var angular: any;
+
+angular.module('app-legacy', ['jsonforms'])
+    .directive('app', upgradeAdapter.downgradeNg2Component(AppComponent));
+
+
+export function main(){
+    try{
+        upgradeAdapter.bootstrap(document.body, ['app-legacy']);
+    }catch (e){
+        console.error(e);
+    }
+
+}

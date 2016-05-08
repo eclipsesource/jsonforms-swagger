@@ -5,8 +5,8 @@ import { IObserver } from '../../helpers/observer/observer.interface';
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
 
 @Component({
-  selector: 'my-query-section',
-  templateUrl: 'app/components/query/query.component.html'
+  selector: 'query-section',
+  templateUrl: 'app/components/query/query.html'
 })
 export class QueryComponent implements IObserver {
 

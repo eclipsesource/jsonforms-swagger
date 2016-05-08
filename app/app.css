@@ -1,0 +1,36 @@
+
+:host {
+  display:flex;
+  flex-direction:column;
+  flex-wrap:nowrap;
+  align-items:stretch;
+  height:100vh;
+}
+
+header {
+  height: 100px;
+  flex-grow:0;
+  flex-shrink:0;
+  width: 100%;
+  background-color: #c1ff97;
+}
+
+.center{
+  width:100%;
+  flex-grow:100;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items:stretch;
+  flex-wrap:nowrap;
+}
+
+sidebar {
+  width: 300px;
+  flex-grow:0;
+  flex-shrink:0;
+}
+
+query-section {
+  flex-grow:100;
+}

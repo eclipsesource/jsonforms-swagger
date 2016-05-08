@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
-import * as _ from 'lodash';
+
 
 import { API } from '../model/api';
 import { Tag } from '../model/tag';
@@ -43,7 +43,7 @@ export class APIGeneratorService {
   }
 
   private generateTags(api: API, jsonAPI: {}) {
-    _.forEach(jsonAPI['tags'], (jsonTag) => {
+    _.forEach(jsonAPI['tags'], (jsonTag:any) => {
       let tag = new Tag();
       tag.properties = _.pick(jsonTag, ['name', 'description']);
       api.tags.push(tag);
@@ -51,8 +51,8 @@ export class APIGeneratorService {
   }
 
   private generateOperations(api: API, jsonAPI: {}) {
-    _.forEach(jsonAPI['paths'], (jsonPath, path) => {
-      _.forEach(jsonPath, (jsonOperation, operationType) => {
+    _.forEach(jsonAPI['paths'], (jsonPath:any, path:any) => {
+      _.forEach(jsonPath, (jsonOperation:any, operationType:any) => {
         let tagName: string = jsonOperation['tags'][0]; // we are assuming an operation corresponds to only one tag
         let tag: Tag = api.getTagByName(tagName);
         this.generateOperation(tag, path, operationType, jsonOperation);
