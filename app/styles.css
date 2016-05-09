@@ -3,3 +3,23 @@
     padding:0;
     box-sizing:border-box;
 }
+
+.primary-bg-color {
+  background-color:#CFE9AD !important;
+}
+
+.soft-bg-color{
+  background-color:#DFEFCA !important;
+}
+
+.dark-bg-color {
+  background-color:#75A339 !important;
+}
+
+.accent-bg-color {
+  background-color:#61AB56 !important;
+}
+
+.accent-soft-bg-color{
+  background-color:#A4D39D !important;
+}

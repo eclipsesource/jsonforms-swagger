@@ -5,7 +5,7 @@ import {HeaderComponent} from './components/header/header.component';
 import { QueryComponent } from './components/query/query.component';
 import { APIGeneratorService } from './components/core/api-generator/api-generator.service';
 import { ActiveOperationService } from './components/core/active-operation/active-operation.service';
-import '/node_modules/lodash/lodash.js';
+import 'lodash';
 
 @Component({
   selector: 'app',
