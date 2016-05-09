@@ -65,6 +65,7 @@ export class APIGeneratorService {
     operation.properties = _.pick(jsonOperation, ['summary', 'description', 'operationId']);
     operation.properties['path'] = path;
     operation.properties['type'] = type;
+    operation.properties['parameters'] = jsonOperation['parameters'];
 
     tag.operations.push(operation);
   }

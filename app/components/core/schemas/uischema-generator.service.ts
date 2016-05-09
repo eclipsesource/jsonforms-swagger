@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class UischemaGeneratorService {
 
   generateUischema(dataschema: {}): {} {
-    let uischema = {
+    let uischema: {} = {
       'type': 'VerticalLayout',
       'elements': []
     };
@@ -19,7 +19,7 @@ export class UischemaGeneratorService {
   addProperty(layoutElements: {}[], property: {}, name: string, path: string) {
     if (property['type'] == 'object') {
       _.forEach(property['properties'], (subproperty, subname) => {
-        let sublayout = {
+        let sublayout: {} = {
           'type': 'HorizontalLayout',
           'elements': []
         };

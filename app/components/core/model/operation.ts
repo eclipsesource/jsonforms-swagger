@@ -1,3 +1,4 @@
+import {Parameter} from "./parameter";
 export class Operation {
 
   properties: {};
@@ -8,6 +9,10 @@ export class Operation {
 
   getPath(): string {
     return this.properties['path'];
+  }
+
+  getParameters(): Parameter[] {
+    return this.properties['parameters'];
   }
 
   getOperationId(): string {
