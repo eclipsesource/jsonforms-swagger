@@ -6,7 +6,7 @@ import { APIGeneratorService } from '../core/api-generator/api-generator.service
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
 import { API } from '../core/model/api';
 import {JsonFormsAdapter} from '../../adapters/jsonforms.adapter';
-import {PanelMenu} from 'primeng/primeng';
+import {PanelMenu} from '../../assets/lib/primeng/primeng';
 
 
 @Component({

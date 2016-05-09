@@ -3,9 +3,11 @@ import { Component } from '@angular/core';
 import { IObserver } from '../../helpers/observer/observer.interface';
 
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
-import {DataschemaGeneratorService} from "../core/schemas/dataschema-generator.service";
-import {UischemaGeneratorService} from "../core/schemas/uischema-generator.service";
-import {JsonFormsAdapter} from '../../adapters/jsonforms.adapter';
+import { Operation } from '../core/model/operation';
+import { DataschemaGeneratorService } from './dataschema-generator.service';
+import { UischemaGeneratorService } from './uischema-generator.service';
+
+import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
 
 @Component({
   selector: 'query-section',
@@ -14,6 +16,8 @@ import {JsonFormsAdapter} from '../../adapters/jsonforms.adapter';
   providers: [DataschemaGeneratorService, UischemaGeneratorService]
 })
 export class QueryComponent implements IObserver {
+
+  activeOperation: Operation;
 
   dataschema: {};
   uischema: {};
@@ -25,16 +29,11 @@ export class QueryComponent implements IObserver {
   }
 
   update() {
-    let op = this.activeOperationService.getActiveOperation();
-    let parameters = op.getParameters();
+    this.activeOperation = this.activeOperationService.getActiveOperation();
 
-    //TODO
-    this.dataschema = this.dataschemaGeneratorService.generateDataschema(parameters);
+    this.dataschema = this.dataschemaGeneratorService.generateDataschema(this.activeOperation.getParameters());
     this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
     this.data = {};
-    console.log(this.dataschema);
-    console.log(this.uischema);
-
   }
 
 }

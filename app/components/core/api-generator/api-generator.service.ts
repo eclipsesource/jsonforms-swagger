@@ -1,12 +1,14 @@
+declare var JsonRefs: any;
+
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 
-
 import { API } from '../model/api';
 import { Tag } from '../model/tag';
 import { Operation } from '../model/operation';
+import { Parameter } from '../model/parameter';
 
 @Injectable()
 export class APIGeneratorService {
@@ -23,7 +25,12 @@ export class APIGeneratorService {
     if (res.status < 200 || res.status >= 300) {
       throw new Error('Bad response status: ' + res.status);
     }
-    return res.json();
+    let jsonApi: {} = res.json();
+    let resolvedJsonApi: {};
+    JsonRefs.resolveRefs(jsonApi, {}, function(err: any, res: any) {
+      resolvedJsonApi = res;
+    });
+    return resolvedJsonApi;
   }
 
   private handleError (error: any) {
@@ -37,8 +44,6 @@ export class APIGeneratorService {
     api.properties = _.pick(jsonAPI, ['info']);
     this.generateTags(api, jsonAPI);
     this.generateOperations(api, jsonAPI);
-    // TODO: generate operation parameters
-    // TODO: generate operation responses
     return api;
   }
 
@@ -61,13 +66,25 @@ export class APIGeneratorService {
   }
 
   private generateOperation(tag: Tag, path: string, type: string, jsonOperation: {}) {
-    let operation = new Operation();
+    let operation: Operation = new Operation();
     operation.properties = _.pick(jsonOperation, ['summary', 'description', 'operationId']);
     operation.properties['path'] = path;
     operation.properties['type'] = type;
-    operation.properties['parameters'] = jsonOperation['parameters'];
+
+    this.generateParameters(operation, jsonOperation);
+
+    // TODO: generate operation responses
 
     tag.operations.push(operation);
+  }
+
+  private generateParameters(operation: Operation, jsonOperation: {}) {
+    _.forEach(jsonOperation['parameters'], (jsonParameter) => {
+      let parameter: Parameter = new Parameter();
+      parameter.properties = jsonParameter;
+
+      operation.parameters.push(parameter);
+    });
   }
 
 }

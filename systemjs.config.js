@@ -9,7 +9,7 @@
         '@angular':                   'node_modules/@angular',
         'angular2':                   'node_modules/@angular',
         'primeng':                    'app/assets/lib/primeng',
-        'lodash': '/node_modules/lodash/lodash.js'
+        'lodash':                     'node_modules/lodash/lodash.js'
     };
 
     // packages tells the System loader how to load when no filename and/or no extension

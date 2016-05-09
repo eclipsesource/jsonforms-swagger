@@ -18,14 +18,15 @@ export class UischemaGeneratorService {
 
   addProperty(layoutElements: {}[], property: {}, name: string, path: string) {
     if (property['type'] == 'object') {
+      let sublayout: {} = {
+        'type': 'Group',
+        'label': name,
+        'elements': []
+      };
       _.forEach(property['properties'], (subproperty, subname) => {
-        let sublayout: {} = {
-          'type': 'HorizontalLayout',
-          'elements': []
-        };
-        layoutElements.push(sublayout);
         this.addProperty(sublayout['elements'], subproperty, subname, path + name + '/properties/');
-      })
+      });
+      layoutElements.push(sublayout);
     } else {
       let control = {
         'type': 'Control',

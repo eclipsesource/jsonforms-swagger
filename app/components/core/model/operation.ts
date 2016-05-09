@@ -1,7 +1,9 @@
-import {Parameter} from "./parameter";
+import { Parameter } from './parameter';
+
 export class Operation {
 
   properties: {};
+  parameters: Parameter[] = [];
 
   getType(): string {
     return this.properties['type'];
@@ -12,7 +14,7 @@ export class Operation {
   }
 
   getParameters(): Parameter[] {
-    return this.properties['parameters'];
+    return this.parameters;
   }
 
   getOperationId(): string {
