@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Parameter } from "../model/parameter";
+
+import { Parameter } from "../core/model/parameter";
 
 @Injectable()
 export class DataschemaGeneratorService {

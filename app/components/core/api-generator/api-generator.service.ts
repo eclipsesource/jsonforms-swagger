@@ -41,7 +41,7 @@ export class APIGeneratorService {
 
   generateAPI(jsonAPI: {}): API {
     let api = new API();
-    api.properties = _.pick(jsonAPI, ['info']);
+    api.properties = _.pick(jsonAPI, ['info', 'host', 'basePath']);
     this.generateTags(api, jsonAPI);
     this.generateOperations(api, jsonAPI);
     return api;
@@ -56,18 +56,20 @@ export class APIGeneratorService {
   }
 
   private generateOperations(api: API, jsonAPI: {}) {
+    let baseUrl = api.getBaseUrl();
     _.forEach(jsonAPI['paths'], (jsonPath:any, path:any) => {
       _.forEach(jsonPath, (jsonOperation:any, operationType:any) => {
         let tagName: string = jsonOperation['tags'][0]; // we are assuming an operation corresponds to only one tag
         let tag: Tag = api.getTagByName(tagName);
-        this.generateOperation(tag, path, operationType, jsonOperation);
+        this.generateOperation(tag, baseUrl, path, operationType, jsonOperation);
       });
     });
   }
 
-  private generateOperation(tag: Tag, path: string, type: string, jsonOperation: {}) {
+  private generateOperation(tag: Tag, baseUrl: string, path: string, type: string, jsonOperation: {}) {
     let operation: Operation = new Operation();
     operation.properties = _.pick(jsonOperation, ['summary', 'description', 'operationId']);
+    operation.properties['baseUrl'] = baseUrl;
     operation.properties['path'] = path;
     operation.properties['type'] = type;
 

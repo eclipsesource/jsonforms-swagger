@@ -5,6 +5,7 @@ import {HeaderComponent} from './components/header/header.component';
 import { QueryComponent } from './components/query/query.component';
 import { APIGeneratorService } from './components/core/api-generator/api-generator.service';
 import { ActiveOperationService } from './components/core/active-operation/active-operation.service';
+import { OperationPerformerService } from './components/core/operation-performer/operation-performer.service';
 import 'lodash';
 
 @Component({
@@ -16,7 +17,8 @@ import 'lodash';
   providers: [
     HTTP_PROVIDERS,
     APIGeneratorService,
-    ActiveOperationService
+    ActiveOperationService,
+    OperationPerformerService
   ]
 })
 export class AppComponent{}

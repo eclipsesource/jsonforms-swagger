@@ -13,12 +13,22 @@ export class Operation {
     return this.properties['path'];
   }
 
-  getParameters(): Parameter[] {
-    return this.parameters;
+  getUrl(): string {
+    return this.properties['baseUrl'] + this.properties['path'];
   }
 
   getOperationId(): string {
     return this.properties['operationId'];
+  }
+
+  getParameters(): Parameter[] {
+    return this.parameters;
+  }
+
+  getParameterByName(name: string): Parameter {
+    return _.find(this.parameters, function(parameter) {
+      return parameter.properties['name'] == name;
+    });
   }
 
 }
