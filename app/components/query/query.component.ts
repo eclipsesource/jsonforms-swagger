@@ -32,7 +32,6 @@ export class QueryComponent implements IObserver {
     this.dataschema = this.dataschemaGeneratorService.generateDataschema(parameters);
     this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
     this.data = {};
-
     console.log(this.dataschema);
     console.log(this.uischema);
 
