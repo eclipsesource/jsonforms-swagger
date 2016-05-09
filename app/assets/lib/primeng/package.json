@@ -1,0 +1,80 @@
+{
+  "_args": [
+    [
+      "primeng",
+      "/home/pancho111203/Studies/EclipseSource/swagger-jsonforms"
+    ]
+  ],
+  "_from": "primeng@*",
+  "_id": "primeng@0.9.1",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/primeng",
+  "_nodeVersion": "5.4.0",
+  "_npmOperationalInternal": {
+    "host": "packages-16-east.internal.npmjs.com",
+    "tmp": "tmp/primeng-0.9.1.tgz_1459138360531_0.04183521610684693"
+  },
+  "_npmUser": {
+    "email": "cagatay.civici@gmail.com",
+    "name": "cagatay.civici"
+  },
+  "_npmVersion": "3.3.12",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "primeng",
+    "raw": "primeng",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "*",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/primeng/-/primeng-0.9.1.tgz",
+  "_shasum": "34537a289cc8b5fc98f2b69eaee8146739ed1737",
+  "_shrinkwrap": null,
+  "_spec": "primeng",
+  "_where": "/home/pancho111203/Studies/EclipseSource/swagger-jsonforms",
+  "dependencies": {},
+  "description": "UI Components for AngularJS 2",
+  "devDependencies": {
+    "concurrently": "^2.0.0",
+    "lite-server": "^2.1.0",
+    "typescript": "^1.8.9",
+    "typings": "^0.7.9"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "34537a289cc8b5fc98f2b69eaee8146739ed1737",
+    "tarball": "https://registry.npmjs.org/primeng/-/primeng-0.9.1.tgz"
+  },
+  "gitHead": "54a5ad2821048148e12a63a7ecd43f82cde8432f",
+  "license": "Apache-2.0",
+  "maintainers": [
+    {
+      "name": "cagatay.civici",
+      "email": "cagatay.civici@gmail.com"
+    }
+  ],
+  "name": "primeng",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "angular2": "2.0.0-beta.12",
+    "es6-shim": "^0.35.0",
+    "primeui": "4.1.6",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.2",
+    "systemjs": "0.19.24",
+    "zone.js": "0.6.6"
+  },
+  "readme": "ERROR: No README data found!",
+  "scripts": {
+    "lite": "lite-server",
+    "start": "concurrent \"npm run tsc:w\" \"npm run lite\" ",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w"
+  },
+  "version": "0.9.1"
+}
