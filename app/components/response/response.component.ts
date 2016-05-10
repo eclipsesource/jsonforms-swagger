@@ -32,24 +32,35 @@ export class ResponseComponent implements IObserver {
 
   update(notification: string) {
     if (notification == 'new active operation') {
-      this.activeOperation = this.activeOperationService.getActiveOperation();
-
-      this.data = {};
+      this.updateActiveOperation();
     }
 
     if (notification == 'response ready') {
-      let response = this.activeOperationService.getResponse();
+      this.responseReady();
+    }
+  }
+
+  updateActiveOperation() {
+    this.activeOperation = this.activeOperationService.getActiveOperation();
+
+    this.data = {};
+  }
+
+  responseReady() {
+    let response = this.activeOperationService.getResponse();
+
+    let apiResponse: APIResponse = this.activeOperation.getResponseByCode(response.status);
+    let message: string;
+    if (apiResponse) {
+      message = apiResponse.getDescription();
+    } else {
+      message = response.statusText;
+    }
+    console.log(message);
+
+    if (apiResponse && apiResponse.hasSchema()) {
       this.data = response.json();
       console.log(this.data);
-
-      let apiResponse: APIResponse = this.activeOperation.getResponseByCode(response.status);
-      let message: string;
-      if (apiResponse) {
-        message = apiResponse.getDescription();
-      } else {
-        message = response.statusText;
-      }
-      console.log(message);
     }
   }
 
