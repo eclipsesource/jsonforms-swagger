@@ -42,8 +42,10 @@ export class SidebarComponent implements IObserver {
       );
   }
 
-  update() {
-    this.activeOperationId = this.activeOperationService.getActiveOperation().getOperationId();
+  update(notification: string) {
+    if (notification == 'new active operation') {
+      this.activeOperationId = this.activeOperationService.getActiveOperation().getOperationId();
+    }
   }
 
 }

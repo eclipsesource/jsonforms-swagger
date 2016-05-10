@@ -49,9 +49,7 @@ export class OperationPerformerService {
 
     let options = new RequestOptions({ headers: headers });
 
-    return this.operationPerformer.performOperation(this.http, url, body, options)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return this.operationPerformer.performOperation(this.http, url, body, options); // Response and error management delegated to ResponseComponent
   }
 
   selectOperationPerformerType(operation: Operation) {
@@ -69,20 +67,6 @@ export class OperationPerformerService {
         this.operationPerformer = new DeletePerformer();
         break;
     }
-  }
-
-  private extractData(res: Response) {
-    if (res.status < 200 || res.status >= 300) {
-      throw new Error('Bad response status: ' + res.status);
-    }
-
-    return res.json();
-  }
-
-  private handleError (error: any) {
-    let errMsg = error.message || 'Server error';
-    console.error(errMsg);
-    return Observable.throw(errMsg);
   }
 
   private addPathParameter(parameter: Parameter, data: {}, url: string): string {

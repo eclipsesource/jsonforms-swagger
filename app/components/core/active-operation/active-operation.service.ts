@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Response } from '@angular/http';
 
 import { ISubject } from '../../../helpers/observer/subject.interface';
 import { IObserver } from '../../../helpers/observer/observer.interface';
@@ -12,6 +13,8 @@ export class ActiveOperationService implements ISubject {
 
   activeOperation: Operation;
 
+  response: Response;
+
   attach(observer: IObserver) {
     this.observers.push(observer);
   }
@@ -23,9 +26,9 @@ export class ActiveOperationService implements ISubject {
     }
   }
 
-  notify() {
+  notify(notification: string) {
     for (let i = 0; i < this.observers.length; i++) {
-      this.observers[i].update();
+      this.observers[i].update(notification);
     }
   }
 
@@ -34,8 +37,19 @@ export class ActiveOperationService implements ISubject {
   }
 
   setActiveOperation(op: Operation) {
-    this.activeOperation = op;
-    this.notify();
+    if (!this.activeOperation || op.getOperationId() != this.activeOperation.getOperationId()) {
+      this.activeOperation = op;
+      this.notify('new active operation');
+    }
+  }
+
+  responseReady(res: Response) {
+    this.response = res;
+    this.notify('response ready');
+  }
+
+  getResponse(): Response {
+    return this.response;
   }
 
 }

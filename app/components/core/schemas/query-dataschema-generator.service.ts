@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { Parameter } from "../core/model/parameter";
+import { Parameter } from '../model/parameter';
 
 @Injectable()
-export class DataschemaGeneratorService {
+export class QueryDataschemaGeneratorService {
 
   generateDataschema(parameters: Parameter[]): {} {
     let dataschema: {} = {

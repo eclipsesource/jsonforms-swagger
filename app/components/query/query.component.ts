@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 import { IObserver } from '../../helpers/observer/observer.interface';
 
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
+import { QueryDataschemaGeneratorService } from '../core/schemas/query-dataschema-generator.service';
+import { UischemaGeneratorService } from '../core/schemas/uischema-generator.service';
 import { OperationPerformerService } from '../core/operation-performer/operation-performer.service';
-import { DataschemaGeneratorService } from './dataschema-generator.service';
-import { UischemaGeneratorService } from './uischema-generator.service';
 
 import { Operation } from '../core/model/operation';
 
@@ -13,9 +13,10 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
 
 @Component({
   selector: 'query-section',
-  templateUrl: 'app/components/query/query.html',
+  moduleId: module.id,
+  templateUrl: 'query.html',
   directives: [JsonFormsAdapter],
-  providers: [DataschemaGeneratorService, UischemaGeneratorService]
+  providers: [QueryDataschemaGeneratorService, UischemaGeneratorService]
 })
 export class QueryComponent implements IObserver {
 
@@ -26,30 +27,30 @@ export class QueryComponent implements IObserver {
   data: {};
 
   constructor(private activeOperationService: ActiveOperationService,
-              private dataschemaGeneratorService: DataschemaGeneratorService,
+              private dataschemaGeneratorService: QueryDataschemaGeneratorService,
               private uischemaGeneratorService: UischemaGeneratorService,
               private operationPerformerService: OperationPerformerService) {
     activeOperationService.attach(this);
   }
 
-  update() {
-    this.activeOperation = this.activeOperationService.getActiveOperation();
+  update(notification: string) {
+    if (notification == 'new active operation') {
+      this.activeOperation = this.activeOperationService.getActiveOperation();
 
-    this.dataschema = this.dataschemaGeneratorService.generateDataschema(this.activeOperation.getParameters());
-    this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
-    this.data = {};
+      this.dataschema = this.dataschemaGeneratorService.generateDataschema(this.activeOperation.getParameters());
+      this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
+      this.data = {};
+    }
   }
 
   performOperation() {
     this.operationPerformerService.performOperation(this.activeOperation, this.data)
       .subscribe(
         (response) => {
-          console.log(response);
-          // TODO
+          this.activeOperationService.responseReady(response);
         },
         (error) => {
-          console.log(error);
-          // TODO
+          this.activeOperationService.responseReady(error);
         }
       );
   }
