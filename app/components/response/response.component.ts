@@ -35,7 +35,7 @@ export class ResponseComponent implements IObserver {
 
   update(notification: string) {
     this.responseMessage = '';
-    this.data = {};
+    this.data = null;
 
     if (notification == 'new active operation') {
       this.updateActiveOperation();
@@ -59,7 +59,6 @@ export class ResponseComponent implements IObserver {
     } else {
       this.responseMessage = response.statusText;
     }
-    console.log(this.responseMessage);
 
     if (apiResponse && apiResponse.hasSchema()) {
       this.dataschema = apiResponse.getSchema();
