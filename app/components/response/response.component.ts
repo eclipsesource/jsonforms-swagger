@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { IObserver } from '../../helpers/observer/observer.interface';
 
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
-import { ResponseDataschemaGeneratorService } from '../core/schemas/response-dataschema-generator.service';
 import { UischemaGeneratorService } from '../core/schemas/uischema-generator.service';
 
 import { Operation } from '../core/model/operation';
@@ -16,22 +15,28 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
   moduleId: module.id,
   templateUrl: 'response.html',
   directives: [JsonFormsAdapter],
-  providers: [ResponseDataschemaGeneratorService, UischemaGeneratorService],
+  providers: [UischemaGeneratorService],
   styleUrls: ['./response.css']
 })
 export class ResponseComponent implements IObserver {
 
   activeOperation: Operation;
 
+  responseMessage: string;
+
   dataschema: {};
   uischema: {};
   data: {};
 
-  constructor(private activeOperationService: ActiveOperationService) {
+  constructor(private activeOperationService: ActiveOperationService,
+              private uischemaGeneratorService: UischemaGeneratorService) {
     activeOperationService.attach(this);
   }
 
   update(notification: string) {
+    this.responseMessage = '';
+    this.data = null;
+
     if (notification == 'new active operation') {
       this.updateActiveOperation();
     }
@@ -43,25 +48,22 @@ export class ResponseComponent implements IObserver {
 
   updateActiveOperation() {
     this.activeOperation = this.activeOperationService.getActiveOperation();
-
-    this.data = {};
   }
 
   responseReady() {
     let response = this.activeOperationService.getResponse();
 
     let apiResponse: APIResponse = this.activeOperation.getResponseByCode(response.status);
-    let message: string;
     if (apiResponse) {
-      message = apiResponse.getDescription();
+      this.responseMessage = apiResponse.getDescription();
     } else {
-      message = response.statusText;
+      this.responseMessage = response.statusText;
     }
-    console.log(message);
 
     if (apiResponse && apiResponse.hasSchema()) {
+      this.dataschema = apiResponse.getSchema();
+      this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
       this.data = response.json();
-      console.log(this.data);
     }
   }
 
