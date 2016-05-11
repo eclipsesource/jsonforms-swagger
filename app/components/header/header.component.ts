@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Checkbox} from '../../assets/lib/primeng/primeng';
+import {Checkbox} from 'primeng/primeng';
 
 @Component({
 		selector: 'header',

@@ -1,4 +1,2 @@
-<div class="jsf">
-  <jsonforms *ngIf="activeOperation" [schema]="dataschema" [uischema]="uischema" [data]="data"></jsonforms>
-</div>
+<jsonforms class="jsf" *ngIf="activeOperation" [schema]="dataschema" [uischema]="uischema" [data]="data"></jsonforms>
 <button *ngIf="activeOperation" (click)="performOperation()">{{activeOperation.getType()}}</button>

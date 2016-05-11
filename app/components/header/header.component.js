@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var primeng_1 = require('../../assets/lib/primeng/primeng');
+var primeng_1 = require('primeng/primeng');
 var HeaderComponent = (function () {
     function HeaderComponent() {
         this.devMode = false;

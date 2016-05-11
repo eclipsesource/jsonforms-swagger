@@ -8,7 +8,7 @@
         'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
         '@angular':                   'node_modules/@angular',
         'angular2':                   'node_modules/@angular',
-        'primeng':                    'app/assets/lib/primeng',
+        'primeng':                    'node_modules/primeng',
         'lodash':                     'node_modules/lodash/lodash.js'
     };
 
