@@ -4,8 +4,6 @@ node_modules
 jspm_packages
 link-checker-results.txt
 **/*npm-debug.log.*
-*.js
-*.js.map
 _test-output
 _temp
 
@@ -15,5 +13,3 @@ _temp
 !systemjs.config.js
 !typings/typings.d.ts
 !wallaby.js
-!app/assets/**
-!app/assets/**

@@ -13,9 +13,11 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
 
 @Component({
   selector: 'query-section',
-  templateUrl: 'app/components/query/query.html',
+  templateUrl: './query.html',
+  moduleId: module.id,
   directives: [JsonFormsAdapter],
-  providers: [DataschemaGeneratorService, UischemaGeneratorService]
+  providers: [DataschemaGeneratorService, UischemaGeneratorService],
+  styleUrls: ['./query.css']
 })
 export class QueryComponent implements IObserver {
 
