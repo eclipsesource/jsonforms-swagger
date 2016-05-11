@@ -52,7 +52,8 @@ var ResponseComponent = (function () {
             moduleId: module.id,
             templateUrl: 'response.html',
             directives: [jsonforms_adapter_1.JsonFormsAdapter],
-            providers: [response_dataschema_generator_service_1.ResponseDataschemaGeneratorService, uischema_generator_service_1.UischemaGeneratorService]
+            providers: [response_dataschema_generator_service_1.ResponseDataschemaGeneratorService, uischema_generator_service_1.UischemaGeneratorService],
+            styleUrls: ['./response.css']
         }), 
         __metadata('design:paramtypes', [active_operation_service_1.ActiveOperationService])
     ], ResponseComponent);

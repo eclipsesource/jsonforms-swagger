@@ -27,3 +27,7 @@
 .contrast-bg-color {
   background-color:#186BA0 !important;
 }
+
+.bottom-border {
+  border-bottom: 1px solid grey;
+}

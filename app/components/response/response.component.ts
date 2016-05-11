@@ -16,7 +16,8 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
   moduleId: module.id,
   templateUrl: 'response.html',
   directives: [JsonFormsAdapter],
-  providers: [ResponseDataschemaGeneratorService, UischemaGeneratorService]
+  providers: [ResponseDataschemaGeneratorService, UischemaGeneratorService],
+  styleUrls: ['./response.css']
 })
 export class ResponseComponent implements IObserver {
 
