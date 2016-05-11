@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-
 import { IObserver } from '../../helpers/observer/observer.interface';
-
 import { APIGeneratorService } from '../core/api-generator/api-generator.service';
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
 import { API } from '../core/model/api';
 import {JsonFormsAdapter} from '../../adapters/jsonforms.adapter';
 import {PanelMenu} from 'primeng/primeng';
+import {HeaderService} from "../header/header.service";
 
 
 @Component({
@@ -14,12 +13,18 @@ import {PanelMenu} from 'primeng/primeng';
   moduleId: module.id,
   templateUrl: 'sidebar.html',
   directives: [JsonFormsAdapter, PanelMenu],
-  styleUrls: ['sidebar.css']
+  styleUrls: ['sidebar.css'],
 })
 export class SidebarComponent implements IObserver {
 
-  constructor(private apiGeneratorService: APIGeneratorService, private activeOperationService: ActiveOperationService) {
+  devMode: boolean = false;
+
+  constructor(private apiGeneratorService: APIGeneratorService, private activeOperationService: ActiveOperationService, headerService: HeaderService) {
     activeOperationService.attach(this);
+
+    headerService.devMode.subscribe((state: boolean)=>{
+      this.devMode = state;
+    });
   }
 
   // TODO: highlight the active operation in the UI

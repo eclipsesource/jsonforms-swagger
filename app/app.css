@@ -23,6 +23,7 @@ header {
   justify-content: space-around;
   align-items:stretch;
   flex-wrap:nowrap;
+  min-height:0;
 }
 
 sidebar {
@@ -40,6 +41,11 @@ sidebar {
 }
 
 query-section {
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
 }
 response-section{
+  display:flex;
+  flex-direction:column;
 }

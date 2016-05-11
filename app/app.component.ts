@@ -7,6 +7,7 @@ import { ResponseComponent } from './components/response/response.component';
 import { APIGeneratorService } from './components/core/api-generator/api-generator.service';
 import { ActiveOperationService } from './components/core/active-operation/active-operation.service';
 import { OperationPerformerService } from './components/core/operation-performer/operation-performer.service';
+import {HeaderService} from "./components/header/header.service";
 import 'lodash';
 
 @Component({
@@ -19,7 +20,8 @@ import 'lodash';
     HTTP_PROVIDERS,
     APIGeneratorService,
     ActiveOperationService,
-    OperationPerformerService
+    OperationPerformerService,
+    HeaderService
   ]
 })
 export class AppComponent{}

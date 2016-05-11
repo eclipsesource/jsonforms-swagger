@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Checkbox} from 'primeng/primeng';
+import {HeaderService} from "./header.service";
 
 @Component({
 		selector: 'header',
@@ -9,11 +10,11 @@ import {Checkbox} from 'primeng/primeng';
 		directives: [Checkbox]
 })
 export class HeaderComponent{
+  devMode: boolean;
+  constructor(private headerService: HeaderService){
+  }
 
-	devMode: boolean = false;
-
-  changeDev($event:any){
-    this.devMode = $event;
-    console.log($event);
+  changeDev(event:boolean){
+    this.headerService.setDevMode(event);
   }
 }

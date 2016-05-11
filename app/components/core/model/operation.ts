@@ -15,6 +15,10 @@ export class Operation {
     return this.properties['path'];
   }
 
+  getSummary(): string {
+    return this.properties['summary'];
+  }
+
   getUrl(): string {
     return this.properties['baseUrl'] + this.properties['path'];
   }

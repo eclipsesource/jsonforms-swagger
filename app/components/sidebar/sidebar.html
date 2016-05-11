@@ -10,7 +10,8 @@
     <div>
       <ul>
         <li class="tagOperation" *ngFor="let operation of tag.operations">
-          <a (click)="activeOperationService.setActiveOperation(operation)">{{operation.getType()}} - {{operation.getPath()}}</a>
+          <a *ngIf="devMode" (click)="activeOperationService.setActiveOperation(operation)">{{operation.getType()}} - {{operation.getPath()}}</a>
+          <a *ngIf="!devMode" (click)="activeOperationService.setActiveOperation(operation)">{{operation.getSummary()}}</a>
         </li>
       </ul>
     </div>
