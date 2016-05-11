@@ -13,6 +13,7 @@ var http_1 = require('@angular/http');
 var sidebar_component_1 = require('./components/sidebar/sidebar.component');
 var header_component_1 = require('./components/header/header.component');
 var query_component_1 = require('./components/query/query.component');
+var response_component_1 = require('./components/response/response.component');
 var api_generator_service_1 = require('./components/core/api-generator/api-generator.service');
 var active_operation_service_1 = require('./components/core/active-operation/active-operation.service');
 var operation_performer_service_1 = require('./components/core/operation-performer/operation-performer.service');
@@ -26,7 +27,7 @@ var AppComponent = (function () {
             moduleId: module.id,
             templateUrl: 'app.html',
             styleUrls: ['app.css'],
-            directives: [sidebar_component_1.SidebarComponent, header_component_1.HeaderComponent, query_component_1.QueryComponent],
+            directives: [sidebar_component_1.SidebarComponent, header_component_1.HeaderComponent, query_component_1.QueryComponent, response_component_1.ResponseComponent],
             providers: [
                 http_1.HTTP_PROVIDERS,
                 api_generator_service_1.APIGeneratorService,

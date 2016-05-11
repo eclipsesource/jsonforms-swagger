@@ -22,17 +22,26 @@ var ActiveOperationService = (function () {
             this.observers.splice(index, 1);
         }
     };
-    ActiveOperationService.prototype.notify = function () {
+    ActiveOperationService.prototype.notify = function (notification) {
         for (var i = 0; i < this.observers.length; i++) {
-            this.observers[i].update();
+            this.observers[i].update(notification);
         }
     };
     ActiveOperationService.prototype.getActiveOperation = function () {
         return this.activeOperation;
     };
     ActiveOperationService.prototype.setActiveOperation = function (op) {
-        this.activeOperation = op;
-        this.notify();
+        if (!this.activeOperation || op.getOperationId() != this.activeOperation.getOperationId()) {
+            this.activeOperation = op;
+            this.notify('new active operation');
+        }
+    };
+    ActiveOperationService.prototype.responseReady = function (res) {
+        this.response = res;
+        this.notify('response ready');
+    };
+    ActiveOperationService.prototype.getResponse = function () {
+        return this.response;
     };
     ActiveOperationService = __decorate([
         core_1.Injectable(), 

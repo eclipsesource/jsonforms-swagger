@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
-var Observable_1 = require('rxjs/Observable');
 var get_performer_1 = require('./get-performer');
 var post_performer_1 = require('./post-performer');
 var put_performer_1 = require('./put-performer');
@@ -45,9 +44,7 @@ var OperationPerformerService = (function () {
             }
         });
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.operationPerformer.performOperation(this.http, url, body, options)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return this.operationPerformer.performOperation(this.http, url, body, options); // Response and error management delegated to ResponseComponent
     };
     OperationPerformerService.prototype.selectOperationPerformerType = function (operation) {
         switch (operation.getType()) {
@@ -64,17 +61,6 @@ var OperationPerformerService = (function () {
                 this.operationPerformer = new delete_performer_1.DeletePerformer();
                 break;
         }
-    };
-    OperationPerformerService.prototype.extractData = function (res) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        return res.json();
-    };
-    OperationPerformerService.prototype.handleError = function (error) {
-        var errMsg = error.message || 'Server error';
-        console.error(errMsg);
-        return Observable_1.Observable.throw(errMsg);
     };
     OperationPerformerService.prototype.addPathParameter = function (parameter, data, url) {
         var parameterName = parameter.getName();

@@ -10,9 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var active_operation_service_1 = require('../core/active-operation/active-operation.service');
+var query_dataschema_generator_service_1 = require('../core/schemas/query-dataschema-generator.service');
+var uischema_generator_service_1 = require('../core/schemas/uischema-generator.service');
 var operation_performer_service_1 = require('../core/operation-performer/operation-performer.service');
-var dataschema_generator_service_1 = require('./dataschema-generator.service');
-var uischema_generator_service_1 = require('./uischema-generator.service');
 var jsonforms_adapter_1 = require('../../adapters/jsonforms.adapter');
 var QueryComponent = (function () {
     function QueryComponent(activeOperationService, dataschemaGeneratorService, uischemaGeneratorService, operationPerformerService) {
@@ -22,32 +22,33 @@ var QueryComponent = (function () {
         this.operationPerformerService = operationPerformerService;
         activeOperationService.attach(this);
     }
-    QueryComponent.prototype.update = function () {
-        this.activeOperation = this.activeOperationService.getActiveOperation();
-        this.dataschema = this.dataschemaGeneratorService.generateDataschema(this.activeOperation.getParameters());
-        this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
-        this.data = {};
+    QueryComponent.prototype.update = function (notification) {
+        if (notification == 'new active operation') {
+            this.activeOperation = this.activeOperationService.getActiveOperation();
+            this.dataschema = this.dataschemaGeneratorService.generateDataschema(this.activeOperation.getParameters());
+            this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
+            this.data = {};
+        }
     };
     QueryComponent.prototype.performOperation = function () {
+        var _this = this;
         this.operationPerformerService.performOperation(this.activeOperation, this.data)
             .subscribe(function (response) {
-            console.log(response);
-            // TODO
+            _this.activeOperationService.responseReady(response);
         }, function (error) {
-            console.log(error);
-            // TODO
+            _this.activeOperationService.responseReady(error);
         });
     };
     QueryComponent = __decorate([
         core_1.Component({
             selector: 'query-section',
-            templateUrl: './query.html',
+            styleUrls: ['./query.css'],
             moduleId: module.id,
+            templateUrl: 'query.html',
             directives: [jsonforms_adapter_1.JsonFormsAdapter],
-            providers: [dataschema_generator_service_1.DataschemaGeneratorService, uischema_generator_service_1.UischemaGeneratorService],
-            styleUrls: ['./query.css']
+            providers: [query_dataschema_generator_service_1.QueryDataschemaGeneratorService, uischema_generator_service_1.UischemaGeneratorService]
         }), 
-        __metadata('design:paramtypes', [active_operation_service_1.ActiveOperationService, dataschema_generator_service_1.DataschemaGeneratorService, uischema_generator_service_1.UischemaGeneratorService, operation_performer_service_1.OperationPerformerService])
+        __metadata('design:paramtypes', [active_operation_service_1.ActiveOperationService, query_dataschema_generator_service_1.QueryDataschemaGeneratorService, uischema_generator_service_1.UischemaGeneratorService, operation_performer_service_1.OperationPerformerService])
     ], QueryComponent);
     return QueryComponent;
 }());

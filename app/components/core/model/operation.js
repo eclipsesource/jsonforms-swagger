@@ -2,6 +2,7 @@
 var Operation = (function () {
     function Operation() {
         this.parameters = [];
+        this.responses = [];
     }
     Operation.prototype.getType = function () {
         return this.properties['type'];
@@ -20,7 +21,15 @@ var Operation = (function () {
     };
     Operation.prototype.getParameterByName = function (name) {
         return _.find(this.parameters, function (parameter) {
-            return parameter.properties['name'] == name;
+            return parameter.getName() == name;
+        });
+    };
+    Operation.prototype.getResponses = function () {
+        return this.responses;
+    };
+    Operation.prototype.getResponseByCode = function (code) {
+        return _.find(this.responses, function (response) {
+            return response.getCode() == code;
         });
     };
     return Operation;

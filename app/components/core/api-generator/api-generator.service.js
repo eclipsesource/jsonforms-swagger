@@ -15,6 +15,7 @@ var api_1 = require('../model/api');
 var tag_1 = require('../model/tag');
 var operation_1 = require('../model/operation');
 var parameter_1 = require('../model/parameter');
+var api_response_1 = require('../model/api-response');
 var APIGeneratorService = (function () {
     function APIGeneratorService(http) {
         this.http = http;
@@ -72,7 +73,7 @@ var APIGeneratorService = (function () {
         operation.properties['path'] = path;
         operation.properties['type'] = type;
         this.generateParameters(operation, jsonOperation);
-        // TODO: generate operation responses
+        this.generateResponses(operation, jsonOperation);
         tag.operations.push(operation);
     };
     APIGeneratorService.prototype.generateParameters = function (operation, jsonOperation) {
@@ -80,6 +81,14 @@ var APIGeneratorService = (function () {
             var parameter = new parameter_1.Parameter();
             parameter.properties = jsonParameter;
             operation.parameters.push(parameter);
+        });
+    };
+    APIGeneratorService.prototype.generateResponses = function (operation, jsonOperation) {
+        _.forEach(jsonOperation['responses'], function (jsonResponse, code) {
+            var response = new api_response_1.APIResponse();
+            response.properties = jsonResponse;
+            response.properties['code'] = code;
+            operation.responses.push(response);
         });
     };
     APIGeneratorService = __decorate([

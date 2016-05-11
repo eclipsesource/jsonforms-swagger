@@ -30,8 +30,10 @@ var SidebarComponent = (function () {
             _this.api = null;
         });
     };
-    SidebarComponent.prototype.update = function () {
-        this.activeOperationId = this.activeOperationService.getActiveOperation().getOperationId();
+    SidebarComponent.prototype.update = function (notification) {
+        if (notification == 'new active operation') {
+            this.activeOperationId = this.activeOperationService.getActiveOperation().getOperationId();
+        }
     };
     SidebarComponent = __decorate([
         core_1.Component({

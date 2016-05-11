@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Checkbox} from "../../uikit/Checkbox";
+import {Checkbox} from '../../assets/lib/primeng/primeng';
 
 @Component({
 		selector: 'header',
@@ -12,7 +12,8 @@ export class HeaderComponent{
 
 	devMode: boolean = false;
 
-  changeDev($event){
+  changeDev($event:any){
     this.devMode = $event;
+    console.log($event);
   }
 }
