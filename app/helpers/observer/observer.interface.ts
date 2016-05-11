@@ -1,5 +1,5 @@
 export interface IObserver {
 
-  update(): void;
+  update(notification: string): void;
 
 }

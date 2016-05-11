@@ -9,6 +9,7 @@ import { API } from '../model/api';
 import { Tag } from '../model/tag';
 import { Operation } from '../model/operation';
 import { Parameter } from '../model/parameter';
+import { APIResponse } from '../model/api-response';
 
 @Injectable()
 export class APIGeneratorService {
@@ -74,8 +75,7 @@ export class APIGeneratorService {
     operation.properties['type'] = type;
 
     this.generateParameters(operation, jsonOperation);
-
-    // TODO: generate operation responses
+    this.generateResponses(operation, jsonOperation);
 
     tag.operations.push(operation);
   }
@@ -86,6 +86,16 @@ export class APIGeneratorService {
       parameter.properties = jsonParameter;
 
       operation.parameters.push(parameter);
+    });
+  }
+
+  private generateResponses(operation: Operation, jsonOperation: {}) {
+    _.forEach(jsonOperation['responses'], (jsonResponse, code) => {
+      let response: APIResponse = new APIResponse();
+      response.properties = jsonResponse;
+      response.properties['code'] = code;
+
+      operation.responses.push(response);
     });
   }
 
