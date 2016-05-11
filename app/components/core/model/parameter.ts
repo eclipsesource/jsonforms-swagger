@@ -1,6 +1,6 @@
 export class Parameter {
 
-  properties: {};
+  properties: {} = {};
 
   getName(): string {
     return this.properties['name'];

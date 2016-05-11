@@ -2,7 +2,7 @@ import { Operation } from './operation';
 
 export class Tag {
 
-  properties: {};
+  properties: {} = {};
   operations: Operation[] = [];
 
   getName(): string {

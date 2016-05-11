@@ -2,7 +2,7 @@ import { Tag } from './tag';
 
 export class API {
 
-  properties: {};
+  properties: {} = {};
   tags: Tag[] = [];
 
   getBaseUrl(): string {

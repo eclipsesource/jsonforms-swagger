@@ -1,6 +1,6 @@
 export class APIResponse {
 
-  properties: {};
+  properties: {} = {};
 
   getCode(): number {
     return this.properties['code'];

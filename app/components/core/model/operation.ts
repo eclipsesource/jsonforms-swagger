@@ -3,7 +3,7 @@ import { APIResponse } from './api-response';
 
 export class Operation {
 
-  properties: {};
+  properties: {} = {};
   parameters: Parameter[] = [];
   responses: APIResponse[] = [];
 
