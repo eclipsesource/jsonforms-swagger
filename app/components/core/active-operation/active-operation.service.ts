@@ -12,6 +12,7 @@ export class ActiveOperationService implements ISubject {
   observers: IObserver[] = [];
 
   activeOperation: Operation;
+  initialData: {};
 
   response: Response;
 
@@ -32,15 +33,18 @@ export class ActiveOperationService implements ISubject {
     }
   }
 
+  setActiveOperation(op: Operation, data: {}) {
+    this.activeOperation = op;
+    this.initialData = data;
+    this.notify('new active operation');
+  }
+
   getActiveOperation(): Operation {
     return this.activeOperation;
   }
 
-  setActiveOperation(op: Operation) {
-    if (!this.activeOperation || op.getOperationId() != this.activeOperation.getOperationId()) {
-      this.activeOperation = op;
-      this.notify('new active operation');
-    }
+  getInitialData(): {} {
+    return this.initialData;
   }
 
   responseReady(res: Response) {

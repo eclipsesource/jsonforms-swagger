@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
+
 import { IObserver } from '../../helpers/observer/observer.interface';
+
 import { APIGeneratorService } from '../core/api-generator/api-generator.service';
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
+import { HeaderService } from '../header/header.service';
+
 import { API } from '../core/model/api';
-import {JsonFormsAdapter} from '../../adapters/jsonforms.adapter';
-import {PanelMenu} from 'primeng/primeng';
-import {HeaderService} from "../header/header.service";
+import { Operation } from '../core/model/operation';
+
+import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
+
+import { PanelMenu } from 'primeng/primeng';
+
 
 
 @Component({
@@ -55,6 +62,18 @@ export class SidebarComponent implements IObserver {
     if (notification == 'new active operation') {
       this.activeOperationId = this.activeOperationService.getActiveOperation().getOperationId();
     }
+  }
+
+  getOperationText(operation: Operation): string {
+    if (this.devMode) {
+      return operation.getType() + ' - ' + operation.getPath();
+    } else {
+      return operation.getSummary();
+    }
+  }
+
+  onClickOperation(operation: Operation) {
+    this.activeOperationService.setActiveOperation(operation, {});
   }
 
 }
