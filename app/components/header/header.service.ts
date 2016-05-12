@@ -12,7 +12,7 @@ export class HeaderService {
   private _devModeSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
   devMode: Observable<boolean> = this._devModeSubject.asObservable();
 
-  private _urlInputSubject: Subject<string> = new Subject();
+  private _urlInputSubject: Subject<string> = new Subject<string>();
   urlInput: Observable<string> = this._urlInputSubject.asObservable();
 
   setDevMode(state: boolean) {

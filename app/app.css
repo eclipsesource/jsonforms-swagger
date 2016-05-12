@@ -9,7 +9,7 @@
 }
 
 header {
-  height: 100px;
+  height: 50px;
   flex-grow:0;
   flex-shrink:0;
   width: 100%;
