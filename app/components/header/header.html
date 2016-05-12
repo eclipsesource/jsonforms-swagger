@@ -1,1 +1,7 @@
-<p-checkbox (onChange)="onChangeDevMode($event)"></p-checkbox>
+<input value="http://petstore.swagger.io/v2/swagger.json" #url />
+<button (click)="headerService.resolveAPIUrl(url.value)">
+  Resolve
+</button>
+<div *ngIf="headerService.getErrorMessage()">{{headerService.getErrorMessage()}}</div>
+
+<p-checkbox (onChange)="headerService.setDevMode($event)"></p-checkbox>

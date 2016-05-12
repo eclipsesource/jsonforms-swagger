@@ -12,11 +12,5 @@ import { Checkbox } from 'primeng/primeng';
 		directives: [Checkbox]
 })
 export class HeaderComponent{
-  devMode: boolean;
-
   constructor(private headerService: HeaderService) {}
-
-  onChangeDevMode(state: boolean) {
-    this.headerService.setDevMode(state);
-  }
 }

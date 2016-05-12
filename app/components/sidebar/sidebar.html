@@ -1,9 +1,3 @@
-<input value="http://petstore.swagger.io/v2/swagger.json" #url />
-<button (click)="generateAPI(url.value)">
-  Resolve
-</button>
-<div *ngIf="errorMessage">{{errorMessage}}</div>
-
 <p-panelMenu *ngIf="api">
   <div *ngFor="let tag of api.tags">
     <div class="tagGroup"><span>{{tag.getName()}}</span></div>

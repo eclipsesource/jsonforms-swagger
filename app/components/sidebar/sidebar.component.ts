@@ -25,20 +25,21 @@ import { PanelMenu } from 'primeng/primeng';
 export class SidebarComponent implements IObserver {
 
   devMode: boolean = false;
+  // TODO: highlight the active operation in the UI
+  activeOperationId: string;
+  api: API;
 
-  constructor(private apiGeneratorService: APIGeneratorService, private activeOperationService: ActiveOperationService, headerService: HeaderService) {
+  constructor(private apiGeneratorService: APIGeneratorService, private activeOperationService: ActiveOperationService, private headerService: HeaderService) {
     activeOperationService.attach(this);
 
     headerService.devMode.subscribe((state: boolean)=>{
       this.devMode = state;
     });
+
+    headerService.urlInput.subscribe((url: string)=>{
+      this.generateAPI(url);
+    });
   }
-
-  // TODO: highlight the active operation in the UI
-  activeOperationId: string;
-
-  errorMessage: string;
-  api: API;
 
   generateAPI(url: string) {
 
@@ -48,11 +49,11 @@ export class SidebarComponent implements IObserver {
           this.api = null;
           setTimeout(()=>{
             this.api = this.apiGeneratorService.generateAPI(jsonAPI);
-            this.errorMessage = null;
+            this.headerService.setErrorMessage(null);
           }, 0);
         },
         error => {
-          this.errorMessage = <any>error;
+          this.headerService.setErrorMessage(<any>error);
           this.api = null;
         }
       );
