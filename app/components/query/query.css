@@ -1,4 +1,11 @@
-:host {
-  overflow-x:hidden;
-  overflow-y:auto;
+.section {
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  background-color:hsl(86, 27%, 70%);
+}
+
+.res {
+  padding-left: 50px;
+  padding-right: 50px;
 }

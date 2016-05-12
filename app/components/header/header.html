@@ -1,7 +1,10 @@
-<input class="input-api-url" value="http://petstore.swagger.io/v2/swagger.json" #url />
+<div class="input-container">
+  <input class="input-api-url" value="http://petstore.swagger.io/v2/swagger.json" #url />
+  <div class="label-error-message" *ngIf="errorMessage">{{errorMessage}}</div>
+</div>
+
 <button class="button-resolve" (click)="headerService.resolveAPIUrl(url.value)">
   Resolve
 </button>
-<div *ngIf="headerService.getErrorMessage()">{{headerService.getErrorMessage()}}</div>
 
 <p-checkbox class="checkbox-dev-mode" (onChange)="headerService.setDevMode($event)"></p-checkbox>

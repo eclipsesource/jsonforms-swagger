@@ -7,7 +7,8 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class HeaderService {
 
-  private errorMessage: any = null;
+  private _errorMessage: BehaviorSubject<any> = new BehaviorSubject(null);
+  errorMessage: Observable<any> = this._errorMessage.asObservable();
 
   private _devModeSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
   devMode: Observable<boolean> = this._devModeSubject.asObservable();
@@ -20,10 +21,7 @@ export class HeaderService {
   }
 
   setErrorMessage(message: any){
-    this.errorMessage = message;
-  }
-  getErrorMessage(): any {
-    return this.errorMessage;
+    this._errorMessage.next(message);
   }
 
   resolveAPIUrl(url: string){
