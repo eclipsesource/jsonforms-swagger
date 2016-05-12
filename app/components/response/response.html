@@ -1,2 +1,10 @@
-<div *ngIf="responseMessage">{{responseMessage}}</div>
-<jsonforms class="jsf" *ngIf="data" [schema]="dataschema" [uischema]="uischema" [data]="data"></jsonforms>
+<div *ngIf="responseMessage || data" class="section">
+  <h2>Response</h2>
+  <div *ngIf="responseMessage">{{responseMessage}}</div>
+  <div class="res">
+    <jsonforms class="jsf" *ngIf="data" [schema]="dataschema" [uischema]="uischema" [data]="data"></jsonforms>
+  </div>
+</div>
+
+
+

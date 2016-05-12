@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
 
 import { IObserver } from '../../helpers/observer/observer.interface';
 
@@ -20,7 +20,6 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
   providers: [QueryDataschemaGeneratorService, UischemaGeneratorService]
 })
 export class QueryComponent implements IObserver {
-
   activeOperation: Operation;
 
   dataschema: {};

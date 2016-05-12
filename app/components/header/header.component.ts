@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer } from '@angular/core';
 
 import { HeaderService } from './header.service';
 
@@ -12,5 +12,21 @@ import { Checkbox } from 'primeng/primeng';
 		directives: [Checkbox]
 })
 export class HeaderComponent{
-  constructor(private headerService: HeaderService) {}
+  errorMessage: any;
+  constructor(private headerService: HeaderService, private element: ElementRef, private renderer:Renderer) {
+    headerService.errorMessage.subscribe((message)=>{
+      this.errorMessage = message;
+      this.errorMessageIn();
+      setTimeout(()=>{
+        this.errorMessageOut();
+      }, 2000);
+    });
+  }
+
+  errorMessageIn(){
+    $(this.element.nativeElement).find('.label-error-message').css('opacity', '100');
+  }
+  errorMessageOut(){
+    $(this.element.nativeElement).find('.label-error-message').css('opacity', '0');
+  }
 }
