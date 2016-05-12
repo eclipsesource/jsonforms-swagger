@@ -26,12 +26,7 @@ export class APIGeneratorService {
     if (res.status < 200 || res.status >= 300) {
       throw new Error('Bad response status: ' + res.status);
     }
-    let jsonApi: {} = res.json();
-    let resolvedJsonApi: {};
-    JsonRefs.resolveRefs(jsonApi, {}, function(err: any, res: any) {
-      resolvedJsonApi = res;
-    });
-    return resolvedJsonApi;
+    return res.json();
   }
 
   private handleError (error: any) {
@@ -45,6 +40,7 @@ export class APIGeneratorService {
     api.properties = _.pick(jsonAPI, ['info', 'host', 'basePath']);
     this.generateTags(api, jsonAPI);
     this.generateOperations(api, jsonAPI);
+    this.generateRelatedOperations(api, jsonAPI);
     return api;
   }
 
@@ -73,8 +69,13 @@ export class APIGeneratorService {
   }
 
   private generateOperations(api: API, jsonAPI: {}) {
+    let resolvedJsonAPI: {};
+    JsonRefs.resolveRefs(jsonAPI, {}, function(err: any, res: any) {
+      resolvedJsonAPI = res;
+    });
+
     let baseUrl = api.getBaseUrl();
-    _.forEach(jsonAPI['paths'], (jsonPath: {}, path: string) => {
+    _.forEach(resolvedJsonAPI['paths'], (jsonPath: {}, path: string) => {
       _.forEach(jsonPath, (jsonOperation: {}, operationType: string) => {
         let tagName: string = jsonOperation['tags'][0]; // we are assuming an operation corresponds to only one tag
         let tag: Tag = api.getTagByName(tagName);
@@ -112,6 +113,45 @@ export class APIGeneratorService {
       response.properties['code'] = code;
 
       operation.responses.push(response);
+    });
+  }
+
+  private generateRelatedOperations(api: API, jsonAPI: {}) {
+    let relatedOperations:{} = {};
+
+    _.forEach(jsonAPI['paths'], (jsonPath: {}) => {
+      _.forEach(jsonPath, (jsonOperation: {}) => {
+        _.forEach(jsonOperation['parameters'], (jsonParameter: {}) => {
+          if (jsonParameter['schema'] && jsonParameter['schema']['$ref']) {
+            let definitionRef: string = jsonParameter['schema']['$ref'];
+            if (relatedOperations[definitionRef]) {
+              relatedOperations[definitionRef]['consumes'] = relatedOperations[definitionRef]['consumes'].concat([jsonOperation['operationId']]);
+            } else {
+              relatedOperations[definitionRef] = { consumes: [jsonOperation['operationId']], produces: [] };
+            }
+          }
+        });
+
+        _.forEach(jsonOperation['responses'], (jsonResponse: {}) => {
+          if (jsonResponse['schema'] && jsonResponse['schema']['$ref']) {
+            let definitionRef: string = jsonResponse['schema']['$ref'];
+            if (relatedOperations[definitionRef]) {
+              relatedOperations[definitionRef]['produces'] = relatedOperations[definitionRef]['produces'].concat([jsonOperation['operationId']]);
+            }
+            // No need to create it now if it has not been created before
+          }
+        });
+      });
+    });
+
+    _.forEach(relatedOperations, (relatedOperation: {}) => {
+      _.forEach(relatedOperation['produces'], (producesId: string) => {
+        let producesOperation: Operation = api.getOperationById(producesId);
+        _.forEach(relatedOperation['consumes'], (consumesId: string) => {
+          let consumesOperation: Operation = api.getOperationById(consumesId);
+          producesOperation.relatedOperations.push(consumesOperation);
+        });
+      });
     });
   }
 

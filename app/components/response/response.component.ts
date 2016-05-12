@@ -4,6 +4,7 @@ import { IObserver } from '../../helpers/observer/observer.interface';
 
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
 import { UischemaGeneratorService } from '../core/schemas/uischema-generator.service';
+import { ResponseMessagesService } from './response-messages.service';
 
 import { Operation } from '../core/model/operation';
 import { APIResponse } from '../core/model/api-response';
@@ -15,7 +16,7 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
   moduleId: module.id,
   templateUrl: 'response.html',
   directives: [JsonFormsAdapter],
-  providers: [UischemaGeneratorService],
+  providers: [UischemaGeneratorService, ResponseMessagesService],
   styleUrls: ['./response.css']
 })
 export class ResponseComponent implements IObserver {
@@ -29,7 +30,8 @@ export class ResponseComponent implements IObserver {
   data: {};
 
   constructor(private activeOperationService: ActiveOperationService,
-              private uischemaGeneratorService: UischemaGeneratorService) {
+              private uischemaGeneratorService: UischemaGeneratorService,
+              private responseMessagesService: ResponseMessagesService) {
     activeOperationService.attach(this);
   }
 
@@ -57,7 +59,7 @@ export class ResponseComponent implements IObserver {
     if (apiResponse) {
       this.responseMessage = apiResponse.getDescription();
     } else {
-      this.responseMessage = response.statusText;
+      this.responseMessage = this.responseMessagesService.getMessage(response.status);
     }
 
     if (apiResponse && apiResponse.hasSchema()) {

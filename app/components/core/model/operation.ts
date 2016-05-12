@@ -6,6 +6,7 @@ export class Operation {
   properties: {} = {};
   parameters: Parameter[] = [];
   responses: APIResponse[] = [];
+  relatedOperations: Operation[] = [];
 
   getType(): string {
     return this.properties['type'];
@@ -44,7 +45,7 @@ export class Operation {
   getResponseByCode(code: number): APIResponse {
     return _.find(this.responses, (response: APIResponse) => {
       return response.getCode() == code;
-    })
+    });
   }
 
 }
