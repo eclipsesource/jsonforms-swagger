@@ -25,6 +25,7 @@ export class HeaderComponent {
     });
   }
 
+  // TODO: $ is giving some errors
   errorMessageIn(){
     //$(this.element.nativeElement).find('.label-error-message').css('opacity', '100');
   }

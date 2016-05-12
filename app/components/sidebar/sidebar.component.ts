@@ -25,8 +25,10 @@ import { PanelMenu } from 'primeng/primeng';
 export class SidebarComponent implements IObserver {
 
   devMode: boolean = false;
-  // TODO: highlight the active operation in the UI
+
+  // TODO: highlight the active operation in the UI using activeOperationId
   activeOperationId: string;
+
   api: API;
 
   constructor(private apiGeneratorService: APIGeneratorService, private activeOperationService: ActiveOperationService, private headerService: HeaderService) {
