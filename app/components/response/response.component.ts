@@ -23,6 +23,8 @@ export class ResponseComponent implements IObserver {
 
   activeOperation: Operation;
 
+  isResponseReady: boolean = false;
+
   responseMessage: string;
 
   dataschema: {};
@@ -36,6 +38,7 @@ export class ResponseComponent implements IObserver {
   }
 
   update(notification: string) {
+    this.isResponseReady = false;
     this.responseMessage = '';
     this.data = null;
 
@@ -67,6 +70,13 @@ export class ResponseComponent implements IObserver {
       this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
       this.data = response.json();
     }
+
+    this.isResponseReady = true;
+  }
+
+  onClickRelatedOperation(relatedOperation: Operation) {
+    let initialData: {} = { body: this.data };
+    this.activeOperationService.setActiveOperation(relatedOperation, initialData);
   }
 
 }

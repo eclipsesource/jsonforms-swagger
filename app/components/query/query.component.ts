@@ -39,7 +39,11 @@ export class QueryComponent implements IObserver {
 
       this.dataschema = this.dataschemaGeneratorService.generateDataschema(this.activeOperation.getParameters());
       this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
-      this.data = {};
+      this.data = this.activeOperationService.getInitialData();
+
+      if (!_.isEmpty(this.data)) {
+        this.performOperation();
+      }
     }
   }
 
