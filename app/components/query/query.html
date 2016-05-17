@@ -3,6 +3,9 @@
   <div class="res">
     <jsonforms class="jsf" [schema]="dataschema" [uischema]="uischema" [data]="data"></jsonforms>
   </div>
-  <button (click)="performOperation()">{{activeOperation.getType()}}</button>
+  <div class="button-container">
+    <button class="response-button" (click)="performOperation()">{{activeOperation.getType()}}</button>
+  </div>
+
 </div>
 

@@ -1,0 +1,31 @@
+.section {
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  background-color:hsl(86, 27%, 70%);
+}
+
+.res {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.button-container {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.response-button {
+  background-color: #186BA0;
+  border-color: #186BA0;
+  color: white;
+  padding: 2px;
+  border-radius: 3px;
+  border-style: solid;
+  height: 28px;
+  width: 80px;
+}

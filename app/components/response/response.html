@@ -4,7 +4,10 @@
   <div class="res">
     <jsonforms class="jsf" *ngIf="data" [schema]="dataschema" [uischema]="uischema" [data]="data"></jsonforms>
   </div>
-  <button *ngFor="let relatedOperation of activeOperation.relatedOperations" (click)="onClickRelatedOperation(relatedOperation)">{{relatedOperation.getType()}}</button>
+  <div class="button-container">
+    <button class="response-button" *ngFor="let relatedOperation of activeOperation.relatedOperations" (click)="onClickRelatedOperation(relatedOperation)">{{relatedOperation.getType()}}</button>
+  </div>
+
 </div>
 
 

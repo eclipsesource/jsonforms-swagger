@@ -13,7 +13,7 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
 
 @Component({
   selector: 'query-section',
-  styleUrls: ['./query.css'],
+  styleUrls: ['../center-content.css'],
   moduleId: module.id,
   templateUrl: 'query.html',
   directives: [JsonFormsAdapter],
