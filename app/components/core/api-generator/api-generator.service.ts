@@ -122,24 +122,25 @@ export class APIGeneratorService {
     _.forEach(jsonAPI['paths'], (jsonPath: {}) => {
       _.forEach(jsonPath, (jsonOperation: {}) => {
         _.forEach(jsonOperation['parameters'], (jsonParameter: {}) => {
-          if (jsonParameter['schema'] && jsonParameter['schema']['$ref']) {
-            let definitionRef: string = jsonParameter['schema']['$ref'];
+          var flattenedParam = this.flattenObjectRefs(jsonParameter);
+          _.forEach(flattenedParam, (definitionRef)=>{
             if (relatedOperations[definitionRef]) {
               relatedOperations[definitionRef]['consumes'] = relatedOperations[definitionRef]['consumes'].concat([jsonOperation['operationId']]);
             } else {
               relatedOperations[definitionRef] = { consumes: [jsonOperation['operationId']], produces: [] };
             }
-          }
+          });
         });
 
         _.forEach(jsonOperation['responses'], (jsonResponse: {}) => {
-          if (jsonResponse['schema'] && jsonResponse['schema']['$ref']) {
-            let definitionRef: string = jsonResponse['schema']['$ref'];
+          var flattenedResponse = this.flattenObjectRefs(jsonResponse);
+          _.forEach(flattenedResponse, (definitionRef)=>{
             if (relatedOperations[definitionRef]) {
               relatedOperations[definitionRef]['produces'] = relatedOperations[definitionRef]['produces'].concat([jsonOperation['operationId']]);
+            } else {
+              relatedOperations[definitionRef] = { consumes: [], produces: [jsonOperation['operationId']] };
             }
-            // No need to create it now if it has not been created before
-          }
+          });
         });
       });
     });
@@ -153,6 +154,23 @@ export class APIGeneratorService {
         });
       });
     });
+
+    console.log(relatedOperations);
   }
+
+  private flattenObjectRefs(ob: any):any {
+    var toReturn = [];
+
+    for (var i:any in ob) {
+      if (!ob.hasOwnProperty(i)) continue;
+      if ((typeof ob[i]) == 'object') {
+        var flatObject:any = this.flattenObjectRefs(ob[i]);
+        toReturn = toReturn.concat(flatObject);
+      } else if(i === '$ref') {
+        toReturn.push(ob[i]);
+      }
+    }
+    return toReturn;
+};
 
 }
