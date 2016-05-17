@@ -31,7 +31,6 @@ export class SidebarComponent implements IObserver {
 
   devMode: boolean = false;
 
-  // TODO: highlight the active operation in the UI using activeOperationId
   activeOperationId: string;
 
   api: API;

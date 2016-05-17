@@ -44,3 +44,8 @@
 :host >>> .ui-overlaypanel {
   position:fixed;
 }
+
+.active *, .active *:hover {
+  background-color:#186BA0;
+  color:white;
+}

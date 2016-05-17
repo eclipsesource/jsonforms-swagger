@@ -11,7 +11,7 @@
     <div class="tagGroup"><span>{{tag.getName()}}</span></div>
     <div>
       <ul>
-        <li class="tagOperation" *ngFor="let operation of tag.operations">
+        <li [ngClass]="{'active': operation.getOperationId() === activeOperationId}" class="tagOperation" *ngFor="let operation of tag.operations">
           <a (click)="onClickOperation(operation)">{{getOperationText(operation)}}</a>
         </li>
       </ul>
