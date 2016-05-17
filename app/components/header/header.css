@@ -22,7 +22,7 @@
 }
 
 .checkbox-dev-mode >>> .ui-chkbox-box.ui-widget{
-  width: 80px;
+  width: auto;
   height: 28px;
   padding-top: 2px;
   border-top-width: 2px;

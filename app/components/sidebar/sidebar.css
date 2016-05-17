@@ -15,3 +15,32 @@
   line-height: 40px;
   text-align: center;
 }
+
+.api-title h4 {
+  text-align: center;
+  background-color: #186BA0;
+  margin: 10px;
+  padding: 10px;
+  color: white;
+  border-radius: 3px;
+}
+
+.api-title{
+  position: relative;
+}
+.api-title .fa-info-circle {
+  position:absolute;
+  color: white;
+  top: 12px;
+  right: 18px;
+  font-size: 1.2em;
+}
+
+:host .info-overlay-target {
+  position: absolute;
+  left: 305px;
+  top: 61px;
+}
+:host >>> .ui-overlaypanel {
+  position:fixed;
+}

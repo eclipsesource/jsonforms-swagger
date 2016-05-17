@@ -1,3 +1,11 @@
+<div *ngIf="getTitle()!=null" class="api-title">
+  <p-overlayPanel #op (mouseenter)="descriptionHoverIn($event, infoTarget)" (mouseleave)="descriptionHoverOut($event)">
+    <div *ngIf="getDescription()!=null">Description: {{getDescription()}}</div>
+  </p-overlayPanel>
+  <i (mouseenter)="descriptionHoverIn($event, infoTarget)" (mouseleave)="descriptionHoverOut($event)" class="fa fa-info-circle"></i>
+  <h4>{{getTitle()}}</h4>
+</div>
+<div #infoTarget class="info-overlay-target"></div>
 <p-panelMenu class="panel-menu-sidebar" *ngIf="api">
   <div *ngFor="let tag of api.tags">
     <div class="tagGroup"><span>{{tag.getName()}}</span></div>
