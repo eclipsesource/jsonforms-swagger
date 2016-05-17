@@ -100,12 +100,7 @@ export class SidebarComponent implements IObserver {
   }
 
   descriptionHoverIn($event, infoTarget){
-
-    console.log('in');
-
     if(this.moreInfoActive){
-      console.log('reenter');
-      console.log(this.moreInfoTimeoutId);
       if(this.moreInfoTimeoutId){
 
         clearTimeout(this.moreInfoTimeoutId);
@@ -117,7 +112,6 @@ export class SidebarComponent implements IObserver {
     }
   }
   descriptionHoverOut($event){
-    console.log('out');
 
     this.moreInfoTimeoutId = setTimeout(()=>{
       this.op.hide($event);
