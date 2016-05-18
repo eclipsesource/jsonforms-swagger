@@ -20,6 +20,9 @@ export class APIGeneratorService {
   private _api: BehaviorSubject<any> = new BehaviorSubject(null);
   api: Observable<any> = this._api.asObservable();
 
+  private _definitionReferences: BehaviorSubject<any> = new BehaviorSubject(null);
+  definitionReferences: Observable<any> = this._definitionReferences.asObservable();
+
   constructor(private http: Http) {}
 
   getAPI(url: string): Observable<{}> {
@@ -52,6 +55,7 @@ export class APIGeneratorService {
             napi.properties = _.pick(jsonAPI, ['info', 'host', 'basePath']);
             this.generateTags(napi, jsonAPI);
             this.generateOperations(napi, jsonAPI);
+            this.generateDefinitions(napi, jsonAPI);
             this.generateRelatedOperations(napi, jsonAPI);
 
             this._api.next(napi);
@@ -142,9 +146,11 @@ export class APIGeneratorService {
 
     _.forEach(jsonAPI['paths'], (jsonPath: {}) => {
       _.forEach(jsonPath, (jsonOperation: {}) => {
+        var operation = api.getOperationById(jsonOperation['operationId']);
         _.forEach(jsonOperation['parameters'], (jsonParameter: {}) => {
           var flattenedParam = this.flattenObjectRefs(jsonParameter);
           _.forEach(flattenedParam, (definitionRef)=>{
+            operation.consumes.push(definitionRef);
             if (relatedOperations[definitionRef]) {
               relatedOperations[definitionRef]['consumes'] = relatedOperations[definitionRef]['consumes'].concat([jsonOperation['operationId']]);
             } else {
@@ -156,7 +162,9 @@ export class APIGeneratorService {
         _.forEach(jsonOperation['responses'], (jsonResponse: {}) => {
           var flattenedResponse = this.flattenObjectRefs(jsonResponse);
           _.forEach(flattenedResponse, (definitionRef)=>{
+            operation.produces.push(definitionRef);
             if (relatedOperations[definitionRef]) {
+
               relatedOperations[definitionRef]['produces'] = relatedOperations[definitionRef]['produces'].concat([jsonOperation['operationId']]);
             } else {
               relatedOperations[definitionRef] = { consumes: [], produces: [jsonOperation['operationId']] };
@@ -175,6 +183,8 @@ export class APIGeneratorService {
         });
       });
     });
+
+    this._definitionReferences.next(relatedOperations);
   }
 
   private flattenObjectRefs(ob: any):any {
@@ -190,5 +200,16 @@ export class APIGeneratorService {
       }
     }
     return toReturn;
+  }
+
+  private generateDefinitions(api: API, jsonAPI: {}){
+    api['definitions'] = [];
+    if(!jsonAPI['definitions']){
+      return;
+    }
+    _.forEach(jsonAPI['definitions'], (def, key)=>{
+      api['definitions'].push(key);
+    });
+
   }
 }

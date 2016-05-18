@@ -7,6 +7,8 @@ export class Operation {
   parameters: Parameter[] = [];
   responses: APIResponse[] = [];
   relatedOperations: Operation[] = [];
+  produces: string[] = [];
+  consumes: string[] = [];
 
   getType(): string {
     return this.properties['type'];

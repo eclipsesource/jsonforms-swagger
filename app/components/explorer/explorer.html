@@ -1,7 +1,7 @@
 <div class="entities-container" *ngIf="api">
-  <div *ngFor="let entity of api.tags" class="entity">
-    <i class="fa fa-search" (click)="find(entity)"></i>
-    <i class="fa fa-plus" (click)="add(entity)"></i>
-    <span>{{entity.getName()}}</span>
+  <div *ngFor="let definition of api.definitions" class="entity">
+    <i class="fa fa-search" (click)="find(definition)"></i>
+    <i class="fa fa-plus" (click)="add(definition)"></i>
+    <span>{{definition}}</span>
   </div>
 </div>
