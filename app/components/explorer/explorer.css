@@ -1,54 +1,51 @@
 :host {
-  display:flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  overflow:auto;
 }
 
-.entities-container{
-  margin-top:30px;
-  margin-bottom: 30px;
-  width: 60%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  align-content: space-around;
+.panel-menu-sidebar >>> .ui-panelmenu.ui-widget {
+  margin: 5px;
 }
 
-.entity{
-  position:relative;
-  margin-right: 30px;
-  margin-left: 30px;
-  width: 100px;
-  height: 100px;
+.panel-menu-sidebar >>> .ui-panelmenu-panel {
+  margin-bottom: 5px;
+}
+
+.panel-menu-sidebar >>> .ui-panelmenu-header {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+}
+
+.api-title h4 {
+  text-align: center;
   background-color: #186BA0;
-  line-height: 100px;
-  text-align:center;
+  margin: 10px;
+  padding: 10px;
   color: white;
-  border-radius: 4px;
-
-  display: flex;
-  flex-wrap:nowrap;
-  justify-content: space-around;
-  align-items: stretch;
+  border-radius: 3px;
 }
 
-.entity span {
+.api-title{
+  position: relative;
+}
+.api-title .fa-info-circle {
+  position:absolute;
+  color: white;
+  top: 12px;
+  right: 18px;
+  font-size: 1.2em;
+}
+
+:host .info-overlay-target {
   position: absolute;
-  pointer-events: none;
-  left:0;
-  width:100%;
+  left: 305px;
+  top: 61px;
 }
-.entity i {
-  width:100%;
-  position:relative;
-  padding-top: 15px;
+:host >>> .ui-overlaypanel {
+  position:fixed;
 }
 
-.entity i:hover {
-  background-color:rgba(117, 163, 57, 0.5);
+.active *, .active *:hover {
+  background-color:#186BA0;
+  color:white;
 }
-
-

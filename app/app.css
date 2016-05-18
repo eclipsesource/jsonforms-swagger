@@ -26,7 +26,7 @@ header {
   min-height:0;
 }
 
-sidebar {
+sidebar, explorer {
   width: 300px;
   flex-grow:0;
   flex-shrink:0;

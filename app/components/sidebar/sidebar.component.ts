@@ -7,8 +7,6 @@ import { HeaderService } from '../header/header.service';
 import { API } from '../core/model/api';
 import { Operation } from '../core/model/operation';
 
-import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
-
 import { PanelMenu } from 'primeng/primeng';
 import {OverlayPanel} from 'primeng/primeng';
 import Timer = NodeJS.Timer;
@@ -18,7 +16,7 @@ import Timer = NodeJS.Timer;
   selector: 'sidebar',
   moduleId: module.id,
   templateUrl: 'sidebar.html',
-  directives: [JsonFormsAdapter, PanelMenu, OverlayPanel],
+  directives: [PanelMenu, OverlayPanel],
   styleUrls: ['sidebar.css'],
 })
 export class SidebarComponent {

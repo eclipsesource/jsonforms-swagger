@@ -1,7 +1,23 @@
-<div class="entities-container" *ngIf="api">
-  <div *ngFor="let definition of getDefinitions()" class="entity">
-    <i *ngIf="hasFindOps(definition)" class="fa fa-search" (click)="find(definition)"></i>
-    <i *ngIf="hasAddOps(definition)" class="fa fa-plus" (click)="add(definition)"></i>
-    <span>{{definition.label}}</span>
-  </div>
+<div *ngIf="getTitle()!=null" class="api-title">
+  <p-overlayPanel #op (mouseenter)="descriptionHoverIn($event, infoTarget)" (mouseleave)="descriptionHoverOut($event)">
+    <div *ngIf="getDescription()!=null">Description: {{getDescription()}}</div>
+  </p-overlayPanel>
+  <i (mouseenter)="descriptionHoverIn($event, infoTarget)" (mouseleave)="descriptionHoverOut($event)" class="fa fa-info-circle"></i>
+  <h4>{{getTitle()}}</h4>
 </div>
+<div #infoTarget class="info-overlay-target"></div>
+<p-panelMenu class="panel-menu-sidebar" *ngIf="api">
+  <div *ngFor="let definition of getDefinitions()">
+    <div class="tagGroup"><span>{{definition.label}}</span></div>
+    <div>
+      <ul>
+        <li class="tagOperation">
+          <a (click)="find(definition)">Find</a>
+        </li>
+        <li class="tagOperation">
+          <a (click)="add(definition)">Add</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</p-panelMenu>
