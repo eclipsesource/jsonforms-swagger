@@ -1,3 +1,4 @@
+import {BehaviorSubject} from "../../../../node_modules/rxjs/BehaviorSubject";
 declare var JsonRefs: any;
 
 import { Injectable } from '@angular/core';
@@ -11,8 +12,13 @@ import { Operation } from '../model/operation';
 import { Parameter } from '../model/parameter';
 import { APIResponse } from '../model/api-response';
 
+
 @Injectable()
 export class APIGeneratorService {
+
+
+  private _api: BehaviorSubject<any> = new BehaviorSubject(null);
+  api: Observable<any> = this._api.asObservable();
 
   constructor(private http: Http) {}
 
@@ -35,13 +41,28 @@ export class APIGeneratorService {
     return Observable.throw(errMsg);
   }
 
-  generateAPI(jsonAPI: {}): API {
-    let api = new API();
-    api.properties = _.pick(jsonAPI, ['info', 'host', 'basePath']);
-    this.generateTags(api, jsonAPI);
-    this.generateOperations(api, jsonAPI);
-    this.generateRelatedOperations(api, jsonAPI);
-    return api;
+  generateAPI(url: string){
+    this.getAPI(url)
+      .subscribe(
+        jsonAPI => {
+          this._api.next(null);
+          setTimeout(()=>{
+
+            let napi = new API();
+            napi.properties = _.pick(jsonAPI, ['info', 'host', 'basePath']);
+            this.generateTags(napi, jsonAPI);
+            this.generateOperations(napi, jsonAPI);
+            this.generateRelatedOperations(napi, jsonAPI);
+
+            this._api.next(napi);
+          }, 0);
+        },
+        error => {
+          this._api.error(error);
+        }
+      );
+
+
   }
 
   private generateTags(api: API, jsonAPI: {}) {

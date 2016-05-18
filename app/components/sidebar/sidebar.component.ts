@@ -43,28 +43,16 @@ export class SidebarComponent implements IObserver {
       this.devMode = state;
     });
 
-    headerService.urlInput.subscribe((url: string)=>{
-      this.generateAPI(url);
+    apiGeneratorService.api.subscribe((api: any)=>{
+      this.headerService.setErrorMessage(null);
+      this.api = api;
+      console.log(api);
+    }, (error: any)=>{
+      console.log(error);
+      this.headerService.setErrorMessage(error);
     });
   }
 
-  generateAPI(url: string) {
-
-    this.apiGeneratorService.getAPI(url)
-      .subscribe(
-        jsonAPI => {
-          this.api = null;
-          setTimeout(()=>{
-            this.api = this.apiGeneratorService.generateAPI(jsonAPI);
-            this.headerService.setErrorMessage(null);
-          }, 0);
-        },
-        error => {
-          this.headerService.setErrorMessage(<any>error);
-          this.api = null;
-        }
-      );
-  }
 
   update(notification: string) {
     if (notification == 'new active operation') {
