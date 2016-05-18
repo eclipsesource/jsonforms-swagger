@@ -1,59 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 
-import { ISubject } from '../../../helpers/observer/subject.interface';
-import { IObserver } from '../../../helpers/observer/observer.interface';
-
 import { Operation } from '../model/operation';
 
+import {BehaviorSubject} from "../../../../node_modules/rxjs/BehaviorSubject";
+import { Observable } from 'rxjs/Observable';
+
 @Injectable()
-export class ActiveOperationService implements ISubject {
+export class ActiveOperationService {
 
-  observers: IObserver[] = [];
+  private _activeOperation: BehaviorSubject<Operation> = new BehaviorSubject(null);
+  activeOperation: Observable<Operation> = this._activeOperation.asObservable();
 
-  activeOperation: Operation;
-  initialData: {};
+  initialData: {} = {};
 
-  response: Response;
-
-  attach(observer: IObserver) {
-    this.observers.push(observer);
-  }
-
-  detach(observer: IObserver) {
-    let index = this.observers.indexOf(observer);
-    if (index >= 0) {
-      this.observers.splice(index, 1);
-    }
-  }
-
-  notify(notification: string) {
-    for (let i = 0; i < this.observers.length; i++) {
-      this.observers[i].update(notification);
-    }
-  }
+  private _response: BehaviorSubject<Response> = new BehaviorSubject(null);
+  response: Observable<Response> = this._response.asObservable();
 
   setActiveOperation(op: Operation, data: {}) {
-    this.activeOperation = op;
     this.initialData = data;
-    this.notify('new active operation');
+    this._activeOperation.next(op);
   }
 
-  getActiveOperation(): Operation {
-    return this.activeOperation;
-  }
-
-  getInitialData(): {} {
+  getInitialData(){
     return this.initialData;
   }
 
-  responseReady(res: Response) {
-    this.response = res;
-    this.notify('response ready');
+  setResponse(res: Response) {
+    this._response.next(res);
   }
-
-  getResponse(): Response {
-    return this.response;
-  }
-
 }

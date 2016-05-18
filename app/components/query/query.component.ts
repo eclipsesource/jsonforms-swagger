@@ -1,7 +1,5 @@
 import { Component, Output } from '@angular/core';
 
-import { IObserver } from '../../helpers/observer/observer.interface';
-
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
 import { QueryDataschemaGeneratorService } from '../core/schemas/query-dataschema-generator.service';
 import { UischemaGeneratorService } from '../core/schemas/uischema-generator.service';
@@ -19,7 +17,7 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
   directives: [JsonFormsAdapter],
   providers: [QueryDataschemaGeneratorService, UischemaGeneratorService]
 })
-export class QueryComponent implements IObserver {
+export class QueryComponent {
   activeOperation: Operation;
 
   dataschema: {};
@@ -31,14 +29,12 @@ export class QueryComponent implements IObserver {
               private dataschemaGeneratorService: QueryDataschemaGeneratorService,
               private uischemaGeneratorService: UischemaGeneratorService,
               private operationPerformerService: OperationPerformerService) {
-    activeOperationService.attach(this);
+    this.activeOperationService.activeOperation.subscribe((op: Operation)=>{
 
-  }
-
-  update(notification: string) {
-    if (notification == 'new active operation') {
-      this.activeOperation = this.activeOperationService.getActiveOperation();
-
+      this.activeOperation = op;
+      if(!op){
+        return;
+      }
       this.dataschema = this.dataschemaGeneratorService.generateDataschema(this.activeOperation.getParameters());
       this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
       this.data = this.activeOperationService.getInitialData();
@@ -46,6 +42,13 @@ export class QueryComponent implements IObserver {
       if (!_.isEmpty(this.data)) {
         this.performOperation();
       }
+    })
+
+  }
+
+  update(notification: string) {
+    if (notification == 'new active operation') {
+
     }
   }
 
@@ -53,10 +56,10 @@ export class QueryComponent implements IObserver {
     this.operationPerformerService.performOperation(this.activeOperation, this.data)
       .subscribe(
         (response) => {
-          this.activeOperationService.responseReady(response);
+          this.activeOperationService.setResponse(response);
         },
         (error) => {
-          this.activeOperationService.responseReady(error);
+          this.activeOperationService.setResponse(error);
         }
       );
   }
