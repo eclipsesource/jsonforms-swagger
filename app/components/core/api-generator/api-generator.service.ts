@@ -12,7 +12,6 @@ import { Operation } from '../model/operation';
 import { Parameter } from '../model/parameter';
 import { APIResponse } from '../model/api-response';
 
-
 @Injectable()
 export class APIGeneratorService {
 
@@ -23,9 +22,8 @@ export class APIGeneratorService {
   constructor(private http: Http) {}
 
   getAPI(url: string): Observable<{}> {
-    return this.http.get(url)
-      .map(this.extractData)
-      .catch(this.handleError);
+    var res: Observable<Response> = this.http.get(url);
+    return res.map(this.extractData).catch(this.handleError);
   }
 
   private extractData(res: Response) {

@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-
-import { IObserver } from '../../helpers/observer/observer.interface';
-
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
 import { UischemaGeneratorService } from '../core/schemas/uischema-generator.service';
 import { ResponseMessagesService } from './response-messages.service';
@@ -10,6 +7,7 @@ import { Operation } from '../core/model/operation';
 import { APIResponse } from '../core/model/api-response';
 
 import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
+import { Response } from '@angular/http';
 
 @Component({
   selector: 'response-section',
@@ -19,7 +17,7 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
   providers: [UischemaGeneratorService, ResponseMessagesService],
   styleUrls: ['../center-content.css']
 })
-export class ResponseComponent implements IObserver {
+export class ResponseComponent {
 
   activeOperation: Operation;
 
@@ -34,29 +32,29 @@ export class ResponseComponent implements IObserver {
   constructor(private activeOperationService: ActiveOperationService,
               private uischemaGeneratorService: UischemaGeneratorService,
               private responseMessagesService: ResponseMessagesService) {
-    activeOperationService.attach(this);
+
+    activeOperationService.activeOperation.subscribe((op)=>{
+      if(!op){
+        return;
+      }
+      this.isResponseReady = false;
+      this.responseMessage = '';
+      this.data = null;
+      this.updateActiveOperation(op);
+    });
+    activeOperationService.response.subscribe((res)=>{
+      if(!res){
+        return;
+      }
+      this.responseReady(res);
+    })
   }
 
-  update(notification: string) {
-    this.isResponseReady = false;
-    this.responseMessage = '';
-    this.data = null;
-
-    if (notification == 'new active operation') {
-      this.updateActiveOperation();
-    }
-
-    if (notification == 'response ready') {
-      this.responseReady();
-    }
+  updateActiveOperation(op: Operation) {
+    this.activeOperation = op;
   }
 
-  updateActiveOperation() {
-    this.activeOperation = this.activeOperationService.getActiveOperation();
-  }
-
-  responseReady() {
-    let response = this.activeOperationService.getResponse();
+  responseReady(response: Response) {
 
     let apiResponse: APIResponse = this.activeOperation.getResponseByCode(response.status);
     if (apiResponse) {

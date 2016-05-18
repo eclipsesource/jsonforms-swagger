@@ -1,7 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { IObserver } from '../../helpers/observer/observer.interface';
-
 import { APIGeneratorService } from '../core/api-generator/api-generator.service';
 import { ActiveOperationService } from '../core/active-operation/active-operation.service';
 import { HeaderService } from '../header/header.service';
@@ -23,7 +21,7 @@ import Timer = NodeJS.Timer;
   directives: [JsonFormsAdapter, PanelMenu, OverlayPanel],
   styleUrls: ['sidebar.css'],
 })
-export class SidebarComponent implements IObserver {
+export class SidebarComponent {
 
   @ViewChild('op') op: any;
 
@@ -37,7 +35,13 @@ export class SidebarComponent implements IObserver {
   api: API;
 
   constructor(private apiGeneratorService: APIGeneratorService, private activeOperationService: ActiveOperationService, private headerService: HeaderService) {
-    activeOperationService.attach(this);
+
+    activeOperationService.activeOperation.subscribe((op)=>{
+      if(!op){
+        return;
+      }
+      this.activeOperationId = op.getOperationId();
+    });
 
     headerService.devMode.subscribe((state: boolean)=>{
       this.devMode = state;
@@ -49,13 +53,6 @@ export class SidebarComponent implements IObserver {
     }, (error: any)=>{
       this.headerService.setErrorMessage(error);
     });
-  }
-
-
-  update(notification: string) {
-    if (notification == 'new active operation') {
-      this.activeOperationId = this.activeOperationService.getActiveOperation().getOperationId();
-    }
   }
 
   getOperationText(operation: Operation): string {
