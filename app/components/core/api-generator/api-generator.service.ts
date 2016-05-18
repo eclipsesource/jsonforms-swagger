@@ -220,7 +220,7 @@ export class APIGeneratorService {
       var addOperations: Operation[] = [];
 
       if(this._definitionReferencesValue[definition]){
-        var consumerOperations = _.map(this._definitionReferencesValue[definition].consumes, (op)=>{
+        var consumerOperations = _.map(this._definitionReferencesValue[definition].consumes, (op: string)=>{
           return api.getOperationById(op);
         });
         _.forEach(consumerOperations, (op)=>{
@@ -233,7 +233,7 @@ export class APIGeneratorService {
       // Taking all the operations that produce the selected definition with the method GET
       var findOperations: Operation[] = [];
       if(this._definitionReferencesValue[definition]){
-        var producerOperations = _.map(this._definitionReferencesValue[definition].produces, (op)=>{
+        var producerOperations = _.map(this._definitionReferencesValue[definition].produces, (op: string)=>{
           return api.getOperationById(op);
         });
         _.forEach(producerOperations, (op)=>{
