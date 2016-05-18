@@ -154,14 +154,12 @@ export class APIGeneratorService {
         });
       });
     });
-
-    console.log(relatedOperations);
   }
 
   private flattenObjectRefs(ob: any):any {
-    var toReturn = [];
+    var toReturn: any[] = [];
 
-    for (var i:any in ob) {
+    for (var i in ob) {
       if (!ob.hasOwnProperty(i)) continue;
       if ((typeof ob[i]) == 'object') {
         var flatObject:any = this.flattenObjectRefs(ob[i]);
@@ -171,6 +169,5 @@ export class APIGeneratorService {
       }
     }
     return toReturn;
-};
-
+  }
 }

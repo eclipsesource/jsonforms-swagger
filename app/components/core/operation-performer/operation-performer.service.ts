@@ -70,6 +70,7 @@ export class OperationPerformerService {
   }
 
   private addPathParameter(parameter: Parameter, data: {}, url: string): string {
+
     let parameterName: string = parameter.getName();
     let parameterData = data[parameterName];
     return url.replace('{' + parameterName + '}', parameterData);

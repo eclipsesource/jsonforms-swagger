@@ -13,6 +13,7 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
 
 import { PanelMenu } from 'primeng/primeng';
 import {OverlayPanel} from 'primeng/primeng';
+import Timer = NodeJS.Timer;
 
 
 @Component({
@@ -24,10 +25,10 @@ import {OverlayPanel} from 'primeng/primeng';
 })
 export class SidebarComponent implements IObserver {
 
-  @ViewChild('op') op;
+  @ViewChild('op') op: any;
 
   moreInfoActive: boolean = false;
-  moreInfoTimeoutId: number = null;
+  moreInfoTimeoutId: Timer = null;
 
   devMode: boolean = false;
 
@@ -99,7 +100,7 @@ export class SidebarComponent implements IObserver {
     }
   }
 
-  descriptionHoverIn($event, infoTarget){
+  descriptionHoverIn($event: any, infoTarget: any){
     if(this.moreInfoActive){
       if(this.moreInfoTimeoutId){
 
@@ -111,7 +112,7 @@ export class SidebarComponent implements IObserver {
       this.moreInfoActive = true;
     }
   }
-  descriptionHoverOut($event){
+  descriptionHoverOut($event: any){
 
     this.moreInfoTimeoutId = setTimeout(()=>{
       this.op.hide($event);

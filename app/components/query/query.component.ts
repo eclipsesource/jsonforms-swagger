@@ -26,11 +26,13 @@ export class QueryComponent implements IObserver {
   uischema: {};
   data: {};
 
+
   constructor(private activeOperationService: ActiveOperationService,
               private dataschemaGeneratorService: QueryDataschemaGeneratorService,
               private uischemaGeneratorService: UischemaGeneratorService,
               private operationPerformerService: OperationPerformerService) {
     activeOperationService.attach(this);
+
   }
 
   update(notification: string) {
