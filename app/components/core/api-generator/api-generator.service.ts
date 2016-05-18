@@ -17,12 +17,21 @@ export class APIGeneratorService {
 
 
   private _api: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _apiValue: any = null;
   api: Observable<any> = this._api.asObservable();
 
   private _definitionReferences: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _definitionReferencesValue: any = null;
   definitionReferences: Observable<any> = this._definitionReferences.asObservable();
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+    this.api.subscribe((a)=>{
+      this._apiValue = a;
+    })
+    this.definitionReferences.subscribe((d)=>{
+      this._definitionReferencesValue = d;
+    })
+  }
 
   getAPI(url: string): Observable<{}> {
     var res: Observable<Response> = this.http.get(url);
@@ -53,9 +62,8 @@ export class APIGeneratorService {
             napi.properties = _.pick(jsonAPI, ['info', 'host', 'basePath']);
             this.generateTags(napi, jsonAPI);
             this.generateOperations(napi, jsonAPI);
-            this.generateDefinitions(napi, jsonAPI);
             this.generateRelatedOperations(napi, jsonAPI);
-
+            this.generateDefinitions(napi, jsonAPI); // call this always after generateRelatedOperations (it uses definitionReferences var)
             this._api.next(napi);
           }, 0);
         },
@@ -206,8 +214,35 @@ export class APIGeneratorService {
       return;
     }
     _.forEach(jsonAPI['definitions'], (def, key)=>{
-      api['definitions'].push(key);
-    });
+      var definition = '#/definitions/' + key;
+      var label = key;
+      // Taking all the operations that consume the selected definition with the method POST
+      var addOperations: Operation[] = [];
 
+      if(this._definitionReferencesValue[definition]){
+        var consumerOperations = _.map(this._definitionReferencesValue[definition].consumes, (op)=>{
+          return api.getOperationById(op);
+        });
+        _.forEach(consumerOperations, (op)=>{
+          if(op['properties']['type'] === 'post'){
+            addOperations.push(op);
+          }
+        });
+      }
+
+      // Taking all the operations that produce the selected definition with the method GET
+      var findOperations: Operation[] = [];
+      if(this._definitionReferencesValue[definition]){
+        var producerOperations = _.map(this._definitionReferencesValue[definition].produces, (op)=>{
+          return api.getOperationById(op);
+        });
+        _.forEach(producerOperations, (op)=>{
+          if(op['properties']['type'] === 'get'){
+            findOperations.push(op);
+          }
+        });
+      }
+      api['definitions'].push({label: label, name: definition, addOperations: addOperations, findOperations: findOperations});
+    });
   }
 }

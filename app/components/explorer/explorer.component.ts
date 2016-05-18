@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {APIGeneratorService} from "../core/api-generator/api-generator.service";
 import {Tag} from "../core/model/tag";
 import {Operation} from "../core/model/operation";
+import {ActiveOperationService} from "../core/active-operation/active-operation.service";
+
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Component({
   selector: 'explorer',
@@ -11,46 +14,53 @@ import {Operation} from "../core/model/operation";
 })
 export class ExplorerComponent{
   api: any = null;
-  definitionReferences: any = null;
-  constructor(apiGeneratorService: APIGeneratorService){
+  constructor(apiGeneratorService: APIGeneratorService, private activeOperationService: ActiveOperationService){
     apiGeneratorService.api.subscribe((api)=>{
       this.api = api;
     });
-    apiGeneratorService.definitionReferences.subscribe((definitionRef)=>{
-      this.definitionReferences = definitionRef;
-    })
   }
 
-  // Taking all the operations that produce the selected definition with the method GET
-  find(definition: string){
-    var findOperations: Operation[] = [];
-    var defKey = '#/definitions/' + definition;
-    if(this.definitionReferences[defKey]){
-      var producerOperations = _.map(this.definitionReferences[defKey].produces, (op)=>{
-        return this.api.getOperationById(op);
-      });
-      _.forEach(producerOperations, (op)=>{
-        if(op['properties']['type'] === 'get'){
-          findOperations.push(op);
-        }
-      });
-    }
+
+  find(definition: any){
+    var findOperations = definition['findOperations'];
+    //TODO poner pestañas en vez de cargar solo la primera
+    this.activeOperationService.setActiveOperation(findOperations[0], {});
 
   }
-  // Taking all the operations that consume the selected definition with the method POST
-  add(definition: string){
-    var addOperations: Operation[] = [];
-    var defKey = '#/definitions/' + definition;
-    if(this.definitionReferences[defKey]){
-      var consumerOperations = _.map(this.definitionReferences[defKey].consumes, (op)=>{
-        return this.api.getOperationById(op);
-      });
-      _.forEach(consumerOperations, (op)=>{
-        if(op['properties']['type'] === 'post'){
-          addOperations.push(op);
-        }
-      });
-    }
 
+  add(definition: any){
+    var addOperations = definition['addOperations'];
+    //TODO poner pestañas en vez de cargar solo la primera
+    this.activeOperationService.setActiveOperation(addOperations[0], {});
+  }
+
+  getDefinitions(): any[]{
+    return _.filter(this.api.definitions, (def)=>{
+      return this.hasOps(def);
+    });
+  }
+
+  hasOps(definition: any){
+    return this.hasFindOps(definition) || this.hasAddOps(definition);
+  }
+
+  hasFindOps(definition: any){
+    if(!definition){
+      return false;
+    }
+    if(definition['findOperations'] && definition['findOperations'].length > 0){
+      return true;
+    }
+    return false;
+  }
+
+  hasAddOps(definition:any){
+    if(!definition){
+      return false;
+    }
+    if(definition['addOperations'] && definition['addOperations'].length > 0){
+      return true;
+    }
+    return false;
   }
 }
