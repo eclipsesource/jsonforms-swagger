@@ -46,9 +46,7 @@ export class SidebarComponent implements IObserver {
     apiGeneratorService.api.subscribe((api: any)=>{
       this.headerService.setErrorMessage(null);
       this.api = api;
-      console.log(api);
     }, (error: any)=>{
-      console.log(error);
       this.headerService.setErrorMessage(error);
     });
   }
