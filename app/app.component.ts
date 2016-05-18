@@ -9,13 +9,14 @@ import { ActiveOperationService } from './components/core/active-operation/activ
 import { OperationPerformerService } from './components/core/operation-performer/operation-performer.service';
 import {HeaderService} from "./components/header/header.service";
 import 'lodash';
+import {ExplorerComponent} from "./components/explorer/explorer.component";
 
 @Component({
   selector: 'app',
   moduleId: module.id,
   templateUrl: 'app.html',
   styleUrls: ['app.css'],
-  directives: [SidebarComponent, HeaderComponent, QueryComponent, ResponseComponent],
+  directives: [SidebarComponent, HeaderComponent, QueryComponent, ResponseComponent, ExplorerComponent],
   providers: [
     HTTP_PROVIDERS,
     APIGeneratorService,
@@ -24,4 +25,11 @@ import 'lodash';
     HeaderService
   ]
 })
-export class AppComponent{}
+export class AppComponent{
+  devMode = false;
+  constructor(headerService: HeaderService){
+    headerService.devMode.subscribe((value:boolean)=>{
+      this.devMode = value;
+    });
+  }
+}

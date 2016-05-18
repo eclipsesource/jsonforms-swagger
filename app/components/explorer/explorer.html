@@ -1,0 +1,7 @@
+<div class="entities-container" *ngIf="api">
+  <div *ngFor="let entity of api.tags" class="entity">
+    <i class="fa fa-search" (click)="find(entity)"></i>
+    <i class="fa fa-plus" (click)="add(entity)"></i>
+    <span>{{entity.getName()}}</span>
+  </div>
+</div>
