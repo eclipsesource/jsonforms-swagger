@@ -22,55 +22,72 @@ export class ExplorerComponent{
   moreInfoActive: boolean = false;
   moreInfoTimeoutId: Timer = null;
 
-  addOperations: Operation[] = [];
-  findOperations: Operation[] = [];
+  activeOperationId: string = null;
+  opTypes: any[] = [{
+    id: 'findOperations',
+    label: 'Find'
+  }, {
+    id: 'addOperations',
+    label: 'Add'
+  }];
+
+  selectedType: string = null;
+  selectedDefinition: any = null;
 
   api: any = null;
   constructor(apiGeneratorService: APIGeneratorService, private activeOperationService: ActiveOperationService){
     apiGeneratorService.api.subscribe((api)=>{
       this.api = api;
     });
+    activeOperationService.activeOperation.subscribe((op)=>{
+      if(!op){
+        return;
+      }
+      this.activeOperationId = op.getOperationId();
+    });
   }
 
-
-  find(definition: any){
-    this.findOperations = definition['findOperations'];
+  selectOps(definition: any, operation: string){
+    if(!operation || !definition){
+      return;
+    }
+    this.selectedDefinition = definition;
+    this.selectedType = operation;
+    var operations = definition[operation];
     //TODO poner pestañas en vez de cargar solo la primera
-    this.activeOperationService.setActiveOperation(this.findOperations[0], {});
+    this.activeOperationService.setActiveOperation(operations[0], {});
 
-  }
-
-  add(definition: any){
-    this.addOperations = definition['addOperations'];
-    //TODO poner pestañas en vez de cargar solo la primera
-    this.activeOperationService.setActiveOperation(this.addOperations[0], {});
   }
 
   getDefinitions(): any[]{
     return _.filter(this.api.definitions, (def)=>{
-      return this.hasOps(def);
+      return this.hasAnyOp(def);
     });
   }
 
-  hasOps(definition: any){
-    return this.hasFindOps(definition) || this.hasAddOps(definition);
+  isSelected(definition: any, type: string): boolean {
+    return (this.selectedDefinition === definition && this.selectedType === type);
   }
 
-  hasFindOps(definition: any){
-    if(!definition){
-      return false;
-    }
-    if(definition['findOperations'] && definition['findOperations'].length > 0){
-      return true;
-    }
-    return false;
+  hasAnyOp(definition: any){
+    return this.opTypes.some((opType)=>{
+      if(this.hasOps(definition, opType.id)){
+        return true;
+      }
+    });
   }
 
-  hasAddOps(definition:any){
-    if(!definition){
+  getOperationTypes(definition: any): any[]{
+    return _.filter(this.opTypes, (opType)=>{
+      return this.hasOps(definition, opType.id);
+    });
+  }
+
+  hasOps(definition: any, type: string){
+    if(!definition || !type){
       return false;
     }
-    if(definition['addOperations'] && definition['addOperations'].length > 0){
+    if(definition[type] && definition[type].length > 0){
       return true;
     }
     return false;

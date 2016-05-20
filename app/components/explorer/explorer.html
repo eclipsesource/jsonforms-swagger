@@ -11,11 +11,8 @@
     <div class="tagGroup"><span>{{definition.label}}</span></div>
     <div>
       <ul>
-        <li class="tagOperation">
-          <a (click)="find(definition)">Find</a>
-        </li>
-        <li class="tagOperation">
-          <a (click)="add(definition)">Add</a>
+        <li *ngFor="let operationType of getOperationTypes(definition)" [ngClass]="{'active': isSelected(definition, operationType.id)}" class="tagOperation">
+          <a (click)="selectOps(definition, operationType.id)">{{operationType.label}}</a>
         </li>
       </ul>
     </div>
