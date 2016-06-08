@@ -62,7 +62,7 @@ export class SidebarComponent {
   }
 
   onClickOperation(operation: Operation) {
-    this.activeOperationService.setActiveOperation(operation, {});
+    this.activeOperationService.setOperation(operation);
   }
 
   getTitle(): string{

@@ -24,7 +24,6 @@ export class QueryComponent {
   uischema: {};
   data: {};
 
-
   constructor(private activeOperationService: ActiveOperationService,
               private dataschemaGeneratorService: QueryDataschemaGeneratorService,
               private uischemaGeneratorService: UischemaGeneratorService,
@@ -46,12 +45,6 @@ export class QueryComponent {
 
   }
 
-  update(notification: string) {
-    if (notification == 'new active operation') {
-
-    }
-  }
-
   performOperation() {
     this.operationPerformerService.performOperation(this.activeOperation, this.data)
       .subscribe(
@@ -62,6 +55,18 @@ export class QueryComponent {
           this.activeOperationService.setResponse(error);
         }
       );
+  }
+
+  getOperationList(){
+    return this.activeOperationService.getCurrentOperations();
+  }
+
+  selectOperation(index: number){
+    this.activeOperationService.setActiveOperationByIndex(index);
+  }
+
+  getSelectedIndex():number{
+    return this.activeOperationService.activeIndex;
   }
 
 }

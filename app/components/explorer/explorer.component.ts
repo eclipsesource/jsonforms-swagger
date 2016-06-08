@@ -54,9 +54,7 @@ export class ExplorerComponent{
     this.selectedDefinition = definition;
     this.selectedType = operation;
     var operations = definition[operation];
-    //TODO poner pestañas en vez de cargar solo la primera
-    this.activeOperationService.setActiveOperation(operations[0], {});
-
+    this.activeOperationService.setOperations(operations);
   }
 
   getDefinitions(): any[]{

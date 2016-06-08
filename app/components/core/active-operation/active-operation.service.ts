@@ -13,11 +13,13 @@ export class ActiveOperationService {
   activeOperation: Observable<Operation> = this._activeOperation.asObservable();
 
   initialData: {} = {};
-
+  activeIndex: number;
   private _response: BehaviorSubject<Response> = new BehaviorSubject(null);
   response: Observable<Response> = this._response.asObservable();
 
-  setActiveOperation(op: Operation, data: {}) {
+  private currentOperations: Operation[] = [];
+
+  private setActiveOperation(op: Operation, data: {}) {
     this.initialData = data;
     this._activeOperation.next(op);
   }
@@ -28,5 +30,26 @@ export class ActiveOperationService {
 
   setResponse(res: Response) {
     this._response.next(res);
+  }
+
+  setOperations(operations: Operation[]){
+    this.currentOperations = operations;
+    this.setActiveOperationByIndex(0);
+  }
+  setOperation(operation: Operation){
+    this.currentOperations = [operation];
+    this.setActiveOperationByIndex(0);
+  }
+
+  getCurrentOperations(): Operation[]{
+    return this.currentOperations;
+  }
+
+  setActiveOperationByIndex(index: number){
+    this.activeIndex = index;
+    if(index>=this.currentOperations.length){
+      return;
+    }
+    this.setActiveOperation(this.currentOperations[index], {});
   }
 }

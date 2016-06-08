@@ -1,3 +1,6 @@
+<div class="tab-button-container">
+  <button class="tab-button" [ngClass]="{'tab-button-active': getSelectedIndex() === i}" *ngFor="let operationTab of getOperationList(); let i = index" (click)="selectOperation(i)">{{operationTab.properties.summary}}</button>
+</div>
 <div *ngIf="activeOperation" class="section">
   <h2>Query</h2>
   <div class="res">

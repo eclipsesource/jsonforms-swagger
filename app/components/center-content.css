@@ -29,3 +29,35 @@
   height: 28px;
   width: 80px;
 }
+
+.tab-button-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  align-content: stretch;
+  height: 35px;
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.tab-button {
+  border-radius: 3px;
+  border: 2px solid #DFEFCA;
+  flex: 1;
+  background-color:#186BA0;
+  color: white;
+}
+
+.tab-button:hover{
+  background-color:white;
+  color:#186BA0;
+}
+
+.tab-button-active {
+  background-color:white;
+  color:#186BA0;
+  border: 2px solid #186BA0;
+}
+

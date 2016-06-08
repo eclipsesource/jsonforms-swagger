@@ -9,7 +9,7 @@ export class UischemaGeneratorService {
       'elements': []
     };
 
-    _.forEach(dataschema['properties'], (property, name) => {
+    _.forEach(dataschema['properties'], (property: any, name: string) => {
       this.addProperty(uischema['elements'], property, name, '#/properties/');
     });
 
@@ -23,7 +23,7 @@ export class UischemaGeneratorService {
         'label': name,
         'elements': []
       };
-      _.forEach(property['properties'], (subproperty, subname) => {
+      _.forEach(property['properties'], (subproperty: any, subname: string) => {
         this.addProperty(sublayout['elements'], subproperty, subname, path + name + '/properties/');
       });
       layoutElements.push(sublayout);

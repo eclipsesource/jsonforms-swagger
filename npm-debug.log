@@ -24,7 +24,7 @@
 14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:212:5)
 15 verbose pkgid swagger-jsonforms@0.0.0
 16 verbose cwd /home/pancho111203/Studies/EclipseSource/jsonforms-swagger
-17 error Linux 3.13.0-85-generic
+17 error Linux 3.13.0-86-generic
 18 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
 19 error node v5.2.0
 20 error npm  v3.3.12
