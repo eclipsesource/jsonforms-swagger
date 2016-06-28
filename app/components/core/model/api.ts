@@ -20,7 +20,11 @@ export class API {
   }
 
   getBaseUrl(): string {
-    return 'http://' +  this.properties['host'] + this.properties['basePath'];
+    let baseUrl = 'http://' +  this.properties['host'] + this.properties['basePath'];
+    if (baseUrl.endsWith('/')) {
+      baseUrl = baseUrl.substring(0, baseUrl.length - 1);
+    }
+    return baseUrl;
   }
 
   getActionByOperation(operation: Operation): Action {

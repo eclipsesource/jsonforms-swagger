@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Response } from '@angular/http';
+import { Response, ResponseType } from '@angular/http';
 
+import { ResponseDataschemaGeneratorService } from '../core/schemas/response-dataschema-generator.service';
 import { UischemaGeneratorService } from '../core/schemas/uischema-generator.service';
 import { ResponseMessagesService } from './response-messages.service';
 import { APIManagerService } from '../core/api-manager/api-manager.service';
@@ -12,70 +13,92 @@ import { APIResponse } from '../core/model/api-response';
 import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
 
 @Component({
-    selector: 'response-section',
-    moduleId: module.id,
-    templateUrl: 'response.component.html',
-    styleUrls: ['../center-content.css'],
-    providers: [UischemaGeneratorService, ResponseMessagesService],
-    directives: [JsonFormsAdapter]
+  selector: 'response-section',
+  moduleId: module.id,
+  templateUrl: 'response.component.html',
+  styleUrls: ['../center-content.css'],
+  providers: [
+    ResponseDataschemaGeneratorService,
+    UischemaGeneratorService,
+    ResponseMessagesService
+  ],
+  directives: [JsonFormsAdapter]
 })
 export class ResponseComponent {
 
-    activeOperation: Operation;
+  activeOperation:Operation;
 
-    response: Response;
-    isResponseReady: boolean = false;
-    responseMessage: string;
+  isResponseReady:boolean = false;
+  responseMessage:string;
 
-    dataschema: {};
-    uischema: {};
-    data: {};
+  dataschema:{};
+  uischema:{};
+  data:{};
 
-    constructor(private uischemaGeneratorService: UischemaGeneratorService,
-                private responseMessagesService: ResponseMessagesService,
-                private apiManagerService: APIManagerService,
-                private operationPerformerService: OperationPerformerService) {
-        apiManagerService.activeOperation$.subscribe((activeOperation: Operation) => {
-            this.activeOperation = activeOperation;
-            this.isResponseReady = false;
-        });
+  constructor(private responseDataschemaGeneratorService:ResponseDataschemaGeneratorService,
+              private uischemaGeneratorService:UischemaGeneratorService,
+              private responseMessagesService:ResponseMessagesService,
+              private apiManagerService:APIManagerService,
+              private operationPerformerService:OperationPerformerService) {
+    apiManagerService.activeOperation$.subscribe((activeOperation:Operation) => {
+      this.activeOperation = activeOperation;
+      this.isResponseReady = false;
+    });
 
-        operationPerformerService.response$.subscribe(
-            (response) => {
-                this.response = response;
+    operationPerformerService.response$.subscribe(
+      (response) => {
 
-                let apiResponse: APIResponse = this.activeOperation.getResponseByCode(response.status);
-                if (apiResponse) {
-                    this.responseMessage = apiResponse.getDescription();
-                } else {
-                    this.responseMessage = this.responseMessagesService.getMessage(response.status);
-                }
+        if (response.type == 3) { // value 3 of ResponseType enum is 'Error'
+          this.responseMessage = 'Response error';
+          this.resetSchemas();
+          this.isResponseReady = true;
+          return;
+        }
 
-                if (apiResponse && apiResponse.hasSchema()) {
-                    this.dataschema = apiResponse.getSchema();
-                    this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
-                    this.data = response.json();
-                } else {
-                    this.dataschema = null;
-                    this.uischema = null;
-                    this.data = null;
-                }
+        this.data = response.json();
+        if (_.isEmpty(this.data)) {
+          this.responseMessage = 'Empty response';
+          this.resetSchemas();
+          this.isResponseReady = true;
+          return;
+        }
 
-                this.isResponseReady = true;
-            },
-            (error) => {
-                this.responseMessage = error;
-                this.dataschema = null;
-                this.uischema = null;
-                this.data = null;
-                this.isResponseReady = true;
-            }
-        );
-    }
+        let apiResponse:APIResponse = this.activeOperation.getResponseByCode(response.status);
+        if (!apiResponse) {
+          this.responseMessage = this.responseMessagesService.getMessage(response.status);
+          this.resetSchemas();
+          this.isResponseReady = true;
+          return;
+        }
 
-    onClickRelatedOperation(relatedOperation: Operation) {
-        let initialData: {} = { body: this.data };
-        this.apiManagerService.setActiveOperation(relatedOperation, initialData);
-    }
+        this.responseMessage = apiResponse.getDescription();
+
+        if (apiResponse.hasSchema()) {
+          this.dataschema = this.responseDataschemaGeneratorService.generateDataschema(apiResponse.getSchema());
+          this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
+          if (apiResponse.isArray()) {
+            this.data = response.json()[0]; // Only take first element until jsonforms array control implemented
+          } else {
+            this.data = response.json();
+          }
+        } else {
+          this.resetSchemas();
+        }
+
+        this.isResponseReady = true;
+      }
+    );
+  }
+
+  private resetSchemas() {
+    this.dataschema = null;
+    this.uischema = null;
+    this.data = null;
+  }
+
+  onClickRelatedOperation(relatedOperation:Operation) {
+    let initialData:{} = {body: this.data};
+    this.apiManagerService.setActiveOperation(relatedOperation, initialData);
+  }
 
 }

@@ -1,10 +1,10 @@
 <div *ngIf="isResponseReady" class="section">
     <h2>Response</h2>
     <div *ngIf="responseMessage">{{responseMessage}}</div>
-    <div class="res">
-        <jsonforms class="jsf" *ngIf="dataschema" [schema]="dataschema" [uischema]="uischema" [data]="data"></jsonforms>
+    <div *ngIf="dataschema" class="res">
+        <jsonforms class="jsf" [schema]="dataschema" [uischema]="uischema" [data]="data"></jsonforms>
     </div>
-    <div class="button-container">
+    <div *ngIf="dataschema" class="button-container">
         <button class="response-button" *ngFor="let relatedOperation of activeOperation.relatedOperations" (click)="onClickRelatedOperation(relatedOperation)">{{relatedOperation.getType()}}</button>
      </div>
 </div>

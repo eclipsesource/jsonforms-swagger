@@ -1,2 +1,3 @@
 <header (onProjectsListClicked)="onProjectsListClicked()" class="dark-bg-color"></header>
-<project-detail [projectName]="selectedProjectName"></project-detail>
+<projects-list *ngIf="!selectedProjectName" (onProjectSelected)="onProjectSelected($event)"></projects-list>
+<project-detail *ngIf="selectedProjectName" [projectName]="selectedProjectName"></project-detail>

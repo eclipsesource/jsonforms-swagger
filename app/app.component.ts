@@ -7,6 +7,7 @@ import './rxjs-operators';
 import { ProjectsManagerService } from './components/core/projects-manager/projects-manager.service';
 
 import { HeaderComponent } from './components/header/header.component';
+import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 
 @Component({
@@ -20,12 +21,13 @@ import { ProjectDetailComponent } from './components/project-detail/project-deta
   ],
   directives: [
     HeaderComponent,
+    ProjectsListComponent,
     ProjectDetailComponent
   ]
 })
 export class AppComponent {
 
-  selectedProjectName: string = 'PetStore';
+  selectedProjectName: string;
 
   onProjectSelected(projectName: string) {
     this.selectedProjectName = projectName;

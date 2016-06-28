@@ -55,7 +55,6 @@ export class OperationPerformerService {
 
         let options = new RequestOptions({headers: headers});
 
-        console.log(url);
         this.operationPerformer.performOperation(this.http, url, body, options).subscribe(
             (res) => this.responseSource.next(res),
             (error) => this.responseSource.next(error)
@@ -88,6 +87,9 @@ export class OperationPerformerService {
     private addQueryParameter(parameter:Parameter, data:{}, url:string):string {
         let parameterName:string = parameter.getName();
         let parameterData = data[parameterName];
+        if (!parameterData) {
+            return url;
+        }
         if (url.indexOf('?') >= 0) {
             url = url + '&';
         } else {
@@ -99,7 +101,9 @@ export class OperationPerformerService {
     private addHeaderParameter(parameter:Parameter, data:{}, headers:Headers) {
         let parameterName:string = parameter.getName();
         let parameterData = data[parameterName];
-        headers.append(parameterName, parameterData);
+        if (parameterData) {
+            headers.append(parameterName, parameterData);
+        }
     }
 
     private addBodyParameter(parameter:Parameter, data:{}):string {

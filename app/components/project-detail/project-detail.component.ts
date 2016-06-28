@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit, NgZone } from '@angular/core';
 
 import { ProjectsManagerService } from '../core/projects-manager/projects-manager.service';
 import { APIManagerService } from '../core/api-manager/api-manager.service';
@@ -11,6 +11,7 @@ import { ResponseComponent } from '../response/response.component';
 
 import { Project } from '../core/model/project';
 import { API } from '../core/model/api';
+
 
 @Component({
     selector: 'project-detail',
@@ -38,7 +39,7 @@ export class ProjectDetailComponent implements OnInit {
 
     errorMessage: string;
 
-    constructor(private projectsService: ProjectsManagerService, private apiManagerService: APIManagerService) {
+    constructor(private projectsService: ProjectsManagerService, private apiManagerService: APIManagerService, private zone: NgZone) {
     }
 
     ngOnInit() {
@@ -52,8 +53,10 @@ export class ProjectDetailComponent implements OnInit {
     private subscribeToAPI() {
         this.apiManagerService.getAPI()
             .subscribe(
-                api => this.api = api,
-                error => this.errorMessage = <any>error
+              (api) => {
+                this.api = api;
+                this.zone.run(() => {});
+              }, error => this.errorMessage = <any>error
             );
     }
 

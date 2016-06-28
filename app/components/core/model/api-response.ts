@@ -14,6 +14,10 @@ export class APIResponse {
     return this.properties['schema'] != undefined;
   }
 
+  isArray(): boolean {
+    return this.properties['schema']['type'] == 'array';
+  }
+
   getSchema(): {} {
     return this.properties['schema'];
   }
