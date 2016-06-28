@@ -6,8 +6,8 @@ import { IOperationPerformer } from './operation-performer.interface';
 
 export class PostPerformer implements IOperationPerformer {
 
-  performOperation(http: Http, url: string, body: string, options: RequestOptions): Observable<Response> {
-    return http.post(url, body, options);
-  }
+    performOperation(http:Http, url:string, body:string, options:RequestOptions):Observable<Response> {
+        return http.post(url, body, options);
+    }
 
 }

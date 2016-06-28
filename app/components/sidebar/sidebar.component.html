@@ -1,0 +1,20 @@
+<div class="api-title">
+    <p-overlayPanel #op (mouseenter)="descriptionHoverIn($event, infoTarget)" (mouseleave)="descriptionHoverOut($event)">
+        <div *ngIf="api.getDescription()!=null">Description: {{api.getDescription()}}</div>
+    </p-overlayPanel>
+    <i (mouseenter)="descriptionHoverIn($event, infoTarget)" (mouseleave)="descriptionHoverOut($event)" class="fa fa-info-circle"></i>
+    <h4>{{api.getTitle()}}</h4>
+</div>
+<div #infoTarget class="info-overlay-target"></div>
+<p-panelMenu class="panel-menu-sidebar">
+    <div *ngFor="let entityType of api.entityTypes">
+        <div class="tagGroup"><span>{{entityType.name}}</span></div>
+        <div>
+            <ul>
+                <li class="tagOperation" *ngFor="let action of entityType.actions" [ngClass]="{'active': isActionActive(action)}">
+                    <a (click)="selectAction(action)">{{action.name}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</p-panelMenu>

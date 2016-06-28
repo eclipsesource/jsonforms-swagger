@@ -1,51 +1,51 @@
 :host {
-  overflow:auto;
+    overflow:auto;
 }
 
 .panel-menu-sidebar >>> .ui-panelmenu.ui-widget {
-  margin: 5px;
+    margin: 5px;
 }
 
 .panel-menu-sidebar >>> .ui-panelmenu-panel {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .panel-menu-sidebar >>> .ui-panelmenu-header {
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
 }
 
 .api-title h4 {
-  text-align: center;
-  background-color: #186BA0;
-  margin: 10px;
-  padding: 10px;
-  color: white;
-  border-radius: 3px;
+    text-align: center;
+    background-color: #186BA0;
+    margin: 10px;
+    padding: 10px;
+    color: white;
+    border-radius: 3px;
 }
 
 .api-title{
-  position: relative;
+    position: relative;
 }
 .api-title .fa-info-circle {
-  position:absolute;
-  color: white;
-  top: 12px;
-  right: 18px;
-  font-size: 1.2em;
+    position:absolute;
+    color: white;
+    top: 12px;
+    right: 18px;
+    font-size: 1.2em;
 }
 
 :host .info-overlay-target {
-  position: absolute;
-  left: 305px;
-  top: 61px;
+    position: absolute;
+    left: 305px;
+    top: 61px;
 }
 :host >>> .ui-overlaypanel {
-  position:fixed;
+    position:fixed;
 }
 
 .active *, .active *:hover {
-  background-color:#186BA0;
-  color:white;
+    background-color:#186BA0;
+    color:white;
 }

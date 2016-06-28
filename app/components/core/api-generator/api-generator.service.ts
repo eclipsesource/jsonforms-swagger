@@ -1,41 +1,27 @@
-import {BehaviorSubject} from "../../../../node_modules/rxjs/BehaviorSubject";
 declare var JsonRefs: any;
 
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 import { API } from '../model/api';
-import { Tag } from '../model/tag';
 import { Operation } from '../model/operation';
 import { Parameter } from '../model/parameter';
 import { APIResponse } from '../model/api-response';
+import { EntityType } from '../model/entity-type';
+import { Action } from '../model/action';
 
 @Injectable()
 export class APIGeneratorService {
 
-
-  private _api: BehaviorSubject<any> = new BehaviorSubject(null);
-  private _apiValue: any = null;
-  api: Observable<any> = this._api.asObservable();
-
-  private _definitionReferences: BehaviorSubject<any> = new BehaviorSubject(null);
-  private _definitionReferencesValue: any = null;
-  definitionReferences: Observable<any> = this._definitionReferences.asObservable();
-
-  constructor(private http: Http) {
-    this.api.subscribe((a)=>{
-      this._apiValue = a;
-    })
-    this.definitionReferences.subscribe((d)=>{
-      this._definitionReferencesValue = d;
-    })
-  }
+  constructor(private http: Http) {}
 
   getAPI(url: string): Observable<{}> {
-    var res: Observable<Response> = this.http.get(url);
-    return res.map(this.extractData).catch(this.handleError);
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   private extractData(res: Response) {
@@ -46,57 +32,36 @@ export class APIGeneratorService {
   }
 
   private handleError (error: any) {
+    console.log(error);
     let errMsg = error.message || 'Server error';
-    console.error(errMsg);
     return Observable.throw(errMsg);
   }
 
-  generateAPI(url: string){
-    this.getAPI(url)
-      .subscribe(
-        jsonAPI => {
-          this._api.next(null);
-          setTimeout(()=>{
-
-            let napi = new API();
-            napi.properties = _.pick(jsonAPI, ['info', 'host', 'basePath']);
-            this.generateTags(napi, jsonAPI);
-            this.generateOperations(napi, jsonAPI);
-            this.generateRelatedOperations(napi, jsonAPI);
-            this.generateDefinitions(napi, jsonAPI); // call this always after generateRelatedOperations (it uses definitionReferences var)
-            this._api.next(napi);
-          }, 0);
-        },
-        error => {
-          this._api.error(error);
-        }
-      );
-
-
+  generateAPI(jsonAPI: {}): API {
+    let api = new API();
+    api.properties = _.pick(jsonAPI, ['info', 'host', 'basePath']);
+    this.generateTags(api, jsonAPI);
+    this.generateOperations(api, jsonAPI);
+    const definitionsUsages = this.computeDefinitionsUsages(jsonAPI);
+    this.generateRelatedOperations(api, definitionsUsages);
+    this.generateEntityTypes(api, definitionsUsages);
+    return api;
   }
 
   private generateTags(api: API, jsonAPI: {}) {
-    let tagsNames: string[] = [];
-
     _.forEach(jsonAPI['paths'], (jsonPath: {}) => {
       _.forEach(jsonPath, (jsonOperation: {}) => {
-        _.forEach(jsonOperation['tags'], (tagName: string) => {
-          if (tagsNames.indexOf(tagName) < 0) {
-            tagsNames.push(tagName);
-            let tag: Tag = new Tag();
-            tag.properties['name'] = tagName;
+        _.forEach(jsonOperation['tags'], (tag: string) => {
+          if (api.tags.indexOf(tag) < 0) {
             api.tags.push(tag);
           }
         });
       });
     });
 
-    _.forEach(jsonAPI['tags'], (jsonTag: {}) => {
-      let tag: Tag = api.getTagByName(jsonTag['name']);
-      if (jsonTag['description']) {
-        tag.properties['description'] = jsonTag['description'];
-      }
-    });
+    if (api.tags.length == 0) {
+      api.tags.push('default');
+    }
   }
 
   private generateOperations(api: API, jsonAPI: {}) {
@@ -108,16 +73,14 @@ export class APIGeneratorService {
     let baseUrl = api.getBaseUrl();
     _.forEach(resolvedJsonAPI['paths'], (jsonPath: {}, path: string) => {
       _.forEach(jsonPath, (jsonOperation: {}, operationType: string) => {
-        let tagName: string = jsonOperation['tags'][0]; // we are assuming an operation corresponds to only one tag
-        let tag: Tag = api.getTagByName(tagName);
-        this.generateOperation(tag, baseUrl, path, operationType, jsonOperation);
+        this.generateOperation(api, baseUrl, path, operationType, jsonOperation);
       });
     });
   }
 
-  private generateOperation(tag: Tag, baseUrl: string, path: string, type: string, jsonOperation: {}) {
+  private generateOperation(api: API, baseUrl: string, path: string, type: string, jsonOperation: {}) {
     let operation: Operation = new Operation();
-    operation.properties = _.pick(jsonOperation, ['summary', 'description', 'operationId']);
+    operation.properties = _.pick(jsonOperation, ['tags', 'summary', 'description', 'operationId']);
     operation.properties['baseUrl'] = baseUrl;
     operation.properties['path'] = path;
     operation.properties['type'] = type;
@@ -125,7 +88,7 @@ export class APIGeneratorService {
     this.generateParameters(operation, jsonOperation);
     this.generateResponses(operation, jsonOperation);
 
-    tag.operations.push(operation);
+    api.operations.push(operation);
   }
 
   private generateParameters(operation: Operation, jsonOperation: {}) {
@@ -147,102 +110,89 @@ export class APIGeneratorService {
     });
   }
 
-  private generateRelatedOperations(api: API, jsonAPI: {}) {
-    let relatedOperations:{} = {};
+  private computeDefinitionsUsages(jsonAPI: {}): {} {
+    let definitionsUsages: {} = {};
 
-    _.forEach(jsonAPI['paths'], (jsonPath: {}) => {
-      _.forEach(jsonPath, (jsonOperation: {}) => {
-        var operation = api.getOperationById(jsonOperation['operationId']);
+    _.forEach(jsonAPI['paths'], (jsonPath: {}, path: string) => {
+      _.forEach(jsonPath, (jsonOperation: {}, operationType: string) => {
+
         _.forEach(jsonOperation['parameters'], (jsonParameter: {}) => {
-          var flattenedParam = this.flattenObjectRefs(jsonParameter);
-          _.forEach(flattenedParam, (definitionRef)=>{
-            operation.consumes.push(definitionRef);
-            if (relatedOperations[definitionRef]) {
-              relatedOperations[definitionRef]['consumes'] = relatedOperations[definitionRef]['consumes'].concat([jsonOperation['operationId']]);
-            } else {
-              relatedOperations[definitionRef] = { consumes: [jsonOperation['operationId']], produces: [] };
+          if (jsonParameter['schema'] && jsonParameter['schema']['$ref']) {
+            let definitionRef: string = jsonParameter['schema']['$ref'].substring(('#/definitions/').length);
+            if (!definitionsUsages[definitionRef]) {
+              definitionsUsages[definitionRef] = { consumes: [], produces: [] };
             }
-          });
+            definitionsUsages[definitionRef]['consumes'].push({ path: path, type: operationType });
+          }
         });
 
         _.forEach(jsonOperation['responses'], (jsonResponse: {}) => {
-          var flattenedResponse = this.flattenObjectRefs(jsonResponse);
-          _.forEach(flattenedResponse, (definitionRef)=>{
-            operation.produces.push(definitionRef);
-            if (relatedOperations[definitionRef]) {
-
-              relatedOperations[definitionRef]['produces'] = relatedOperations[definitionRef]['produces'].concat([jsonOperation['operationId']]);
-            } else {
-              relatedOperations[definitionRef] = { consumes: [], produces: [jsonOperation['operationId']] };
+          let definitionRef: string;
+          if (jsonResponse['schema']) {
+            if (jsonResponse['schema']['$ref']) {
+              definitionRef = jsonResponse['schema']['$ref'];
+            } else if (jsonResponse['schema']['items'] && jsonResponse['schema']['items']['$ref']) {
+              definitionRef = jsonResponse['schema']['items']['$ref'];
             }
-          });
+          }
+          if (definitionRef) {
+            definitionRef = definitionRef.substring(('#/definitions/').length);
+            if (!definitionsUsages[definitionRef]) {
+              definitionsUsages[definitionRef] = { consumes: [], produces: [] };
+            }
+            definitionsUsages[definitionRef]['produces'].push({ path: path, type: operationType });
+          }
         });
+
       });
     });
 
-    _.forEach(relatedOperations, (relatedOperation: {}) => {
-      _.forEach(relatedOperation['produces'], (producesId: string) => {
-        let producesOperation: Operation = api.getOperationById(producesId);
-        _.forEach(relatedOperation['consumes'], (consumesId: string) => {
-          let consumesOperation: Operation = api.getOperationById(consumesId);
+    return definitionsUsages;
+  }
+
+  private generateRelatedOperations(api: API, definitionsUsages: {}) {
+    _.forEach(definitionsUsages, (definitionUsage: {}) => {
+      _.forEach(definitionUsage['produces'], (operationPathAndType: {}) => {
+        let producesOperation: Operation = api.getOperationByPathAndType(operationPathAndType['path'], operationPathAndType['type']);
+        _.forEach(definitionUsage['consumes'], (operationPathAndType: {}) => {
+          let consumesOperation: Operation = api.getOperationByPathAndType(operationPathAndType['path'], operationPathAndType['type']);
           producesOperation.relatedOperations.push(consumesOperation);
         });
       });
     });
-
-    this._definitionReferences.next(relatedOperations);
   }
 
-  private flattenObjectRefs(ob: any):any {
-    var toReturn: any[] = [];
+  private generateEntityTypes(api: API, definitionsUsages: {}) {
+    _.forEach(definitionsUsages, (definitionUsage: {}, definitionName: string) => {
+      let entityType: EntityType = new EntityType();
+      entityType.name = definitionName;
 
-    for (var i in ob) {
-      if (!ob.hasOwnProperty(i)) continue;
-      if ((typeof ob[i]) == 'object') {
-        var flatObject:any = this.flattenObjectRefs(ob[i]);
-        toReturn = toReturn.concat(flatObject);
-      } else if(i === '$ref') {
-        toReturn.push(ob[i]);
-      }
-    }
-    return toReturn;
-  }
-
-  private generateDefinitions(api: API, jsonAPI: {}){
-    api['definitions'] = [];
-    if(!jsonAPI['definitions']){
-      return;
-    }
-    _.forEach(jsonAPI['definitions'], (def, key)=>{
-      var definition = '#/definitions/' + key;
-      var label = key;
-      // Taking all the operations that consume the selected definition with the method POST
-      var addOperations: Operation[] = [];
-
-      if(this._definitionReferencesValue[definition]){
-        var consumerOperations = _.map(this._definitionReferencesValue[definition].consumes, (op: string)=>{
-          return api.getOperationById(op);
-        });
-        _.forEach(consumerOperations, (op)=>{
-          if(op['properties']['type'] === 'post'){
-            addOperations.push(op);
-          }
-        });
+      let findAction: Action = new Action();
+      findAction.name = 'Find ' + definitionName;
+      _.forEach(definitionUsage['produces'], (operationPathAndType: {}) => {
+        if (operationPathAndType['type'] == 'get') {
+          let getOperation = api.getOperationByPathAndType(operationPathAndType['path'], operationPathAndType['type']);
+          findAction.operations.push(getOperation);
+        }
+      });
+      if (findAction.operations.length > 0) {
+        entityType.actions.push(findAction);
       }
 
-      // Taking all the operations that produce the selected definition with the method GET
-      var findOperations: Operation[] = [];
-      if(this._definitionReferencesValue[definition]){
-        var producerOperations = _.map(this._definitionReferencesValue[definition].produces, (op: string)=>{
-          return api.getOperationById(op);
-        });
-        _.forEach(producerOperations, (op)=>{
-          if(op['properties']['type'] === 'get'){
-            findOperations.push(op);
-          }
-        });
+      let createAction: Action = new Action();
+      createAction.name = 'Create ' + definitionName;
+      _.forEach(definitionUsage['consumes'], (operationPathAndType: {}) => {
+        if (operationPathAndType['type'] == 'post') {
+          let postOperation = api.getOperationByPathAndType(operationPathAndType['path'], operationPathAndType['type']);
+          createAction.operations.push(postOperation);
+        }
+      });
+      if (createAction.operations.length > 0) {
+        entityType.actions.push(createAction);
       }
-      api['definitions'].push({label: label, name: definition, addOperations: addOperations, findOperations: findOperations});
+
+      api.entityTypes.push(entityType);
     });
   }
+
 }

@@ -1,0 +1,18 @@
+{
+  "data": [
+    { "name": "PetStore", "apiUrl": "http://petstore.swagger.io/v2/swagger.json" },
+    { "name": "Buffer", "apiUrl": "https://api.apis.guru/v2/specs/bufferapp.com/1/swagger.json" },
+    { "name": "gettyimages", "apiUrl": "https://api.apis.guru/v2/specs/gettyimages.com/3.0/swagger.json" },
+    { "name": "GitHub", "apiUrl": "https://api.apis.guru/v2/specs/github.com/v3/swagger.json" },
+    { "name": "Blogger", "apiUrl": "https://api.apis.guru/v2/specs/googleapis.com/blogger/v3/swagger.json" },
+    { "name": "Gmail", "apiUrl": "https://api.apis.guru/v2/specs/googleapis.com/gmail/v1/swagger.json" },
+    { "name": "YouTube", "apiUrl": "https://api.apis.guru/v2/specs/googleapis.com/youtube/v3/swagger.json" },
+    { "name": "Instagram", "apiUrl": "https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.json" },
+    { "name": "Owler", "apiUrl": "https://api.apis.guru/v2/specs/owler.com/1.0.0/swagger.json" },
+    { "name": "Semantria", "apiUrl": "https://api.apis.guru/v2/specs/semantria.com/4.0/swagger.json" },
+    { "name": "Slack", "apiUrl": "https://api.apis.guru/v2/specs/slack.com/1.0.0/swagger.json" },
+    { "name": "Trello", "apiUrl": "https://api.apis.guru/v2/specs/trello.com/1.0/swagger.json" },
+    { "name": "Wordnik", "apiUrl": "https://api.apis.guru/v2/specs/wordnik.com/4.0/swagger.json" },
+    { "name": "xkcd", "apiUrl": "https://api.apis.guru/v2/specs/xkcd.com/1.0.0/swagger.json" }
+  ]
+}

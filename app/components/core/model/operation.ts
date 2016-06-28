@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 import { Parameter } from './parameter';
 import { APIResponse } from './api-response';
 
@@ -7,8 +9,6 @@ export class Operation {
   parameters: Parameter[] = [];
   responses: APIResponse[] = [];
   relatedOperations: Operation[] = [];
-  produces: string[] = [];
-  consumes: string[] = [];
 
   getType(): string {
     return this.properties['type'];
@@ -18,8 +18,12 @@ export class Operation {
     return this.properties['path'];
   }
 
+  getTags(): string[] {
+    return this.properties['tags'] || [];
+  }
+
   getSummary(): string {
-    return this.properties['summary'];
+    return this.properties['summary'] || (this.getType() + ' - ' + this.getPath());
   }
 
   getUrl(): string {

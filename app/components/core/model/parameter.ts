@@ -18,4 +18,8 @@ export class Parameter {
     return this.properties['schema'];
   }
 
+  getRequired() {
+    return this.properties['required'];
+  }
+
 }

@@ -1,0 +1,18 @@
+<h3>Projects:</h3>
+<ul>
+  <li *ngFor="let project of projects">
+    <a (click)="selectProject(project.name)">{{project.name}} - {{project.apiUrl}}</a>
+  </li>
+</ul>
+<div>New Project</div>
+<div>
+  Name (no spaces):
+  <input #newProjectName />
+</div>
+<div>
+  API URL:
+  <input #newProjectApiUrl />
+</div>
+<div>
+  <button (click)="createProject(newProjectName.value, newProjectApiUrl.value); newProjectName.value=''; newProjectApiUrl.value=''">Create Project</button>
+</div>

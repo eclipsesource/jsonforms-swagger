@@ -1,0 +1,34 @@
+:host {
+    display:flex;
+    flex-direction:column;
+    flex-wrap:nowrap;
+    align-items:stretch;
+    height:100vh;
+    overflow:hidden;
+}
+
+.center{
+    width:100%;
+    flex-grow:100;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items:stretch;
+    flex-wrap:nowrap;
+    min-height:0;
+}
+
+sidebar {
+    width: 300px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.content {
+    flex-grow: 100;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:stretch;
+    overflow-y: scroll;
+}

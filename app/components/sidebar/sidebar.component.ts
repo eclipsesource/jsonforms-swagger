@@ -1,106 +1,62 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
-import { APIGeneratorService } from '../core/api-generator/api-generator.service';
-import { ActiveOperationService } from '../core/active-operation/active-operation.service';
-import { HeaderService } from '../header/header.service';
-
-import { API } from '../core/model/api';
-import { Operation } from '../core/model/operation';
-
-import { PanelMenu } from 'primeng/primeng';
-import {OverlayPanel} from 'primeng/primeng';
+import { PanelMenu, OverlayPanel } from 'primeng/primeng';
 import Timer = NodeJS.Timer;
 
+import {APIManagerService } from '../core/api-manager/api-manager.service';
+
+import { API } from '../core/model/api';
+import { EntityType } from '../core/model/entity-type';
+import { Action } from '../core/model/action';
 
 @Component({
-  selector: 'sidebar',
-  moduleId: module.id,
-  templateUrl: 'sidebar.html',
-  directives: [PanelMenu, OverlayPanel],
-  styleUrls: ['sidebar.css'],
+    selector: 'sidebar',
+    moduleId: module.id,
+    templateUrl: 'sidebar.component.html',
+    styleUrls: ['sidebar.css'],
+    directives: [PanelMenu, OverlayPanel]
 })
 export class SidebarComponent {
 
-  @ViewChild('op') op: any;
+    @Input() api: API;
 
-  moreInfoActive: boolean = false;
-  moreInfoTimeoutId: Timer = null;
+    @ViewChild('op') op: OverlayPanel;
 
-  devMode: boolean = false;
+    moreInfoActive: boolean = false;
+    moreInfoTimeoutId: Timer = null;
 
-  activeOperationId: string;
+    activeAction: Action;
 
-  api: API;
-
-  constructor(private apiGeneratorService: APIGeneratorService, private activeOperationService: ActiveOperationService, private headerService: HeaderService) {
-
-    activeOperationService.activeOperation.subscribe((op)=>{
-      if(!op){
-        return;
-      }
-      this.activeOperationId = op.getOperationId();
-    });
-
-    headerService.devMode.subscribe((state: boolean)=>{
-      this.devMode = state;
-    });
-
-    apiGeneratorService.api.subscribe((api: any)=>{
-      this.headerService.setErrorMessage(null);
-      this.api = api;
-    }, (error: any)=>{
-      this.headerService.setErrorMessage(error);
-    });
-  }
-
-  getOperationText(operation: Operation): string {
-    if (this.devMode) {
-      return operation.getType() + ' - ' + operation.getPath();
-    } else {
-      return operation.getSummary();
+    constructor(private apiManagerService:APIManagerService) {
+      apiManagerService.activeAction$.subscribe((activeAction: Action) => this.activeAction = activeAction);
     }
-  }
 
-  onClickOperation(operation: Operation) {
-    this.activeOperationService.setOperation(operation);
-  }
-
-  getTitle(): string{
-    if(this.api && this.api.properties && this.api.properties['info'] && this.api.properties['info']['title']){
-      return this.api.properties['info']['title'];
-    }else {
-      return null;
+    selectAction(action: Action) {
+        this.apiManagerService.setActiveAction(action);
     }
-  }
 
-  getDescription(): string {
-    if(this.api && this.api.properties && this.api.properties['info'] && this.api.properties['info']['description']){
-      return this.api.properties['info']['description'];
-    }else {
-      return null;
+    isActionActive(action: Action): boolean {
+        return action == this.activeAction;
     }
-  }
 
-  descriptionHoverIn($event: any, infoTarget: any){
-    if(this.moreInfoActive){
-      if(this.moreInfoTimeoutId){
-
-        clearTimeout(this.moreInfoTimeoutId);
-        this.moreInfoTimeoutId = null;
-      }
-    }else {
-      this.op.show($event, infoTarget);
-      this.moreInfoActive = true;
+    descriptionHoverIn($event:any, infoTarget:any) {
+        if (this.moreInfoActive) {
+            if (this.moreInfoTimeoutId) {
+                clearTimeout(this.moreInfoTimeoutId);
+                this.moreInfoTimeoutId = null;
+            }
+        } else {
+            this.op.show($event, infoTarget);
+            this.moreInfoActive = true;
+        }
     }
-  }
-  descriptionHoverOut($event: any){
 
-    this.moreInfoTimeoutId = setTimeout(()=>{
-      this.op.hide($event);
-      this.moreInfoTimeoutId = null;
-      this.moreInfoActive = false;
-
-    }, 1000);
-  }
+    descriptionHoverOut($event:any) {
+        this.moreInfoTimeoutId = setTimeout(()=>{
+            this.op.hide();
+            this.moreInfoTimeoutId = null;
+            this.moreInfoActive = false;
+        }, 1000);
+    }
 
 }

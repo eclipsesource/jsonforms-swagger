@@ -4,6 +4,6 @@ import { Observable } from 'rxjs/Observable';
 
 export interface IOperationPerformer {
 
-  performOperation(http: Http, url: string, body: string, options: RequestOptions): Observable<Response>;
+    performOperation(http:Http, url:string, body:string, options:RequestOptions): Observable<Response>;
 
 }
