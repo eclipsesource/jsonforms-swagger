@@ -55,14 +55,6 @@ export class ResponseComponent {
           return;
         }
 
-        this.data = response.json();
-        if (_.isEmpty(this.data)) {
-          this.responseMessage = 'Empty response';
-          this.resetSchemas();
-          this.isResponseReady = true;
-          return;
-        }
-
         let apiResponse:APIResponse = this.activeOperation.getResponseByCode(response.status);
         if (!apiResponse) {
           this.responseMessage = this.responseMessagesService.getMessage(response.status);
@@ -74,8 +66,16 @@ export class ResponseComponent {
         this.responseMessage = apiResponse.getDescription();
 
         if (apiResponse.hasSchema()) {
+          if (!response.json() || _.isEmpty(response.json())) {
+            this.responseMessage = 'Empty response';
+            this.resetSchemas();
+            this.isResponseReady = true;
+            return;
+          }
+
           this.dataschema = this.responseDataschemaGeneratorService.generateDataschema(apiResponse.getSchema());
           this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
+
           if (apiResponse.isArray()) {
             this.data = response.json()[0]; // Only take first element until jsonforms array control implemented
           } else {
