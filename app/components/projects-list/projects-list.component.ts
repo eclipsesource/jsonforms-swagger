@@ -6,7 +6,7 @@ import { Project } from '../core/model/project';
 @Component({
     selector: 'projects-list',
     moduleId: module.id,
-    templateUrl: 'projects-list.component.html',
+    templateUrl: 'projects-list.html',
 })
 export class ProjectsListComponent implements OnInit {
 

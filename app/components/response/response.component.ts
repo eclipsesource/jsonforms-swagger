@@ -15,7 +15,7 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
 @Component({
   selector: 'response-section',
   moduleId: module.id,
-  templateUrl: 'response.component.html',
+  templateUrl: 'response.html',
   styleUrls: ['../center-content.css'],
   providers: [
     ResponseDataschemaGeneratorService,
@@ -40,7 +40,7 @@ export class ResponseComponent {
               private responseMessagesService:ResponseMessagesService,
               private apiManagerService:APIManagerService,
               private operationPerformerService:OperationPerformerService) {
-    apiManagerService.activeOperation$.subscribe((activeOperation:Operation) => {
+    apiManagerService.activeOperation.subscribe((activeOperation:Operation) => {
       this.activeOperation = activeOperation;
       this.isResponseReady = false;
     });

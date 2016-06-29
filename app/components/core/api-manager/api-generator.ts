@@ -1,6 +1,5 @@
 declare var JsonRefs: any;
 
-import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
@@ -13,12 +12,11 @@ import { APIResponse } from '../model/api-response';
 import { EntityType } from '../model/entity-type';
 import { Action } from '../model/action';
 
-@Injectable()
-export class APIGeneratorService {
+export class APIGenerator {
 
   constructor(private http: Http) {}
 
-  getAPI(url: string): Observable<{}> {
+  getJSONAPI(url: string): Observable<{}> {
     return this.http.get(url)
       .map(this.extractData)
       .catch(this.handleError);

@@ -2,7 +2,6 @@ import {Component, Input, OnInit, NgZone } from '@angular/core';
 
 import { ProjectsManagerService } from '../core/projects-manager/projects-manager.service';
 import { APIManagerService } from '../core/api-manager/api-manager.service';
-import { APIGeneratorService } from '../core/api-generator/api-generator.service';
 import { OperationPerformerService } from '../core/operation-performer/operation-performer.service';
 
 import { SidebarComponent } from '../sidebar/sidebar.component';
@@ -14,50 +13,50 @@ import { API } from '../core/model/api';
 
 
 @Component({
-    selector: 'project-detail',
-    moduleId: module.id,
-    templateUrl: 'project-detail.component.html',
-    styleUrls: ['project-detail.css'],
-    providers: [
-        APIManagerService,
-        APIGeneratorService,
-        OperationPerformerService
-    ],
-    directives: [
-        SidebarComponent,
-        QueryComponent,
-        ResponseComponent
-    ]
+	selector: 'project-detail',
+	moduleId: module.id,
+	templateUrl: 'project-detail.html',
+	styleUrls: ['project-detail.css'],
+	providers: [
+		APIManagerService,
+		OperationPerformerService
+	],
+	directives: [
+		SidebarComponent,
+		QueryComponent,
+		ResponseComponent
+	]
 })
 export class ProjectDetailComponent implements OnInit {
 
-    @Input() projectName: string;
+	@Input() projectName:string;
 
-    project: Project;
+	project:Project;
 
-    api: API;
+	api:API;
 
-    errorMessage: string;
+	errorMessage:string;
 
-    constructor(private projectsService: ProjectsManagerService, private apiManagerService: APIManagerService, private zone: NgZone) {
-    }
+	constructor(private projectsService:ProjectsManagerService, private apiManagerService:APIManagerService, private zone:NgZone) {
+	}
 
-    ngOnInit() {
-        this.projectsService.getProject(this.projectName).subscribe(project => {
-            this.project = project;
-            this.apiManagerService.setAPIUrl(this.project.apiUrl);
-            this.subscribeToAPI();
-        });
-    }
+	ngOnInit() {
+		this.projectsService.getProject(this.projectName).subscribe(project => {
+			this.project = project;
+			this.apiManagerService.generateAPI(this.project.apiUrl);
+			this.subscribeToAPI();
+		});
+	}
 
-    private subscribeToAPI() {
-        this.apiManagerService.getAPI()
-            .subscribe(
-              (api) => {
-                this.api = api;
-                this.zone.run(() => {});
-              }, error => this.errorMessage = <any>error
-            );
-    }
+	private subscribeToAPI() {
+		this.apiManagerService.api
+			.subscribe(
+				(api) => {
+					this.api = api;
+					this.zone.run(() => {
+					});
+				}, error => this.errorMessage = <any>error
+			);
+	}
 
 }

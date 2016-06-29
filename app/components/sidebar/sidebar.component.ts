@@ -10,53 +10,57 @@ import { EntityType } from '../core/model/entity-type';
 import { Action } from '../core/model/action';
 
 @Component({
-    selector: 'sidebar',
-    moduleId: module.id,
-    templateUrl: 'sidebar.component.html',
-    styleUrls: ['sidebar.css'],
-    directives: [PanelMenu, OverlayPanel]
+	selector: 'sidebar',
+	moduleId: module.id,
+	templateUrl: 'sidebar.html',
+	styleUrls: ['sidebar.css'],
+	directives: [PanelMenu, OverlayPanel]
 })
 export class SidebarComponent {
 
-    @Input() api: API;
+	api:API;
 
-    @ViewChild('op') op: OverlayPanel;
+	@ViewChild('op') op:OverlayPanel;
 
-    moreInfoActive: boolean = false;
-    moreInfoTimeoutId: Timer = null;
+	moreInfoActive:boolean = false;
+	moreInfoTimeoutId:Timer = null;
 
-    activeAction: Action;
+	activeAction:Action;
 
-    constructor(private apiManagerService:APIManagerService) {
-      apiManagerService.activeAction$.subscribe((activeAction: Action) => this.activeAction = activeAction);
-    }
+	constructor(private apiManagerService:APIManagerService) {
+		apiManagerService.api.subscribe((api:API) => {
+			this.api = api;
+		});
 
-    selectAction(action: Action) {
-        this.apiManagerService.setActiveAction(action);
-    }
+		apiManagerService.activeAction.subscribe((activeAction:Action) => this.activeAction = activeAction);
+	}
 
-    isActionActive(action: Action): boolean {
-        return action == this.activeAction;
-    }
+	selectAction(action:Action) {
+		this.apiManagerService.setActiveAction(action);
+	}
 
-    descriptionHoverIn($event:any, infoTarget:any) {
-        if (this.moreInfoActive) {
-            if (this.moreInfoTimeoutId) {
-                clearTimeout(this.moreInfoTimeoutId);
-                this.moreInfoTimeoutId = null;
-            }
-        } else {
-            this.op.show($event, infoTarget);
-            this.moreInfoActive = true;
-        }
-    }
+	isActionActive(action:Action):boolean {
+		return action == this.activeAction;
+	}
 
-    descriptionHoverOut($event:any) {
-        this.moreInfoTimeoutId = setTimeout(()=>{
-            this.op.hide();
-            this.moreInfoTimeoutId = null;
-            this.moreInfoActive = false;
-        }, 1000);
-    }
+	descriptionHoverIn($event:any, infoTarget:any) {
+		if (this.moreInfoActive) {
+			if (this.moreInfoTimeoutId) {
+				clearTimeout(this.moreInfoTimeoutId);
+				this.moreInfoTimeoutId = null;
+			}
+		} else {
+			this.op.show($event, infoTarget);
+			this.moreInfoActive = true;
+		}
+	}
+
+	descriptionHoverOut($event:any) {
+		this.moreInfoTimeoutId = setTimeout(()=> {
+			this.op.hide();
+			this.moreInfoTimeoutId = null;
+			this.moreInfoActive = false;
+		}, 1000);
+	}
 
 }

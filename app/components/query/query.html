@@ -1,5 +1,8 @@
 <div *ngIf="activeAction" class="tab-button-container">
-    <button class="tab-button" [ngClass]="{'tab-button-active': operation == activeOperation}" *ngFor="let operation of activeAction.operations" (click)="selectOperation(operation)">{{operation.getSummary()}}</button>
+    <button class="tab-button" [ngClass]="{'tab-button-active': operation == activeOperation}" *ngFor="let operation of activeAction.operations" (click)="selectOperation(operation)">
+        {{operation.getSummary()}}
+        <div class="operation-locked-indicator fa fa-lock" *ngIf="authService.hasLocks(operationTab)" (click)="authService.openDialogForOperation(operationTab)"></div>
+    </button>
 </div>
 <div *ngIf="activeOperation" class="section">
     <h2>Query</h2>

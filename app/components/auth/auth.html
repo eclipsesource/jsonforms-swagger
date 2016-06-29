@@ -1,0 +1,11 @@
+<p-dialog header="Authentication" [draggable]="false" [(visible)]="displayDialog" modal="modal" showEffect="fade">
+  <div class="strategy-list-container">
+    <div class="strategy-container" *ngFor="let authStrategy of getStrategies()">
+      <h4>{{authStrategy.getId()}}</h4>
+      <auth-strategy [strategy]="authStrategy"></auth-strategy>
+      <div class="auth-border-bottom"></div>
+    </div>
+  </div>
+</p-dialog>
+
+<button class="button-auth" *ngIf="getStrategies().length > 0" (click)="showDialog()">Authentication</button>
