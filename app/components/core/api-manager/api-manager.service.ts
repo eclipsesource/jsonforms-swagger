@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { APIGenerator } from './api-generator';
-import { Http } from '@angular/http';
 
 import { API } from '../model/api';
 import { Action } from '../model/action';
@@ -13,10 +12,7 @@ import { Operation } from '../model/operation';
 @Injectable()
 export class APIManagerService {
 
-    private generator: APIGenerator;
-
-    constructor(private http:Http) {
-      this.generator = new APIGenerator(http);
+    constructor(private generator:APIGenerator) {
     }
 
     private jsonAPI:{};
@@ -34,12 +30,13 @@ export class APIManagerService {
     private initialData: {} = {};
 
     generateAPI(url: string) {
-      this.generator.getJSONAPI(url)
-          .map((jsonAPI:any) => {
-              this.jsonAPI = jsonAPI;
-              this.currentAPI = this.generator.generateAPI(this.jsonAPI);
-              this._api.next(this.currentAPI);
-          });
+        this.generator.getJSONAPI(url).subscribe((jsonAPI)=>{
+            this.jsonAPI = jsonAPI;
+            this.currentAPI = this.generator.generateAPI(this.jsonAPI);
+            console.log("currentapi");
+            console.log(this.currentAPI);
+            this._api.next(this.currentAPI);
+        });
     }
 
     setActiveAction(action: Action) {

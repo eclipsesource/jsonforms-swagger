@@ -1,5 +1,6 @@
 declare var JsonRefs: any;
 
+import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
@@ -12,9 +13,11 @@ import { APIResponse } from '../model/api-response';
 import { EntityType } from '../model/entity-type';
 import { Action } from '../model/action';
 
+@Injectable()
 export class APIGenerator {
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+  }
 
   getJSONAPI(url: string): Observable<{}> {
     return this.http.get(url)
@@ -26,10 +29,12 @@ export class APIGenerator {
     if (res.status < 200 || res.status >= 300) {
       throw new Error('Bad response status: ' + res.status);
     }
+    console.log(res);
     return res.json();
   }
 
   private handleError (error: any) {
+    console.log('handleError');
     console.log(error);
     let errMsg = error.message || 'Server error';
     return Observable.throw(errMsg);
@@ -43,6 +48,7 @@ export class APIGenerator {
     const definitionsUsages = this.computeDefinitionsUsages(jsonAPI);
     this.generateRelatedOperations(api, definitionsUsages);
     this.generateEntityTypes(api, definitionsUsages);
+    this.generateSecurityDefinitions(api, jsonAPI);
     return api;
   }
 
@@ -78,7 +84,7 @@ export class APIGenerator {
 
   private generateOperation(api: API, baseUrl: string, path: string, type: string, jsonOperation: {}) {
     let operation: Operation = new Operation();
-    operation.properties = _.pick(jsonOperation, ['tags', 'summary', 'description', 'operationId']);
+    operation.properties = _.pick(jsonOperation, ['tags', 'summary', 'description', 'operationId', 'security']);
     operation.properties['baseUrl'] = baseUrl;
     operation.properties['path'] = path;
     operation.properties['type'] = type;
@@ -192,5 +198,7 @@ export class APIGenerator {
       api.entityTypes.push(entityType);
     });
   }
-
+  private generateSecurityDefinitions(api: API, jsonAPI: {}){
+    api['securityDefinitions'] = jsonAPI['securityDefinitions'];
+  }
 }

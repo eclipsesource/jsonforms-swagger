@@ -19,11 +19,11 @@ export class AuthBasic implements AuthStrategy {
 
   getTemplate():string{
     return "<div class='form-container'>" +
-      "<input type='text' [(ngModel)]='scope.tempUsername' placeholder='Username' />" +
-      "<input type='password' [(ngModel)]='scope.tempPassword' placeholder='Password' />" +
+      "<input [disabled]='scope.isLoggedIn()' type='text' [(ngModel)]='scope.tempUsername' placeholder='Username' />" +
+      "<input [disabled]='scope.isLoggedIn()' type='password' [(ngModel)]='scope.tempPassword' placeholder='Password' />" +
       "<div class='buttons-panel'>" +
-      "<button (click)='scope.login()'>Log In</button>" +
-      "<button (click)='scope.logout()'>Log Out</button>" +
+      "<button *ngIf='!scope.isLoggedIn()' (click)='scope.login()'>Log In</button>" +
+      "<button *ngIf='scope.isLoggedIn()' (click)='scope.logout()'>Log Out</button>" +
       "</div>" +
       "</div>";
   }
@@ -41,9 +41,11 @@ export class AuthBasic implements AuthStrategy {
   }
 
   login(): void{
-    this.username = this.tempUsername;
-    this.password = this.tempPassword;
-    this.loggedIn = true;
+    if(this.tempUsername && this.tempPassword){
+      this.username = this.tempUsername;
+      this.password = this.tempPassword;
+      this.loggedIn = true;
+    }
   }
 
   logout():void{

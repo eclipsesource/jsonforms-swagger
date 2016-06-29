@@ -39,13 +39,14 @@ export function generateFromDefinitions(definitions: any): { [id:string] : AuthS
 
   for(var defName in definitions){
     if(definitions.hasOwnProperty(defName)){
-      auths[defName] = createAuthStrategy(defName, definitions[defName]);
+      var strat = createAuthStrategy(defName, definitions[defName]);
+      if(strat) auths[defName] = strat;
     }
   }
   return auths;
 }
 
-
+// TODO Missing way to obtain client_id for oauth - it should be provided by the developer that creates the schema
 function createAuthStrategy(id: string, definition: any): any{
   if(!definition){
     return null;
@@ -58,8 +59,10 @@ function createAuthStrategy(id: string, definition: any): any{
   switch(type){
     case 'apiKey': return new AuthApiKey(id, definition);
     case 'oauth2':
-          var flow = definition['flow'];
-          if(!flow){
+      //TODO include oauth
+          return null;
+          //var flow = definition['flow'];
+          /*if(!flow){
             return null;
           }
           switch(flow){
@@ -68,7 +71,7 @@ function createAuthStrategy(id: string, definition: any): any{
             case 'accessCode': return new AuthOauthCode(id, definition);
             case 'application': return new AuthOauthApplication(id, definition);
             default: return null;
-          }
+          }*/
     case 'basic': return new AuthBasic(id, definition);
     default: return null;
   }

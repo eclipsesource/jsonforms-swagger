@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
-import {APIGeneratorService} from "../core/api-generator/api-generator.service";
 import {API} from "../core/model/api";
 import {AuthStrategy, generateFromDefinitions} from "./model/auth-strategy.component";
 import {Operation} from "../core/model/operation";
 
 import {Subject} from "../../../node_modules/rxjs/Subject";
 import { Observable } from 'rxjs/Observable';
+
+import { APIManagerService } from '../core/api-manager/api-manager.service';
 
 @Injectable()
 export class AuthService{
@@ -18,8 +19,8 @@ export class AuthService{
   openDialog: Observable<string[]> = this._openDialog.asObservable();
 
 
-  constructor(apiGeneratorService: APIGeneratorService){
-    apiGeneratorService.api.subscribe((api: any)=>{
+  constructor(apiManagerService: APIManagerService){
+    apiManagerService.api.subscribe((api: any)=>{
       this.api = api;
       this.reset();
     });
@@ -63,8 +64,10 @@ export class AuthService{
 
   hasLocks(operation: Operation): boolean {
     var locks = operation.getLocks();
-
-    return !!locks;
+    locks = _.filter(_.keys(locks), (lock)=>{
+      return this.authStrategies[lock] != undefined;
+    });
+    return !!locks && locks.length;
   }
 
   openDialogForOperation(operation: Operation){
@@ -75,12 +78,14 @@ export class AuthService{
 
   applyStrategies(operation: Operation): any{
     var strategies = operation.getLocks();
+    strategies = _.filter(_.keys(strategies), (lock)=>{
+      return this.authStrategies[lock] != undefined;
+    });
+
     var obj = {"url": "", "headers": {}};
     for(let strat in strategies){
       if(this.authStrategies.hasOwnProperty(strat) && this.authStrategies[strat].isLoggedIn()){
         this.authStrategies[strat].apply(obj);
-      }else{
-        return false;
       }
     }
     return obj;

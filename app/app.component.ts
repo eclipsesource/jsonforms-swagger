@@ -5,36 +5,42 @@ import { HTTP_PROVIDERS } from '@angular/http';
 import './rxjs-operators';
 
 import { ProjectsManagerService } from './components/core/projects-manager/projects-manager.service';
+import { AuthService } from './components/auth/auth.service';
+import { APIManagerService } from './components/core/api-manager/api-manager.service';
+import { APIGenerator } from './components/core/api-manager/api-generator';
 
 import { HeaderComponent } from './components/header/header.component';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 
 @Component({
-  selector: 'app',
-  moduleId: module.id,
-  templateUrl: 'app.html',
-  styleUrls: ['app.css'],
-  providers: [
-    HTTP_PROVIDERS,
-    ProjectsManagerService
-  ],
-  directives: [
-    HeaderComponent,
-    ProjectsListComponent,
-    ProjectDetailComponent
-  ]
+	selector: 'app',
+	moduleId: module.id,
+	templateUrl: 'app.html',
+	styleUrls: ['app.css'],
+	providers: [
+		HTTP_PROVIDERS,
+		ProjectsManagerService,
+		AuthService,
+		APIManagerService,
+		APIGenerator
+	],
+	directives: [
+		HeaderComponent,
+		ProjectsListComponent,
+		ProjectDetailComponent
+	]
 })
 export class AppComponent {
 
-  selectedProjectName: string;
+	selectedProjectName:string;
 
-  onProjectSelected(projectName: string) {
-    this.selectedProjectName = projectName;
-  }
+	onProjectSelected(projectName:string) {
+		this.selectedProjectName = projectName;
+	}
 
-  onProjectsListClicked() {
-    this.selectedProjectName = '';
-  }
+	onProjectsListClicked() {
+		this.selectedProjectName = '';
+	}
 
 }

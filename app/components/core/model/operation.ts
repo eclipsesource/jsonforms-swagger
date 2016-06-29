@@ -53,5 +53,11 @@ export class Operation {
       return response.getCode() == code;
     });
   }
-
+  getLocks(): any{
+    var sec = this.properties['security'];
+    if(!sec){
+      return null;
+    }
+    return this.properties['security'][0];
+  }
 }

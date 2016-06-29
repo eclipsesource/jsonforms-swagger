@@ -14,6 +14,7 @@ import { DeletePerformer } from './delete-performer';
 
 import { Operation } from '../model/operation';
 import { Parameter } from '../model/parameter';
+import {AuthService} from "../../auth/auth.service";
 
 @Injectable()
 export class OperationPerformerService {
@@ -23,14 +24,24 @@ export class OperationPerformerService {
     private responseSource = new Subject<Response>();
     response$ = this.responseSource.asObservable();
 
-    constructor(private http:Http) {
+    constructor(private http:Http, private authService: AuthService) {
     }
 
     performOperation(operation:Operation, data:{}) {
         this.selectOperationPerformerType(operation);
 
-        let url:string = operation.getUrl();
-        let headers:Headers = new Headers({'Content-Type': 'application/json', 'Accept': 'application/json'});
+        var auth = this.authService.applyStrategies(operation);
+        console.log(auth);
+        if(!auth || typeof auth.url === 'undefined' || typeof auth.headers === 'undefined'){ //if this returns false, the operation cannot be done as it has not been authenticated
+            //TODO implement error notif
+            console.log("Not authenticated");
+            return;
+        }
+
+        let url:string = operation.getUrl() + auth['url'];
+
+        var headerObject = Object.assign(auth.headers, { 'Content-Type': 'application/json', 'Accept': 'application/json' });
+        let headers:Headers = new Headers(headerObject);
         let body:string;
 
         _.forEach(operation.getParameters(), (parameter:Parameter) => {

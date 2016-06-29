@@ -18,7 +18,7 @@ import { Action } from '../core/model/action';
 })
 export class SidebarComponent {
 
-	api:API;
+	@Input() api: API;
 
 	@ViewChild('op') op:OverlayPanel;
 
@@ -28,10 +28,6 @@ export class SidebarComponent {
 	activeAction:Action;
 
 	constructor(private apiManagerService:APIManagerService) {
-		apiManagerService.api.subscribe((api:API) => {
-			this.api = api;
-		});
-
 		apiManagerService.activeAction.subscribe((activeAction:Action) => this.activeAction = activeAction);
 	}
 

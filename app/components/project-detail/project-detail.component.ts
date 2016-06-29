@@ -18,7 +18,6 @@ import { API } from '../core/model/api';
 	templateUrl: 'project-detail.html',
 	styleUrls: ['project-detail.css'],
 	providers: [
-		APIManagerService,
 		OperationPerformerService
 	],
 	directives: [

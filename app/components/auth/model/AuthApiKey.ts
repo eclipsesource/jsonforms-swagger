@@ -26,10 +26,10 @@ export class AuthApiKey implements AuthStrategy {
   getTemplate():string{
     return "<div class='form-container'>" +
       "<label for='__auth_api_key_input__' >{{scope.name}}</label>" +
-      "<input id='__auth_api_key_input__' type='text' [(ngModel)]='scope.tempKey' placeholder='Key' />" +
+      "<input [disabled]='scope.isLoggedIn()' id='__auth_api_key_input__' type='text' [(ngModel)]='scope.tempKey' placeholder='Key' />" +
       "<div class='buttons-panel'>" +
-      "<button (click)='scope.login()'>Log In</button>" +
-      "<button (click)='scope.logout()'>Log Out</button>" +
+      "<button *ngIf='!scope.isLoggedIn()' (click)='scope.login()'>Log In</button>" +
+      "<button *ngIf='scope.isLoggedIn()' (click)='scope.logout()'>Log Out</button>" +
       "</div>" +
       "</div>";
   }
@@ -47,8 +47,10 @@ export class AuthApiKey implements AuthStrategy {
   }
 
   login(): void{
-    this.key = this.tempKey;
-    this.loggedIn = true;
+    if(this.tempKey){
+      this.key = this.tempKey;
+      this.loggedIn = true;
+    }
   }
 
   logout():void{
