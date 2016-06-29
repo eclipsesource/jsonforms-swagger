@@ -42,10 +42,6 @@ export class AuthApiKey implements AuthStrategy {
     return this.id;
   }
 
-  getOther(): any{
-    return null;
-  }
-
   login(): void{
     if(this.tempKey){
       this.key = this.tempKey;
@@ -62,12 +58,8 @@ export class AuthApiKey implements AuthStrategy {
   // this function doesn't override values if they are already present in the query/header
   apply(obj: any): void {
     if(this.in === "query"){
-      if(!obj.url){
-        throw new Error('Invalid url');
-      }
-
-      if(!queryIsAlreadyPresent(obj.url, this.name)){
-        obj.url = addQueryToUrl(obj.url, this.name, this.key);
+      if(typeof obj.parameters[this.name] === 'undefined') {
+        obj.parameters[this.name] = this.key;
       }
     }else{ // header
       if(typeof obj.headers[this.name] === 'undefined') {

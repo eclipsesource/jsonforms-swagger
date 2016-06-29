@@ -36,10 +36,6 @@ export class AuthBasic implements AuthStrategy {
     return this.id;
   }
 
-  getOther(): any{
-    return null;
-  }
-
   login(): void{
     if(this.tempUsername && this.tempPassword){
       this.username = this.tempUsername;

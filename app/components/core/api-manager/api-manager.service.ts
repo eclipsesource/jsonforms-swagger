@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 
 import { APIGenerator } from './api-generator';
@@ -17,7 +18,7 @@ export class APIManagerService {
 
     private jsonAPI:{};
 
-    private _api = new Subject<API>();
+    private _api = new BehaviorSubject<API>(null);
     api = this._api.asObservable();
     currentAPI: API;
 
@@ -33,8 +34,6 @@ export class APIManagerService {
         this.generator.getJSONAPI(url).subscribe((jsonAPI)=>{
             this.jsonAPI = jsonAPI;
             this.currentAPI = this.generator.generateAPI(this.jsonAPI);
-            console.log("currentapi");
-            console.log(this.currentAPI);
             this._api.next(this.currentAPI);
         });
     }
@@ -55,5 +54,13 @@ export class APIManagerService {
     getInitialData(): {} {
         return this.initialData;
     }
+
+    resetService(){
+        this._api.next(null);
+        this.currentAPI = null;
+        this.initialData = {};
+        this.jsonAPI = null;
+    }
+
 
 }

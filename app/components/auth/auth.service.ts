@@ -1,93 +1,103 @@
 import {Injectable} from '@angular/core';
 import {API} from "../core/model/api";
-import {AuthStrategy, generateFromDefinitions} from "./model/auth-strategy.component";
+import {AuthStrategy} from "./model/auth-strategy.component";
 import {Operation} from "../core/model/operation";
 
 import {Subject} from "../../../node_modules/rxjs/Subject";
 import { Observable } from 'rxjs/Observable';
 
 import { APIManagerService } from '../core/api-manager/api-manager.service';
+import {AuthApiKey} from "./model/AuthApiKey";
+import {AuthBasic} from "./model/AuthBasic";
 
 @Injectable()
-export class AuthService{
+export class AuthService {
 
-  api: API;
+    api:API;
 
-  authStrategies:  { [id:string] : AuthStrategy} = {};
+    authStrategies:{ [id:string] : AuthStrategy} = {};
 
-  private _openDialog: Subject<string[]> = new Subject<string[]>();
-  openDialog: Observable<string[]> = this._openDialog.asObservable();
+    private _openDialog:Subject<string[]> = new Subject<string[]>();
+    openDialog:Observable<string[]> = this._openDialog.asObservable();
 
 
-  constructor(apiManagerService: APIManagerService){
-    apiManagerService.api.subscribe((api: any)=>{
-      this.api = api;
-      this.reset();
-    });
+    constructor(apiManagerService:APIManagerService) {
+        apiManagerService.api.subscribe((api:any)=> {
+            this.api = api;
+            this.reset();
+        });
 
-  }
-
-  reset(){
-    if(this.api){
-      this.authStrategies = generateFromDefinitions(this.api['securityDefinitions']);
     }
-  }
 
-  isLocked(operation: Operation): boolean{
-    var locks = operation.getLocks();
-    for(let lockName in locks) {
-      if (locks.hasOwnProperty(lockName)) {
-        var authStrategy:AuthStrategy = this.authStrategies[lockName];
-        if (!authStrategy) {
-          continue; // the security spec is not defined
+    private reset() {
+        if (this.api) {
+            this.authStrategies = this.generateFromDefinitions(this.api['securityDefinitions']);
         }
-        if (!authStrategy.isLoggedIn()) {
-          return true; // when one authStrategy is found and it isn't logged in, the operation is locked
+    }
 
+    hasLocks(operation:Operation):boolean {
+        var locks = operation.getLocks();
+        locks = _.filter(_.keys(locks), (lock)=> {
+            return this.authStrategies[lock] != undefined;
+        });
+        return !!locks && locks.length;
+    }
 
-        } else {
-          // TODO handle oauth using the authStrategy.getOther() method
-          if (typeof locks[lockName] === 'array') { //oauth specific
-            var scopes = locks[lockName];
-            var availableScopes = authStrategy.getOther().scopes;
-            if (!scopes.every(function (val: any) {
-                return availableScopes.indexOf(val) >= 0;
-              })) {
-              return true; // when not all scopes are included
+    openDialogForOperation(operation:Operation) {
+        var lockIds = _.keys(operation.getLocks());
+
+        this._openDialog.next(lockIds);
+    }
+
+    applyStrategies(operation:Operation):any {
+        var strategies = operation.getLocks();
+        var obj = {"parameters": {}, "headers": {}};
+
+        for(let key in strategies){
+            let value = strategies[key];
+            // If the rule is defined, we procced to authenticate
+            // If the rule is not defined, we ignore it
+            if(this.authStrategies.hasOwnProperty(key)){
+                if(this.authStrategies[key].isLoggedIn()){ //if logged in, apply auth
+                    this.authStrategies[key].apply(obj);
+                }else{//if not logged in, return false(not authenticated)
+                    return false;
+                }
             }
-          }
         }
-      }
+        return obj;
     }
-    return false;
-  }
 
-  hasLocks(operation: Operation): boolean {
-    var locks = operation.getLocks();
-    locks = _.filter(_.keys(locks), (lock)=>{
-      return this.authStrategies[lock] != undefined;
-    });
-    return !!locks && locks.length;
-  }
+    private generateFromDefinitions(definitions:any):{ [id:string] : AuthStrategy} {
+        var auths:{ [id:string] : AuthStrategy} = {};
 
-  openDialogForOperation(operation: Operation){
-    var lockIds = _.keys(operation.getLocks());
-
-    this._openDialog.next(lockIds);
-  }
-
-  applyStrategies(operation: Operation): any{
-    var strategies = operation.getLocks();
-    strategies = _.filter(_.keys(strategies), (lock)=>{
-      return this.authStrategies[lock] != undefined;
-    });
-
-    var obj = {"url": "", "headers": {}};
-    for(let strat in strategies){
-      if(this.authStrategies.hasOwnProperty(strat) && this.authStrategies[strat].isLoggedIn()){
-        this.authStrategies[strat].apply(obj);
-      }
+        for (var defName in definitions) {
+            if (definitions.hasOwnProperty(defName)) {
+                var strat = this.createAuthStrategy(defName, definitions[defName]);
+                if (strat) auths[defName] = strat;
+            }
+        }
+        return auths;
     }
-    return obj;
-  }
+
+    // TODO Missing way to obtain client_id for oauth - it should be provided by the developer that creates the schema
+    private createAuthStrategy(id:string, definition:any):any {
+        if (!definition) {
+            return null;
+        }
+        var type = definition['type'];
+        if (!type) {
+            return null;
+        }
+
+        switch (type) {
+            case 'apiKey':
+                return new AuthApiKey(id, definition);
+            case 'basic':
+                return new AuthBasic(id, definition);
+            default:
+                return null;
+        }
+    }
+
 }

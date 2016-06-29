@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, NgZone } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import { ProjectsManagerService } from '../core/projects-manager/projects-manager.service';
 import { APIManagerService } from '../core/api-manager/api-manager.service';
@@ -36,26 +36,18 @@ export class ProjectDetailComponent implements OnInit {
 
 	errorMessage:string;
 
-	constructor(private projectsService:ProjectsManagerService, private apiManagerService:APIManagerService, private zone:NgZone) {
-	}
+	constructor(private projectsService:ProjectsManagerService, private apiManagerService:APIManagerService) {
+    apiManagerService.api.subscribe((api)=>{
+      this.api = api;
+    }, (error)=>{
+      this.errorMessage = <any>error;
+    });
+  }
 
 	ngOnInit() {
 		this.projectsService.getProject(this.projectName).subscribe(project => {
 			this.project = project;
 			this.apiManagerService.generateAPI(this.project.apiUrl);
-			this.subscribeToAPI();
 		});
-	}
-
-	private subscribeToAPI() {
-		this.apiManagerService.api
-			.subscribe(
-				(api) => {
-					this.api = api;
-					this.zone.run(() => {
-					});
-				}, error => this.errorMessage = <any>error
-			);
-	}
-
+  }
 }

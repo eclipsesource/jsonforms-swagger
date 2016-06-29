@@ -30,18 +30,8 @@ export class OperationPerformerService {
     performOperation(operation:Operation, data:{}) {
         this.selectOperationPerformerType(operation);
 
-        var auth = this.authService.applyStrategies(operation);
-        console.log(auth);
-        if(!auth || typeof auth.url === 'undefined' || typeof auth.headers === 'undefined'){ //if this returns false, the operation cannot be done as it has not been authenticated
-            //TODO implement error notif
-            console.log("Not authenticated");
-            return;
-        }
-
-        let url:string = operation.getUrl() + auth['url'];
-
-        var headerObject = Object.assign(auth.headers, { 'Content-Type': 'application/json', 'Accept': 'application/json' });
-        let headers:Headers = new Headers(headerObject);
+        let url:string = operation.getUrl();
+        let headers:Headers = new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
         let body:string;
 
         _.forEach(operation.getParameters(), (parameter:Parameter) => {
@@ -63,6 +53,14 @@ export class OperationPerformerService {
                     break;
             }
         });
+
+        let auth = this.authService.applyStrategies(operation);
+        if(!this.isAuthenticated(auth)){
+            //TODO return error
+            console.log('Not Authenticated!');
+            return;
+        }
+        this.addAuthParameters(auth, url, headers);
 
         let options = new RequestOptions({headers: headers});
 
@@ -98,6 +96,10 @@ export class OperationPerformerService {
     private addQueryParameter(parameter:Parameter, data:{}, url:string):string {
         let parameterName:string = parameter.getName();
         let parameterData = data[parameterName];
+        if(this.queryIsAlreadyPresent(url, parameterName)){
+            //TODO Error handling
+            return url;
+        }
         if (!parameterData) {
             return url;
         }
@@ -113,7 +115,9 @@ export class OperationPerformerService {
         let parameterName:string = parameter.getName();
         let parameterData = data[parameterName];
         if (parameterData) {
-            headers.append(parameterName, parameterData);
+            if(!headers.has(parameterName)) {
+                headers.append(parameterName, parameterData);
+            }
         }
     }
 
@@ -121,4 +125,64 @@ export class OperationPerformerService {
         return JSON.stringify(data[parameter.getName()]);
     }
 
+    private addAuthParameters(auth: any, url: string, oldHeaders: Headers){
+        let parameters = auth['parameters'];
+        let headers = auth['headers'];
+
+        for(let parameterName in parameters){
+            if(parameters.hasOwnProperty(parameterName)){
+                if(this.queryIsAlreadyPresent(url, parameterName)){
+                    //TODO error handling
+                    continue;
+                }
+
+            }
+            let parameterData = parameters[parameterName];
+            if (!parameterData) {
+                continue;
+            }
+            if (url.indexOf('?') >= 0) {
+                url = url + '&';
+            } else {
+                url = url + '?';
+            }
+            url = url + parameterName + '=' + parameterData;
+        }
+
+        for(let headerName in headers){
+            if(headers.hasOwnProperty(headerName)){
+                let headerData = headers[headerName];
+                if(!oldHeaders.has(headerName)){
+                    oldHeaders.append(headerName, headerData);
+                }
+            }
+        }
+    }
+
+    private isAuthenticated(auth: any):boolean {
+        if(!auth){ //if this returns false, the operation cannot be done as it has not been authenticated
+            return false;
+        }
+        return true;
+    }
+
+
+    private queryIsAlreadyPresent(url: string, queryName: string): boolean{
+        var qp: any;
+        if (url.indexOf('?') > 0) {
+            qp = url.substring(url.indexOf('?') + 1);
+            var parts = qp.split('&');
+            if(parts && parts.length > 0) {
+                for(var i = 0; i < parts.length; i++) {
+                    var kv = parts[i].split('=');
+                    if(kv && kv.length > 0) {
+                        if (kv[0] === queryName) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

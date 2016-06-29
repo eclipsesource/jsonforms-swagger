@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { PanelMenu, OverlayPanel } from 'primeng/primeng';
 import Timer = NodeJS.Timer;
@@ -18,7 +18,7 @@ import { Action } from '../core/model/action';
 })
 export class SidebarComponent {
 
-	@Input() api: API;
+	api: API;
 
 	@ViewChild('op') op:OverlayPanel;
 
@@ -29,6 +29,10 @@ export class SidebarComponent {
 
 	constructor(private apiManagerService:APIManagerService) {
 		apiManagerService.activeAction.subscribe((activeAction:Action) => this.activeAction = activeAction);
+
+    apiManagerService.api.subscribe((api: API) => {
+      this.api = api;
+    });
 	}
 
 	selectAction(action:Action) {
