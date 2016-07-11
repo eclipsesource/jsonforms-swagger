@@ -41,7 +41,7 @@ export class APIGenerator {
 
   generateAPI(jsonAPI: {}): API {
     let api = new API();
-    api.properties = _.pick(jsonAPI, ['info', 'host', 'basePath']);
+    api.properties = _.pick(jsonAPI, ['schemes', 'info', 'host', 'basePath']);
     this.generateTags(api, jsonAPI);
     this.generateOperations(api, jsonAPI);
     const definitionsUsages = this.computeDefinitionsUsages(jsonAPI);

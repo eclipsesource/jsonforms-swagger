@@ -20,7 +20,7 @@ export class API {
   }
 
   getBaseUrl(): string {
-    let baseUrl = 'http://' +  this.properties['host'] + this.properties['basePath'];
+    let baseUrl = this.properties['schemes'][0] + '://' +  this.properties['host'] + this.properties['basePath'];
     if (baseUrl.endsWith('/')) {
       baseUrl = baseUrl.substring(0, baseUrl.length - 1);
     }
