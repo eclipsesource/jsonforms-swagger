@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {ElementRef} from "@angular/core";
 import {AuthStrategy} from "./auth-strategy.component";
-import {addQueryToUrl, queryIsAlreadyPresent} from "../../../../app/helpers/Helpers";
 
 export class AuthApiKey implements AuthStrategy {
   public name: string;
