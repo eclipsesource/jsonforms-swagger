@@ -1,0 +1,78 @@
+:host {
+    display:flex;
+    flex-direction:column;
+    flex-wrap:nowrap;
+    align-items:stretch;
+    height:100vh;
+    overflow-x:hidden;
+    overflow-y:auto;
+    background-color:#DFEFCA;
+}
+
+.center {
+    display:flex;
+    flex-direction:column;
+    flex-wrap:nowrap;
+    justify-content:flex-start;
+    align-items:center;
+    padding-top:50px;
+    height:100%;
+    width:100%;
+}
+
+.projects-list {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    padding: 15px;
+    list-style: none;
+}
+
+.project-box {
+    width: 400px;
+    height: 150px;
+    background-color: #186BA0;
+    margin: 15px;
+    flex-shrink: 1.2;
+    flex-grow: 1.2;
+    transition: background-color 0.4s;
+
+    color:white;
+    text-align:center;
+    font-size: large;
+}
+
+.project-box:hover {
+    background-color: #75A339;
+}
+
+.project-box.new {
+    position:relative;
+    background-color:#61AB56;
+}
+
+.project-box.new .filter {
+    width:100%;
+    height:100%;
+    background-color:#61AB56;
+    z-index:100;
+    position:absolute;
+    display:block;
+}
+.project-box.new:hover .filter {
+    display:none;
+}
+
+.project-box h3 {
+    line-height:150px;
+}
+
+.new-project-form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap:nowrap;
+    justify-content:space-around;
+    align-items:center;
+}

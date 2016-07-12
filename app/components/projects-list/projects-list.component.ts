@@ -7,6 +7,7 @@ import { Project } from '../core/model/project';
     selector: 'projects-list',
     moduleId: module.id,
     templateUrl: 'projects-list.html',
+    styleUrls: ['projects-list.css']
 })
 export class ProjectsListComponent implements OnInit {
 

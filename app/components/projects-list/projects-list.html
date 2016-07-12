@@ -1,18 +1,25 @@
-<h3>Projects:</h3>
-<ul>
-  <li *ngFor="let project of projects">
-    <a (click)="selectProject(project.name)">{{project.name}} - {{project.apiUrl}}</a>
-  </li>
-</ul>
-<div>New Project</div>
-<div>
-  Name (no spaces):
-  <input #newProjectName />
-</div>
-<div>
-  API URL:
-  <input #newProjectApiUrl />
-</div>
-<div>
-  <button (click)="createProject(newProjectName.value, newProjectApiUrl.value); newProjectName.value=''; newProjectApiUrl.value=''">Create Project</button>
+<div class="center">
+    <h2>Projects</h2>
+    <ul class="projects-list">
+        <li (click)="selectProject(project.name)" class="project-box" *ngFor="let project of projects">
+            <h3>{{project.name}}</h3>
+            <!--{{project.apiUrl}}-->
+        </li>
+        <li class="project-box new">
+            <div class="filter">
+                <h3>Add New...</h3>
+            </div>
+            <div class="new-project-form">
+                <h4>New Project</h4>
+                <label for="new-project-name">Name (no spaces):</label>
+                <input id="new-project-name" #newProjectName />
+                <br />
+                <label for="new-project-api-url">API URL:</label>
+                <input id="new-project-api-url" #newProjectApiUrl />
+                <button (click)="createProject(newProjectName.value, newProjectApiUrl.value); newProjectName.value=''; newProjectApiUrl.value=''">
+                    Create Project
+                </button>
+            </div>
+        </li>
+    </ul>
 </div>
