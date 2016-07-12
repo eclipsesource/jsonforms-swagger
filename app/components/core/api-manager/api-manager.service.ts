@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 
 import { APIGenerator } from './api-generator';
+import { ErrorService } from '../../error/error.service';
 
 import { API } from '../model/api';
 import { Action } from '../model/action';
@@ -13,54 +14,60 @@ import { Operation } from '../model/operation';
 @Injectable()
 export class APIManagerService {
 
-    constructor(private generator:APIGenerator) {
-    }
+	private jsonAPI:{};
 
-    private jsonAPI:{};
+	private _api = new BehaviorSubject<API>(null);
+	api = this._api.asObservable();
+	currentAPI:API;
 
-    private _api = new BehaviorSubject<API>(null);
-    api = this._api.asObservable();
-    currentAPI: API;
+	private _activeAction = new Subject<Action>();
+	activeAction = this._activeAction.asObservable();
 
-    private _activeAction = new Subject<Action>();
-    activeAction = this._activeAction.asObservable();
+	private _activeOperation = new Subject<Operation>();
+	activeOperation = this._activeOperation.asObservable();
 
-    private _activeOperation = new Subject<Operation>();
-    activeOperation = this._activeOperation.asObservable();
+	private initialData:{} = {};
 
-    private initialData: {} = {};
+	constructor(private generator: APIGenerator, private errorService: ErrorService) {
+	}
 
-    generateAPI(url: string) {
-        this.generator.getJSONAPI(url).subscribe((jsonAPI)=>{
-            this.jsonAPI = jsonAPI;
-            this.currentAPI = this.generator.generateAPI(this.jsonAPI);
-            this._api.next(this.currentAPI);
-        });
-    }
+	generateAPI(url:string) {
+		this.generator.getJSONAPI(url).subscribe(
+			(jsonAPI) => {
+				this.jsonAPI = jsonAPI;
+				this.currentAPI = this.generator.generateAPI(this.jsonAPI);
+				this._api.next(this.currentAPI);
+			},
+			(error) => {
+				console.log(error);
+				this.errorService.showErrorMessage(error);
+			}
+		);
+	}
 
-    setActiveAction(action: Action) {
-        this._activeAction.next(action);
-        this.initialData = {};
-        this._activeOperation.next(action.operations[0]);
-    }
+	setActiveAction(action:Action) {
+		this._activeAction.next(action);
+		this.initialData = {};
+		this._activeOperation.next(action.operations[0]);
+	}
 
-    setActiveOperation(operation: Operation, initialData: {}) {
-        let action: Action = this.currentAPI.getActionByOperation(operation);
-        this._activeAction.next(action);
-        this.initialData = initialData;
-        this._activeOperation.next(operation);
-    }
+	setActiveOperation(operation:Operation, initialData:{}) {
+		let action:Action = this.currentAPI.getActionByOperation(operation);
+		this._activeAction.next(action);
+		this.initialData = initialData;
+		this._activeOperation.next(operation);
+	}
 
-    getInitialData(): {} {
-        return this.initialData;
-    }
+	getInitialData():{} {
+		return this.initialData;
+	}
 
-    resetService(){
-        this._api.next(null);
-        this.currentAPI = null;
-        this.initialData = {};
-        this.jsonAPI = null;
-    }
+	resetService() {
+		this._api.next(null);
+		this.currentAPI = null;
+		this.initialData = {};
+		this.jsonAPI = null;
+	}
 
 
 }

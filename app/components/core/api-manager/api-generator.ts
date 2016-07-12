@@ -33,8 +33,6 @@ export class APIGenerator {
   }
 
   private handleError (error: any) {
-    console.log('handleError');
-    console.log(error);
     let errMsg = error.message || 'Server error';
     return Observable.throw(errMsg);
   }

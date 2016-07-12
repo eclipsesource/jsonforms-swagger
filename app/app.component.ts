@@ -8,10 +8,12 @@ import { ProjectsManagerService } from './components/core/projects-manager/proje
 import { AuthService } from './components/auth/auth.service';
 import { APIManagerService } from './components/core/api-manager/api-manager.service';
 import { APIGenerator } from './components/core/api-manager/api-generator';
+import { ErrorService } from './components/error/error.service';
 
 import { HeaderComponent } from './components/header/header.component';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
+import { ErrorComponent } from './components/error/error.component';
 
 @Component({
 	selector: 'app',
@@ -23,12 +25,14 @@ import { ProjectDetailComponent } from './components/project-detail/project-deta
 		ProjectsManagerService,
 		AuthService,
 		APIManagerService,
-		APIGenerator
+		APIGenerator,
+		ErrorService
 	],
 	directives: [
 		HeaderComponent,
 		ProjectsListComponent,
-		ProjectDetailComponent
+		ProjectDetailComponent,
+		ErrorComponent
 	]
 })
 export class AppComponent {

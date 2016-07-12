@@ -1,3 +1,4 @@
 <header (onProjectsListClicked)="onProjectsListClicked()" class="dark-bg-color"></header>
 <projects-list *ngIf="!selectedProjectName" (onProjectSelected)="onProjectSelected($event)"></projects-list>
 <project-detail *ngIf="selectedProjectName" [projectName]="selectedProjectName"></project-detail>
+<error></error>

@@ -34,20 +34,16 @@ export class ProjectDetailComponent implements OnInit {
 
 	api:API;
 
-	errorMessage:string;
-
 	constructor(private projectsService:ProjectsManagerService, private apiManagerService:APIManagerService) {
-    apiManagerService.api.subscribe((api)=>{
-      this.api = api;
-    }, (error)=>{
-      this.errorMessage = <any>error;
-    });
-  }
+		apiManagerService.api.subscribe((api) => {
+			this.api = api;
+		});
+	}
 
 	ngOnInit() {
 		this.projectsService.getProject(this.projectName).subscribe(project => {
 			this.project = project;
 			this.apiManagerService.generateAPI(this.project.apiUrl);
 		});
-  }
+	}
 }
