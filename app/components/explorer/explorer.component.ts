@@ -6,9 +6,12 @@ import {APIManagerService } from '../core/api-manager/api-manager.service';
 
 import { API } from '../core/model/api';
 
+import {SearchPipe} from './search.pipe';
+
 @Component({
 	selector: 'explorer',
 	moduleId: module.id,
+	pipes: [SearchPipe],
 	templateUrl: 'explorer.html',
 	styleUrls: ['explorer.css'],
 	directives: [PanelMenu]
@@ -22,5 +25,4 @@ export class ExplorerComponent {
 			this.api = api;
 		});
 	}
-
 }

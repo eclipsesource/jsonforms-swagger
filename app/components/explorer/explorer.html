@@ -1,10 +1,11 @@
 <div *ngIf="api">
     <p-panelMenu class="panel-menu-sidebar">
+        <input #searchFilter type="text" />
         <div *ngFor="let tag of api.tags">
             <div class="tagGroup"><span>{{tag}}</span></div>
             <div>
                 <ul>
-                    <li class="tagOperation" *ngFor="let operation of api.getOperationsByTag(tag)">
+                    <li class="tagOperation" *ngFor="let operation of api.getOperationsByTag(tag) | search: searchFilter.value">
                         <a>{{operation.getTypeAndPath()}}</a>
                     </li>
                 </ul>
