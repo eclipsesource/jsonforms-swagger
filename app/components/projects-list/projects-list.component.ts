@@ -17,14 +17,14 @@ export class ProjectsListComponent implements OnInit {
 
     @Output() onProjectSelected = new EventEmitter<any>();
 
-    constructor (private projectsService: ProjectsManagerService) { }
+    constructor (private projectsManagerService: ProjectsManagerService) { }
 
     ngOnInit() {
         this.subscribeToProjects();
     }
 
     private subscribeToProjects() {
-        this.projectsService.getProjects()
+        this.projectsManagerService.getProjects()
             .subscribe(
                 projects => this.projects = projects,
                 error => this.errorMessage = <any>error
@@ -32,7 +32,7 @@ export class ProjectsListComponent implements OnInit {
     }
 
     createProject(name: string, apiUrl: string) {
-        this.projectsService.createProject(name, apiUrl);
+        this.projectsManagerService.createProject(name, apiUrl);
     }
 
     selectProject(projectName: string) {

@@ -52,7 +52,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		console.log('onDestroy');
 		this.project.apiModel = this.api.generateAPIModel();
 	}
 }

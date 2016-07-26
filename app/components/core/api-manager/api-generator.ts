@@ -44,9 +44,8 @@ export class APIGenerator {
 		this.generateOperations(api, jsonAPI);
 		const definitionsUsages = this.computeDefinitionsUsages(jsonAPI);
 		this.generateRelatedOperations(api, definitionsUsages);
-		this.generateEntityTypes(api, definitionsUsages);
+		this.generateEntityTypes(api, definitionsUsages, apiModel);
 		this.generateSecurityDefinitions(api, jsonAPI);
-		this.compareWithAPIModel(api, apiModel);
 		return api;
 	}
 
@@ -164,7 +163,16 @@ export class APIGenerator {
 		});
 	}
 
-	private generateEntityTypes(api:API, definitionsUsages:{}) {
+	private generateEntityTypes(api: API, definitionUsages: {}, apiModel: {}) {
+		if (_.isEmpty(apiModel)) {
+			this.generateEntityTypesFromDefinitionsUsages(api, definitionUsages);
+			apiModel = api.generateAPIModel();
+		} else {
+			this.generateEntityTypesFromAPIModel(api, apiModel);
+		}
+	}
+
+	private generateEntityTypesFromDefinitionsUsages(api:API, definitionsUsages:{}) {
 		_.forEach(definitionsUsages, (definitionUsage:{}, definitionName:string) => {
 			let entityType:EntityType = new EntityType();
 			entityType.name = definitionName;
@@ -197,32 +205,29 @@ export class APIGenerator {
 		});
 	}
 
-	private generateSecurityDefinitions(api:API, jsonAPI:{}) {
-		api['securityDefinitions'] = jsonAPI['securityDefinitions'];
+	private generateEntityTypesFromAPIModel(api: API, apiModel: {}) {
+		_.forEach(apiModel['entityTypes'], (entityTypeModel: {}) => {
+			let entityType: EntityType = new EntityType();
+			entityType.name = entityTypeModel['name'];
+
+			_.forEach(entityTypeModel['actions'], (actionModel: {}) => {
+				let action: Action = new Action();
+				action.name = actionModel['name'];
+
+				_.forEach(actionModel['operations'], (operationModel: {}) => {
+					let operation: Operation = api.getOperationByPathAndType(operationModel['path'], operationModel['type']); // We assume operation exists in api
+					action.addOperation(operation);
+				});
+
+				entityType.actions.push(action);
+			});
+
+			api.entityTypes.push(entityType);
+		});
 	}
 
-	private compareWithAPIModel(api:API, apiModel:{}) { // We assume apiModel cannot be null or undefined
-		if (_.isEmpty(apiModel)) {
-			apiModel = api.generateAPIModel();
-		} else {
-			_.forEach(apiModel['entityTypes'], (entityTypeModel:{}) => {
-				let entityType:EntityType = api.getEntityTypeByName(entityTypeModel['name']); // We assume entityTypes in api and apiModel always coincide
-				_.forEach(entityTypeModel['actions'], (actionModel:{}) => {
-					let action:Action = entityType.getActionByName(actionModel['name']);
-					if (!action) {
-						entityType.addAction(actionModel['name']); // We assume the new action is correctly added
-						action = entityType.getActionByName(actionModel['name']);
-					}
-					_.forEach(actionModel['operations'], (operationModel:{}) => {
-						let operation:Operation = action.getOperationByPathAndType(operationModel['path'], operationModel['type']);
-						if (!operation) {
-							operation = api.getOperationByPathAndType(operationModel['path'], operationModel['type']); // We assume operation exists in api
-							action.addOperation(operation);
-						}
-					});
-				});
-			});
-		}
+	private generateSecurityDefinitions(api:API, jsonAPI:{}) {
+		api['securityDefinitions'] = jsonAPI['securityDefinitions'];
 	}
 
 }

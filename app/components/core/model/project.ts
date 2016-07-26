@@ -1,6 +1,6 @@
 export class Project {
 
-	public apiModel: {};
+	public apiModel: {} = {};
 
 	constructor(public name: string, public apiUrl: string) {
 	}
