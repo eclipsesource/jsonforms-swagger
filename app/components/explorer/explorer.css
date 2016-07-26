@@ -22,3 +22,8 @@ input {
     margin-top: 10px;
     height: 30px;
 }
+
+.active *, .active *:hover {
+    background-color:#186BA0;
+    color:white;
+}

@@ -46,6 +46,10 @@ export class QueryComponent {
         });
     }
 
+    getOperationsList() {
+        return (this.activeAction && this.activeAction.operations) || [this.activeOperation];
+    }
+
     selectOperation(operation: Operation) {
         this.apiManagerService.setActiveOperation(operation, {});
     }
