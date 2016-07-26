@@ -15,7 +15,7 @@ export class ProjectsListComponent implements OnInit {
 
     errorMessage: string;
 
-    @Output() onProjectSelected = new EventEmitter<string>();
+    @Output() onProjectSelected = new EventEmitter<any>();
 
     constructor (private projectsService: ProjectsManagerService) { }
 
@@ -36,7 +36,17 @@ export class ProjectsListComponent implements OnInit {
     }
 
     selectProject(projectName: string) {
-        this.onProjectSelected.emit(projectName);
+        this.onProjectSelected.emit({
+            name: projectName,
+            devMode: false
+        });
+    }
+
+    selectProjectDev(projectName: string) {
+        this.onProjectSelected.emit({
+            name: projectName,
+            devMode: true
+        });
     }
 
 }

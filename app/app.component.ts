@@ -38,9 +38,11 @@ import { ErrorComponent } from './components/error/error.component';
 export class AppComponent {
 
 	selectedProjectName:string;
+	selectedDevMode:boolean;
 
-	onProjectSelected(projectName:string) {
-		this.selectedProjectName = projectName;
+	onProjectSelected({name, devMode}) {
+		this.selectedProjectName = name;
+		this.selectedDevMode = devMode;
 	}
 
 	onProjectsListClicked() {
