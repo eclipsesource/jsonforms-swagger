@@ -18,12 +18,16 @@ export class Operation {
     return this.properties['path'];
   }
 
+  getTypeAndPath(): string {
+    return this.getType() + ' - ' + this.getPath();
+  }
+
   getTags(): string[] {
     return this.properties['tags'] || [];
   }
 
   getSummary(): string {
-    return this.properties['summary'] || (this.getType() + ' - ' + this.getPath());
+    return this.properties['summary'] || this.getTypeAndPath();
   }
 
   getUrl(): string {

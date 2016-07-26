@@ -1,0 +1,14 @@
+<div *ngIf="api">
+    <p-panelMenu class="panel-menu-sidebar">
+        <div *ngFor="let tag of api.tags">
+            <div class="tagGroup"><span>{{tag}}</span></div>
+            <div>
+                <ul>
+                    <li class="tagOperation" *ngFor="let operation of api.getOperationsByTag(tag)">
+                        <a>{{operation.getTypeAndPath()}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </p-panelMenu>
+</div>

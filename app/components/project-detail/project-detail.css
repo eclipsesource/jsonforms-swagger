@@ -32,3 +32,9 @@ sidebar {
     align-items:stretch;
     overflow-y: scroll;
 }
+
+explorer {
+    width: 300px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
