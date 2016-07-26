@@ -31,11 +31,11 @@ export class APIManagerService {
 	constructor(private generator: APIGenerator, private errorService: ErrorService) {
 	}
 
-	generateAPI(url:string) {
+	generateAPI(url:string, apiModel: {}) {
 		this.generator.getJSONAPI(url).subscribe(
 			(jsonAPI) => {
 				this.jsonAPI = jsonAPI;
-				this.currentAPI = this.generator.generateAPI(this.jsonAPI);
+				this.currentAPI = this.generator.generateAPI(this.jsonAPI, apiModel);
 				this._api.next(this.currentAPI);
 			},
 			(error) => {

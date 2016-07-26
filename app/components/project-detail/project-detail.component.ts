@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { ProjectsManagerService } from '../core/projects-manager/projects-manager.service';
 import { APIManagerService } from '../core/api-manager/api-manager.service';
@@ -28,7 +28,7 @@ import { API } from '../core/model/api';
 		ExplorerComponent
 	]
 })
-export class ProjectDetailComponent implements OnInit {
+export class ProjectDetailComponent implements OnInit, OnDestroy {
 
 	@Input() projectName:string;
 	@Input() devMode: boolean;
@@ -38,6 +38,7 @@ export class ProjectDetailComponent implements OnInit {
 	api:API;
 
 	constructor(private projectsService:ProjectsManagerService, private apiManagerService:APIManagerService) {
+		this.apiManagerService.resetService();
 		apiManagerService.api.subscribe((api) => {
 			this.api = api;
 		});
@@ -46,7 +47,12 @@ export class ProjectDetailComponent implements OnInit {
 	ngOnInit() {
 		this.projectsService.getProject(this.projectName).subscribe(project => {
 			this.project = project;
-			this.apiManagerService.generateAPI(this.project.apiUrl);
+			this.apiManagerService.generateAPI(this.project.apiUrl, this.project.apiModel);
 		});
+	}
+
+	ngOnDestroy() {
+		console.log('onDestroy');
+		this.project.apiModel = this.api.generateAPIModel();
 	}
 }

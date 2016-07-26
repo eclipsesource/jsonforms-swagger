@@ -13,12 +13,7 @@ export class HeaderComponent {
 
     @Output() onProjectsListClicked = new EventEmitter<any>();
 
-    constructor(private apiManagerService: APIManagerService){
-
-    }
-
     gotoProjects() {
-        this.apiManagerService.resetService();
         this.onProjectsListClicked.emit(null);
     }
 

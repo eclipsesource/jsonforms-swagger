@@ -1,5 +1,12 @@
 export class Project {
 
-    constructor (public name: string, public apiUrl: string) { }
+	public apiModel: {};
+
+	constructor(public name: string, public apiUrl: string) {
+	}
+
+	setAPIModel(newAPIModel: {}) {
+		this.apiModel = newAPIModel;
+	}
 
 }
