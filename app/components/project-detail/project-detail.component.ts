@@ -7,6 +7,7 @@ import { OperationPerformerService } from '../core/operation-performer/operation
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { QueryComponent } from '../query/query.component';
 import { ResponseComponent } from '../response/response.component';
+import { ExplorerComponent } from '../explorer/explorer.component';
 
 import { Project } from '../core/model/project';
 import { API } from '../core/model/api';
@@ -23,7 +24,8 @@ import { API } from '../core/model/api';
 	directives: [
 		SidebarComponent,
 		QueryComponent,
-		ResponseComponent
+		ResponseComponent,
+		ExplorerComponent
 	]
 })
 export class ProjectDetailComponent implements OnInit {

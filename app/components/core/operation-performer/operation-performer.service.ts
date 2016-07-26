@@ -64,8 +64,6 @@ export class OperationPerformerService {
 
         let options = new RequestOptions({headers: headers});
 
-        console.log(url);
-        console.log(options);
         this.operationPerformer.performOperation(this.http, url, body, options).subscribe(
             (res) => this.responseSource.next(res),
             (error) => this.responseSource.next(error)

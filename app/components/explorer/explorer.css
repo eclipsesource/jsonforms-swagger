@@ -1,0 +1,17 @@
+:host {
+    overflow:auto;
+}
+
+.panel-menu-sidebar >>> .ui-panelmenu.ui-widget {
+    margin: 5px;
+}
+
+.panel-menu-sidebar >>> .ui-panelmenu-panel {
+    margin-bottom: 5px;
+}
+
+.panel-menu-sidebar >>> .ui-panelmenu-header {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
