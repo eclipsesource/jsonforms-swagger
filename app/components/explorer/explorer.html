@@ -1,15 +1,4 @@
 <div *ngIf="api">
-    <p-panelMenu class="panel-menu-sidebar">
-        <input #searchFilter type="text" />
-        <div *ngFor="let tag of api.tags">
-            <div class="tagGroup"><span>{{tag}}</span></div>
-            <div>
-                <ul>
-                    <li class="tagOperation" *ngFor="let operation of api.getOperationsByTag(tag) | search: searchFilter.value" [ngClass]="{'active': isOperationActive(operation)}">
-                        <a (click)="selectOperation(operation)">{{operation.getTypeAndPath()}}</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </p-panelMenu>
+    <input #searchFilter type="text" (keydown)="changedSearch(searchFilter.value)" />
+    <panelMenu [draggable]="'addOperation'" class="panel-menu-sidebar" [model]="items"></panelMenu>
 </div>

@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { PanelMenu, OverlayPanel } from 'primeng/primeng';
+import { OverlayPanel} from 'primeng/primeng';
+import {PanelMenu, MenuItem} from '../common/panelMenu.component';
 import Timer = NodeJS.Timer;
 
 import {APIManagerService } from '../core/api-manager/api-manager.service';
@@ -18,6 +19,7 @@ import { Action } from '../core/model/action';
 })
 export class SidebarComponent {
 
+	private items: MenuItem[] = [];
 	api: API;
 
 	@ViewChild('op') op:OverlayPanel;
@@ -30,6 +32,9 @@ export class SidebarComponent {
 	constructor(private apiManagerService:APIManagerService) {
 		apiManagerService.api.subscribe((api: API) => {
 			this.api = api;
+			if(this.api){
+				this.generatePanelItems();
+			}
 		});
 
 		apiManagerService.activeAction.subscribe((activeAction:Action) => this.activeAction = activeAction);
@@ -63,4 +68,31 @@ export class SidebarComponent {
 		}, 1000);
 	}
 
+	generatePanelItems(){
+		this.items = [];
+
+		this.api.entityTypes.forEach((entityType: EntityType)=>{
+			this.items.push({
+				'label': entityType.name,
+				'items': this.generateEntityActions(entityType)
+			});
+		});
+	}
+
+	generateEntityActions(entityType: EntityType):any[]{
+		let actions: any[] = [];
+		entityType.actions.forEach((action)=>{
+			actions.push({
+				'label': action.name,
+				'command': (event) => {
+					this.selectAction(action);
+				}
+			});
+		});
+		return actions;
+	}
+
+	addOperation($event){
+		console.log($event);
+	}
 }
