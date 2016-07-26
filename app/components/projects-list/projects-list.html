@@ -1,7 +1,9 @@
 <div class="center">
     <h2>Projects</h2>
     <ul class="projects-list">
-        <li (click)="selectProject(project.name)" class="project-box" *ngFor="let project of projects">
+        <li class="project-box" *ngFor="let project of projects">
+            <div class="project-box-view" (click)="selectProject(project.name)">View</div>
+            <div class="project-box-edit" (click)="selectProjectDev(project.name)">Edit</div>
             <h3>{{project.name}}</h3>
             <!--{{project.apiUrl}}-->
         </li>

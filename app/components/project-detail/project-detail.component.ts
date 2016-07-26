@@ -29,6 +29,7 @@ import { API } from '../core/model/api';
 export class ProjectDetailComponent implements OnInit {
 
 	@Input() projectName:string;
+	@Input() devMode: boolean;
 
 	project:Project;
 
