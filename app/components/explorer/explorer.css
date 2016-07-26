@@ -15,3 +15,8 @@
     line-height: 40px;
     text-align: center;
 }
+
+.active *, .active *:hover {
+    background-color:#186BA0;
+    color:white;
+}

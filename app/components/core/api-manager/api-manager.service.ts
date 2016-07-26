@@ -52,7 +52,7 @@ export class APIManagerService {
 	}
 
 	setActiveOperation(operation:Operation, initialData:{}) {
-		let action:Action = this.currentAPI.getActionByOperation(operation);
+		let action: Action = this.currentAPI.getActionByOperation(operation); // may be undefined
 		this._activeAction.next(action);
 		this.initialData = initialData;
 		this._activeOperation.next(operation);

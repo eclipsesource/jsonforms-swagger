@@ -27,7 +27,7 @@ export class API {
     return baseUrl;
   }
 
-  getActionByOperation(operation: Operation): Action {
+  getActionByOperation(operation: Operation): Action { // We assume that an operation can belong to only one action. May return undefined
     let action: Action;
     _.forEach(this.entityTypes, (entityType: EntityType) => {
       action = entityType.getActionByOperation(operation);

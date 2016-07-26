@@ -28,11 +28,11 @@ export class SidebarComponent {
 	activeAction:Action;
 
 	constructor(private apiManagerService:APIManagerService) {
-		apiManagerService.activeAction.subscribe((activeAction:Action) => this.activeAction = activeAction);
+		apiManagerService.api.subscribe((api: API) => {
+			this.api = api;
+		});
 
-    apiManagerService.api.subscribe((api: API) => {
-      this.api = api;
-    });
+		apiManagerService.activeAction.subscribe((activeAction:Action) => this.activeAction = activeAction);
 	}
 
 	selectAction(action:Action) {
