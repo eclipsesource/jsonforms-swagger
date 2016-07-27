@@ -1,7 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input, OnDestroy } from '@angular/core';
 
 import { OverlayPanel} from 'primeng/primeng';
 import Timer = NodeJS.Timer;
+import { Subscription } from 'rxjs/Subscription';
 
 import {APIManagerService } from '../core/api-manager/api-manager.service';
 
@@ -17,9 +18,9 @@ import {Droppable} from 'primeng/primeng';
 	styleUrls: ['sidebar.css', '../panel-menu.css'],
 	directives: [OverlayPanel, Droppable]
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnDestroy {
 
-	api: API;
+	@Input() api: API;
 
 	@ViewChild('op') op:OverlayPanel;
 
@@ -27,13 +28,10 @@ export class SidebarComponent {
 	moreInfoTimeoutId:Timer = null;
 
 	activeAction:Action;
+	activeActionSubscription: Subscription;
 
 	constructor(private apiManagerService:APIManagerService) {
-		apiManagerService.api.subscribe((api: API) => {
-			this.api = api;
-		});
-
-		apiManagerService.activeAction.subscribe((activeAction:Action) => this.activeAction = activeAction);
+		this.activeActionSubscription = apiManagerService.activeAction.subscribe((activeAction:Action) => this.activeAction = activeAction);
 	}
 
 	selectAction(action:Action) {
@@ -94,5 +92,9 @@ export class SidebarComponent {
 	}
 	test(){
 		console.log('f');
+	}
+
+	ngOnDestroy() {
+		this.activeActionSubscription.unsubscribe();
 	}
 }

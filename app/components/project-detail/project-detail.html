@@ -1,10 +1,10 @@
 <div *ngIf="api" class="center">
-  <sidebar class="primary-bg-color"></sidebar>
+  <sidebar [api]="api" class="primary-bg-color"></sidebar>
   <div class="content soft-bg-color">
     <query-section></query-section>
     <response-section></response-section>
   </div>
-  <explorer *ngIf="devMode" class="primary-bg-color"></explorer>
+  <explorer *ngIf="devMode" [api]="api" class="primary-bg-color"></explorer>
 </div>
 <div *ngIf="!api">
   Loading...
