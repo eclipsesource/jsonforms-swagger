@@ -38,7 +38,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	api:API;
 
 	constructor(private projectsService:ProjectsManagerService, private apiManagerService:APIManagerService) {
-		this.apiManagerService.resetService();
 		apiManagerService.api.subscribe((api) => {
 			this.api = api;
 		});
@@ -52,6 +51,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		this.project.apiModel = this.api.generateAPIModel();
+		// At this moment, this.api is null, so we use this.apiManagerService.getCurrentAPI() instead
+		this.project.apiModel = this.apiManagerService.getCurrentAPI().generateAPIModel();
 	}
 }

@@ -17,7 +17,13 @@ export class QueryDataschemaGeneratorService {
             if (parameter.getIn() == 'body') {
                 dataschema['properties'][parameter.getName()] = parameter.getSchema();
             } else if (parameter.getType() != 'file') { // TODO: implement file type
-                dataschema['properties'][parameter.getName()] = _.pick(parameter.properties, ['type', 'required', 'format', 'items']);
+                dataschema['properties'][parameter.getName()] = _.pick(parameter.properties, ['type', 'format', 'items', 'enum']);
+				if (parameter.properties['required']) {
+					if (!dataschema['required']) {
+						dataschema['required'] = [];
+					}
+					dataschema['required'].push(parameter.getName());
+				}
             }
         });
 

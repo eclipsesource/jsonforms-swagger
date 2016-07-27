@@ -28,4 +28,13 @@ export class Action {
 		return true;
 	}
 
+	removeOperation(operation: Operation): boolean {
+		let index = this.operations.indexOf(operation);
+		if (index < 0) {
+			return false;
+		}
+		this.operations.splice(index, 1);
+		return true;
+	}
+
 }
