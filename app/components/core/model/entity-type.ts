@@ -30,4 +30,13 @@ export class EntityType {
 		return true;
 	}
 
+	removeAction(action: Action): boolean {
+		let index = this.actions.indexOf(action);
+		if (index < 0) {
+			return false;
+		}
+		this.actions.splice(index, 1);
+		return true;
+	}
+
 }
