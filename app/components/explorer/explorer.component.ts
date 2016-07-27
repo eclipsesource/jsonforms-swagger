@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
+
+import { Draggable } from 'primeng/primeng';
+import { Subscription } from 'rxjs/Subscription';
 
 import {APIManagerService } from '../core/api-manager/api-manager.service';
 
 import { API } from '../core/model/api';
+import { Action } from '../core/model/action';
 import { Operation } from '../core/model/operation';
-import {SearchPipe} from '../common/search.pipe';
-
-import {Draggable} from 'primeng/primeng';
+import { SearchPipe } from '../common/search.pipe';
 
 @Component({
 	selector: 'explorer',
@@ -16,19 +18,22 @@ import {Draggable} from 'primeng/primeng';
 	pipes: [SearchPipe],
 	directives: [Draggable]
 })
-export class ExplorerComponent {
+export class ExplorerComponent implements OnDestroy {
 
-	api: API;
-	private filter: string = '';
+	@Input() api: API;
+
+	activeAction: Action;
+	activeActionSubscription: Subscription;
 
 	activeOperation: Operation;
+	activeOperationSubscription: Subscription;
+
+	private filter: string = '';
 
 	constructor(private apiManagerService:APIManagerService) {
-		apiManagerService.api.subscribe((api: API) => {
-			this.api = api;
-		});
+		this. activeActionSubscription = apiManagerService.activeAction.subscribe((activeAction: Action) => this.activeAction = activeAction);
 
-		apiManagerService.activeOperation.subscribe((activeOperation: Operation) => this.activeOperation = activeOperation);
+		this.activeOperationSubscription = apiManagerService.activeOperation.subscribe((activeOperation: Operation) => this.activeOperation = activeOperation);
 	}
 
 	selectOperation(operation: Operation) {
@@ -60,6 +65,11 @@ export class ExplorerComponent {
 
 	isHoverMenu(menu: string):boolean {
 		return this.hover[menu];
+	}
+
+	ngOnDestroy() {
+		this.activeActionSubscription.unsubscribe();
+		this.activeOperationSubscription.unsubscribe();
 	}
 }
 

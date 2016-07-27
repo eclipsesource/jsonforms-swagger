@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
 
 import { APIManagerService } from '../core/api-manager/api-manager.service';
 import { QueryDataschemaGeneratorService } from '../core/schemas/query-dataschema-generator.service';
@@ -26,10 +27,13 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
 	],
     directives: [JsonFormsAdapter]
 })
-export class QueryComponent {
+export class QueryComponent implements OnDestroy {
 
     activeAction: Action;
+    activeActionSubscription: Subscription;
+
     activeOperation: Operation;
+    activeOperationSubscription: Subscription;
 
     dataschema: {};
     uischema: {};
@@ -41,9 +45,9 @@ export class QueryComponent {
                 private apiManagerService: APIManagerService,
                 private operationPerformerService: OperationPerformerService,
                 private authService: AuthService) {
-        apiManagerService.activeAction.subscribe((activeAction: Action) => this.activeAction = activeAction);
+        this. activeActionSubscription = apiManagerService.activeAction.subscribe((activeAction: Action) => this.activeAction = activeAction);
 
-        apiManagerService.activeOperation.subscribe((activeOperation: Operation) => {
+        this.activeOperationSubscription = apiManagerService.activeOperation.subscribe((activeOperation: Operation) => {
             this.activeOperation = activeOperation;
 
             this.dataschema = this.dataschemaGeneratorService.generateDataschema(this.activeOperation.getParameters());
@@ -62,6 +66,11 @@ export class QueryComponent {
 
     performOperation() {
         this.operationPerformerService.performOperation(this.activeOperation, this.data);
+    }
+
+    ngOnDestroy() {
+        this.activeActionSubscription.unsubscribe();
+        this.activeOperationSubscription.unsubscribe();
     }
 
 }

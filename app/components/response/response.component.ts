@@ -47,7 +47,6 @@ export class ResponseComponent {
 
     operationPerformerService.response$.subscribe(
       (response) => {
-
         if (response.type == 3) { // value 3 of ResponseType enum is 'Error'
           this.responseMessage = 'Response error';
           this.resetSchemas();
