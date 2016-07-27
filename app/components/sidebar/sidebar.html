@@ -21,6 +21,7 @@
                 <div (click)="selectAction(action)" [ngClass]="{'active': isActionActive(action)}" class="tagOperation"
                      *ngFor="let action of entityType.actions" pDroppable="addOperation" (onDrop)="newOperationDropped($event)" (onDragEnter)="test()">
                     <a pDroppable="addOperation" (onDrop)="newOperationDropped($event)" (onDragEnter)="test()">{{action.name}}</a>
+
                 </div>
             </div>
         </div>

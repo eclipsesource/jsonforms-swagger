@@ -9,6 +9,7 @@ import { API } from '../core/model/api';
 import { EntityType } from '../core/model/entity-type';
 import { Action } from '../core/model/action';
 import {Droppable} from 'primeng/primeng';
+import {AuthService} from "../auth/auth.service";
 
 @Component({
 	selector: 'sidebar',
@@ -28,7 +29,7 @@ export class SidebarComponent {
 
 	activeAction:Action;
 
-	constructor(private apiManagerService:APIManagerService) {
+	constructor(private apiManagerService:APIManagerService, private authService: AuthService) {
 		apiManagerService.api.subscribe((api: API) => {
 			this.api = api;
 		});

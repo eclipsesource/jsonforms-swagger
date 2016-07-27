@@ -16,7 +16,7 @@
     padding: 5px;
     display: flex;
     flex-wrap: nowrap;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
 }
 
@@ -26,4 +26,11 @@
 
 .tagOperation.active > *, .tagOperation.active:hover > *{
     color:white;
+}
+
+.operation-locked-indicator {
+    position: absolute;
+    right: 10px;
+    left: initial;
+    top: 10px;
 }

@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { APIManagerService } from '../core/api-manager/api-manager.service';
 import {AuthApiKey} from "./model/AuthApiKey";
 import {AuthBasic} from "./model/AuthBasic";
+import {Action} from "../core/model/action";
 
 @Injectable()
 export class AuthService {
@@ -45,8 +46,32 @@ export class AuthService {
         return !!locks && locks.length;
     }
 
+    actionHasLocks(action: Action): boolean {
+        if(!action){
+            return false;
+        }
+        let operations = action.operations;
+
+        let res = operations.find((op)=>{
+            return this.hasLocks(op);
+        });
+
+        return (res !== undefined);
+    }
+
     openDialogForOperation(operation:Operation) {
         var lockIds = _.keys(operation.getLocks());
+
+        this._openDialog.next(lockIds);
+    }
+
+    openDialogForAction(action:Action) {
+        const operations: Operation[] = action.operations;
+        let lockIds: string[] = [];
+        operations.forEach((operation: Operation)=>{
+            let opIds = _.keys(operation.getLocks());
+            lockIds = _.union(lockIds, opIds);
+        });
 
         this._openDialog.next(lockIds);
     }

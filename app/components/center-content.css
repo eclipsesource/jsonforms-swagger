@@ -43,6 +43,8 @@
 }
 
 .tab-button {
+  text-align: center;
+  line-height: 30px;
   border-radius: 3px;
   border: 2px solid #DFEFCA;
   flex: 1;
