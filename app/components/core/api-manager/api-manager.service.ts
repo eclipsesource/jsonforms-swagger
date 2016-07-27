@@ -45,6 +45,10 @@ export class APIManagerService {
 		);
 	}
 
+	getCurrentAPI(): API {
+		return this.currentAPI;
+	}
+
 	setActiveAction(action:Action) {
 		this._activeAction.next(action);
 		this.initialData = {};
@@ -58,13 +62,12 @@ export class APIManagerService {
 		this._activeOperation.next(operation);
 	}
 
-	getInitialData():{} {
+	getInitialData(): {} {
 		return this.initialData;
 	}
 
 	resetService() {
 		this._api.next(null);
-		this.currentAPI = null;
 		this.initialData = {};
 		this.jsonAPI = null;
 	}

@@ -5,16 +5,16 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
 
+import { AuthService } from '../../auth/auth.service';
+import { ErrorService } from '../../error/error.service';
+
 import { IOperationPerformer } from './operation-performer.interface';
 import { GetPerformer } from './get-performer';
 import { PostPerformer } from './post-performer';
 import { PutPerformer } from './put-performer';
 import { DeletePerformer } from './delete-performer';
-
-
 import { Operation } from '../model/operation';
 import { Parameter } from '../model/parameter';
-import {AuthService} from "../../auth/auth.service";
 
 @Injectable()
 export class OperationPerformerService {
@@ -24,7 +24,7 @@ export class OperationPerformerService {
     private responseSource = new Subject<Response>();
     response$ = this.responseSource.asObservable();
 
-    constructor(private http:Http, private authService: AuthService) {
+    constructor(private http:Http, private authService: AuthService, private errorService: ErrorService) {
     }
 
     performOperation(operation:Operation, data:{}) {
@@ -57,6 +57,7 @@ export class OperationPerformerService {
         let auth = this.authService.applyStrategies(operation);
         if(!this.isAuthenticated(auth)){
             //TODO return error
+			this.errorService.showErrorMessage('Not Authenticated!');
             console.log('Not Authenticated!');
             return;
         }

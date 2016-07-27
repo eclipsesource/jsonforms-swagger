@@ -32,6 +32,8 @@ export class AuthService {
     private reset() {
         if (this.api) {
             this.authStrategies = this.generateFromDefinitions(this.api['securityDefinitions']);
+        } else {
+            this.authStrategies = {};
         }
     }
 

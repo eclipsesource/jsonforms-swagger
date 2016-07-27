@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { APIManagerService } from '../core/api-manager/api-manager.service';
 import { QueryDataschemaGeneratorService } from '../core/schemas/query-dataschema-generator.service';
 import { UischemaGeneratorService } from '../core/schemas/uischema-generator.service';
+import { DataGeneratorService } from '../core/schemas/data-generator.service';
 import { OperationPerformerService } from '../core/operation-performer/operation-performer.service';
 import { AuthService } from "../auth/auth.service";
 
@@ -18,7 +19,11 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
     moduleId: module.id,
     templateUrl: 'query.html',
     styleUrls: ['../center-content.css'],
-    providers: [QueryDataschemaGeneratorService, UischemaGeneratorService],
+    providers: [
+		QueryDataschemaGeneratorService,
+		UischemaGeneratorService,
+		DataGeneratorService
+	],
     directives: [JsonFormsAdapter]
 })
 export class QueryComponent {
@@ -32,6 +37,7 @@ export class QueryComponent {
 
     constructor(private dataschemaGeneratorService: QueryDataschemaGeneratorService,
                 private uischemaGeneratorService: UischemaGeneratorService,
+				private dataGeneratorService: DataGeneratorService,
                 private apiManagerService: APIManagerService,
                 private operationPerformerService: OperationPerformerService,
                 private authService: AuthService) {
@@ -42,7 +48,7 @@ export class QueryComponent {
 
             this.dataschema = this.dataschemaGeneratorService.generateDataschema(this.activeOperation.getParameters());
             this.uischema = this.uischemaGeneratorService.generateUischema(this.dataschema);
-            this.data = this.apiManagerService.getInitialData();
+            this.data = this.dataGeneratorService.generateData(this.activeOperation.getParameters(), this.apiManagerService.getInitialData());
         });
     }
 
