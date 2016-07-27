@@ -28,9 +28,8 @@
     color:white;
 }
 
-.operation-locked-indicator {
-    position: absolute;
-    right: 10px;
+.action-icon {
+    position: relative;
+    right: 120px;
     left: initial;
-    top: 10px;
 }

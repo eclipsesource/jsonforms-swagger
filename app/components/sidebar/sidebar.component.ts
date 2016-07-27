@@ -1,6 +1,7 @@
 import { Component, ViewChild, Input, OnDestroy } from '@angular/core';
 
 import { OverlayPanel} from 'primeng/primeng';
+import {Droppable} from 'primeng/primeng';
 import Timer = NodeJS.Timer;
 import { Subscription } from 'rxjs/Subscription';
 
@@ -9,8 +10,6 @@ import {APIManagerService } from '../core/api-manager/api-manager.service';
 import { API } from '../core/model/api';
 import { EntityType } from '../core/model/entity-type';
 import { Action } from '../core/model/action';
-import {Droppable} from 'primeng/primeng';
-import {AuthService} from "../auth/auth.service";
 
 @Component({
 	selector: 'sidebar',
@@ -36,11 +35,19 @@ export class SidebarComponent implements OnDestroy {
 	}
 
 	selectAction(action:Action) {
-		this.apiManagerService.setActiveAction(action);
+		if (!this.isActionActive(action)) {
+			this.apiManagerService.setActiveAction(action);
+		}
 	}
 
 	isActionActive(action:Action):boolean {
 		return action == this.activeAction;
+	}
+
+	removeAction(entityType: EntityType, action: Action) {
+		if (entityType.removeAction(action)) {
+			this.apiManagerService.setActiveAction(null);
+		}
 	}
 
 	descriptionHoverIn($event:any, infoTarget:any) {

@@ -11,6 +11,7 @@
                 <div (click)="selectOperation(operation)" [ngClass]="{'active': isOperationActive(operation)}" class="tagOperation"
                      *ngFor="let operation of api.getOperationsByTag(tag) | search: searchFilter.value" pDraggable="addOperation">
                     <a>{{operation.getTypeAndPath()}}</a>
+                    <div class="action-icon fa fa-plus" (click)="$event.stopPropagation(); addOperationToActiveAction(operation)"></div>
                 </div>
             </div>
         </div>

@@ -49,10 +49,14 @@ export class APIManagerService {
 		return this.currentAPI;
 	}
 
-	setActiveAction(action:Action) {
+	setActiveAction(action: Action) {
 		this._activeAction.next(action);
 		this.initialData = {};
-		this._activeOperation.next(action.operations[0]);
+		if (action && action.operations.length > 0) {
+			this._activeOperation.next(action.operations[0]);
+		} else {
+			this._activeOperation.next(null);
+		}
 	}
 
 	setActiveOperation(operation:Operation, initialData:{}) {

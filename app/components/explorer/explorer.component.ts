@@ -44,6 +44,14 @@ export class ExplorerComponent implements OnDestroy {
 		return operation == this.activeOperation;
 	}
 
+	addOperationToActiveAction(operation: Operation) {
+		if (this.activeAction) {
+			if (this.activeAction.addOperation(operation)) {
+				this.selectOperation(operation);
+			}
+		}
+	}
+
 	changedSearch(value){
 		this.filter = value;
 	}
