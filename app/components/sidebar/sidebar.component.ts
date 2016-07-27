@@ -22,6 +22,8 @@ export class SidebarComponent implements OnDestroy {
 
 	@Input() api: API;
 
+	@Input() devMode: boolean;
+
 	@ViewChild('op') op:OverlayPanel;
 
 	moreInfoActive:boolean = false;
