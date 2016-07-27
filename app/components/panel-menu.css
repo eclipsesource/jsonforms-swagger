@@ -1,0 +1,29 @@
+.panel-menu-sidebar .ui-panelmenu.ui-widget {
+    margin: 5px;
+}
+
+.panel-menu-sidebar .ui-panelmenu-panel {
+    margin-bottom: 5px;
+}
+
+.panel-menu-sidebar .ui-panelmenu-header {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+.tagOperation {
+    padding: 5px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.tagOperation.active, .tagOperation.active:hover{
+    background-color:#186BA0;
+}
+
+.tagOperation.active > *, .tagOperation.active:hover > *{
+    color:white;
+}

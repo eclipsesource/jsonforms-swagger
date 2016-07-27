@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { OverlayPanel} from 'primeng/primeng';
-import {PanelMenu, MenuItem} from '../common/panelMenu.component';
 import Timer = NodeJS.Timer;
 
 import {APIManagerService } from '../core/api-manager/api-manager.service';
@@ -9,17 +8,17 @@ import {APIManagerService } from '../core/api-manager/api-manager.service';
 import { API } from '../core/model/api';
 import { EntityType } from '../core/model/entity-type';
 import { Action } from '../core/model/action';
+import {Droppable} from 'primeng/primeng';
 
 @Component({
 	selector: 'sidebar',
 	moduleId: module.id,
 	templateUrl: 'sidebar.html',
-	styleUrls: ['sidebar.css'],
-	directives: [PanelMenu, OverlayPanel]
+	styleUrls: ['sidebar.css', '../panel-menu.css'],
+	directives: [OverlayPanel, Droppable]
 })
 export class SidebarComponent {
 
-	private items: MenuItem[] = [];
 	api: API;
 
 	@ViewChild('op') op:OverlayPanel;
@@ -32,9 +31,6 @@ export class SidebarComponent {
 	constructor(private apiManagerService:APIManagerService) {
 		apiManagerService.api.subscribe((api: API) => {
 			this.api = api;
-			if(this.api){
-				this.generatePanelItems();
-			}
 		});
 
 		apiManagerService.activeAction.subscribe((activeAction:Action) => this.activeAction = activeAction);
@@ -49,6 +45,9 @@ export class SidebarComponent {
 	}
 
 	descriptionHoverIn($event:any, infoTarget:any) {
+		if(!this.op){
+			return;
+		}
 		if (this.moreInfoActive) {
 			if (this.moreInfoTimeoutId) {
 				clearTimeout(this.moreInfoTimeoutId);
@@ -61,6 +60,9 @@ export class SidebarComponent {
 	}
 
 	descriptionHoverOut($event:any) {
+		if(!this.op){
+			return;
+		}
 		this.moreInfoTimeoutId = setTimeout(()=> {
 			this.op.hide();
 			this.moreInfoTimeoutId = null;
@@ -68,31 +70,29 @@ export class SidebarComponent {
 		}, 1000);
 	}
 
-	generatePanelItems(){
-		this.items = [];
+	active:boolean[] = [];
+	hover:boolean[] = [];
 
-		this.api.entityTypes.forEach((entityType: EntityType)=>{
-			this.items.push({
-				'label': entityType.name,
-				'items': this.generateEntityActions(entityType)
-			});
-		});
+	onClickMenu(menu: string) {
+		this.active[menu] = !this.active[menu];
 	}
 
-	generateEntityActions(entityType: EntityType):any[]{
-		let actions: any[] = [];
-		entityType.actions.forEach((action)=>{
-			actions.push({
-				'label': action.name,
-				'command': (event) => {
-					this.selectAction(action);
-				}
-			});
-		});
-		return actions;
+	isActiveMenu(menu: string):boolean {
+		return this.active[menu];
 	}
 
-	addOperation($event){
-		console.log($event);
+	hoveringMenu(menu: string, state:boolean) {
+		this.hover[menu] = state;
+	}
+
+	isHoverMenu(menu: string):boolean {
+		return this.hover[menu];
+	}
+
+	newOperationDropped(event){
+		console.log(event);
+	}
+	test(){
+		console.log('f');
 	}
 }

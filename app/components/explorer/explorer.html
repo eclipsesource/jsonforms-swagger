@@ -1,4 +1,18 @@
 <div *ngIf="api">
     <input #searchFilter type="text" (keydown)="changedSearch(searchFilter.value)" />
-    <panelMenu [draggable]="'addOperation'" class="panel-menu-sidebar" [model]="items"></panelMenu>
+    <div class="ui-panelmenu ui-widget panel-menu-sidebar">
+        <div class="ui-panelmenu-panel tagGroup" *ngFor="let tag of api.tags">
+            <div [ngClass]="{'ui-corner-all':!isActiveMenu(tag),'ui-state-active ui-corner-top':isActiveMenu(tag),'ui-state-hover':isHoverMenu(tag)}"
+                 (click)="onClickMenu(tag)" (mouseenter)="hoveringMenu(tag, true)" (mouseleave)="hoveringMenu(tag, false)"
+                 class="ui-widget ui-panelmenu-header ui-state-default">
+                <span>{{tag}}</span>
+            </div>
+            <div [style.display]="isActiveMenu(tag) ? 'block' : 'none'" class="ui-panelmenu-content ui-widget-content">
+                <div (click)="selectOperation(operation)" [ngClass]="{'active': isOperationActive(operation)}" class="tagOperation"
+                     *ngFor="let operation of api.getOperationsByTag(tag) | search: searchFilter.value" pDraggable="addOperation">
+                    <a>{{operation.getTypeAndPath()}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -8,6 +8,21 @@
            class="fa fa-info-circle"></i>
         <h4>{{api.getTitle()}}</h4>
     </div>
-    <div #infoTarget class="info-ovperlay-target"></div>
-    <panelMenu [droppable]="'addOperation'" (onDrop)="addOperation($event)" [model]="items" class="panel-menu-sidebar"></panelMenu>
+    <div #infoTarget class="info-overlay-target"></div>
+
+    <div class="ui-panelmenu ui-widget panel-menu-sidebar">
+        <div class="ui-panelmenu-panel tagGroup" *ngFor="let entityType of api.entityTypes">
+            <div [ngClass]="{'ui-corner-all':!isActiveMenu(entityType.name),'ui-state-active ui-corner-top':isActiveMenu(entityType.name),'ui-state-hover':isHoverMenu(entityType.name)}"
+                 (click)="onClickMenu(entityType.name)" (mouseenter)="hoveringMenu(entityType.name, true)" (mouseleave)="hoveringMenu(entityType.name, false)"
+                 class="ui-widget ui-panelmenu-header ui-state-default">
+                <span>{{entityType.name}}</span>
+            </div>
+            <div [style.display]="isActiveMenu(entityType.name) ? 'block' : 'none'" class="ui-panelmenu-content ui-widget-content" pDroppable="addOperation" (onDrop)="newOperationDropped($event)" (onDragEnter)="test()">
+                <div (click)="selectAction(action)" [ngClass]="{'active': isActionActive(action)}" class="tagOperation"
+                     *ngFor="let action of entityType.actions" pDroppable="addOperation" (onDrop)="newOperationDropped($event)" (onDragEnter)="test()">
+                    <a pDroppable="addOperation" (onDrop)="newOperationDropped($event)" (onDragEnter)="test()">{{action.name}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
