@@ -10,6 +10,9 @@
     "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true
   },
+  "files": [
+    "app/main.ts"
+  ],
   "exclude": [
     "node_modules",
     "typings/main",
