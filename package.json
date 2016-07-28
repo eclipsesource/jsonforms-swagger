@@ -29,7 +29,7 @@
     "bootstrap": "^3.3.6",
     "es6-shim": "^0.35.0",
     "jquery": "^2.2.3",
-    "jsonforms": "1.0.1",
+    "jsonforms": "1.0.2",
     "lodash": "^4.11.2",
     "primeng": "1.0.0-beta.9",
     "primeui": "4.1.12",
