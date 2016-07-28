@@ -3,6 +3,7 @@ import { Component, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import {APIManagerService } from '../core/api-manager/api-manager.service';
+import { ErrorService } from '../error/error.service';
 
 import { API } from '../core/model/api';
 import { Action } from '../core/model/action';
@@ -31,7 +32,7 @@ export class ExplorerComponent implements OnDestroy {
 	active:boolean[] = [];
 	hover:boolean[] = [];
 
-	constructor(private apiManagerService:APIManagerService) {
+	constructor(private apiManagerService:APIManagerService, private errorService: ErrorService) {
 		this. activeActionSubscription = apiManagerService.activeAction.subscribe((activeAction: Action) => this.activeAction = activeAction);
 
 		this.activeOperationSubscription = apiManagerService.activeOperation.subscribe((activeOperation: Operation) => this.activeOperation = activeOperation);
@@ -50,6 +51,8 @@ export class ExplorerComponent implements OnDestroy {
 			if (this.activeAction.addOperation(operation)) {
 				this.selectOperation(operation);
 			}
+		} else {
+			this.errorService.showErrorMessage('To add an operation, please first select one action on the left sidebar');
 		}
 	}
 
