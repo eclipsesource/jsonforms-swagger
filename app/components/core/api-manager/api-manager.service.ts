@@ -49,15 +49,21 @@ export class APIManagerService {
 		return this.currentAPI;
 	}
 
-	setActiveAction(action:Action) {
+	setActiveAction(action: Action) {
 		this._activeAction.next(action);
 		this.initialData = {};
-		this._activeOperation.next(action.operations[0]);
+		if (action && action.operations.length > 0) {
+			this._activeOperation.next(action.operations[0]);
+		} else {
+			this._activeOperation.next(null);
+		}
 	}
 
-	setActiveOperation(operation:Operation, initialData:{}) {
-		let action: Action = this.currentAPI.getActionByOperation(operation); // may be undefined
-		this._activeAction.next(action);
+	setActiveOperation(operation: Operation, initialData: {}) {
+		if (operation) {
+			let action:Action = this.currentAPI.getActionByOperation(operation); // may be undefined
+			this._activeAction.next(action);
+		}
 		this.initialData = initialData;
 		this._activeOperation.next(operation);
 	}

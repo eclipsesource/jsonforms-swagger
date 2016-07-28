@@ -1,5 +1,5 @@
 <div *ngIf="api" class="center">
-  <sidebar [api]="api" class="primary-bg-color"></sidebar>
+  <sidebar [api]="api" [devMode]="devMode" class="primary-bg-color"></sidebar>
   <div class="content soft-bg-color">
     <query-section></query-section>
     <response-section></response-section>

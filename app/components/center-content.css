@@ -43,6 +43,7 @@
 }
 
 .tab-button {
+  position: relative;
   text-align: center;
   line-height: 30px;
   border-radius: 3px;
@@ -63,3 +64,18 @@
   border: 2px solid #186BA0;
 }
 
+.action-icon {
+  position: absolute;
+  right: 10px;
+  left: initial;
+  top: 10px;
+  cursor: pointer;
+}
+
+.action-icon2 {
+  position: absolute;
+  right: 35px;
+  left: initial;
+  top: 10px;
+  cursor: pointer;
+}

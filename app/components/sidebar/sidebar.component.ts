@@ -9,19 +9,19 @@ import {APIManagerService } from '../core/api-manager/api-manager.service';
 import { API } from '../core/model/api';
 import { EntityType } from '../core/model/entity-type';
 import { Action } from '../core/model/action';
-import {Droppable} from 'primeng/primeng';
-import {AuthService} from "../auth/auth.service";
 
 @Component({
 	selector: 'sidebar',
 	moduleId: module.id,
 	templateUrl: 'sidebar.html',
 	styleUrls: ['sidebar.css', '../panel-menu.css'],
-	directives: [OverlayPanel, Droppable]
+	directives: [OverlayPanel]
 })
 export class SidebarComponent implements OnDestroy {
 
 	@Input() api: API;
+
+	@Input() devMode: boolean;
 
 	@ViewChild('op') op:OverlayPanel;
 
@@ -31,16 +31,29 @@ export class SidebarComponent implements OnDestroy {
 	activeAction:Action;
 	activeActionSubscription: Subscription;
 
+	active:boolean[] = [];
+	hover:boolean[] = [];
+
 	constructor(private apiManagerService:APIManagerService) {
 		this.activeActionSubscription = apiManagerService.activeAction.subscribe((activeAction:Action) => this.activeAction = activeAction);
 	}
 
 	selectAction(action:Action) {
-		this.apiManagerService.setActiveAction(action);
+		if (!this.isActionActive(action)) {
+			this.apiManagerService.setActiveAction(action);
+		}
 	}
 
 	isActionActive(action:Action):boolean {
 		return action == this.activeAction;
+	}
+
+	removeAction(entityType: EntityType, action: Action) {
+		if (entityType.removeAction(action)) {
+			if (this.activeAction == action) {
+				this.apiManagerService.setActiveAction(null);
+			}
+		}
 	}
 
 	descriptionHoverIn($event:any, infoTarget:any) {
@@ -69,9 +82,6 @@ export class SidebarComponent implements OnDestroy {
 		}, 1000);
 	}
 
-	active:boolean[] = [];
-	hover:boolean[] = [];
-
 	onClickMenu(menu: string) {
 		this.active[menu] = !this.active[menu];
 	}
@@ -86,13 +96,6 @@ export class SidebarComponent implements OnDestroy {
 
 	isHoverMenu(menu: string):boolean {
 		return this.hover[menu];
-	}
-
-	newOperationDropped(event){
-		console.log(event);
-	}
-	test(){
-		console.log('f');
 	}
 
 	ngOnDestroy() {

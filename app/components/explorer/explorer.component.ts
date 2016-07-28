@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 
-import { Draggable } from 'primeng/primeng';
 import { Subscription } from 'rxjs/Subscription';
 
 import {APIManagerService } from '../core/api-manager/api-manager.service';
+import { ErrorService } from '../error/error.service';
 
 import { API } from '../core/model/api';
 import { Action } from '../core/model/action';
@@ -15,8 +15,7 @@ import { SearchPipe } from '../common/search.pipe';
 	moduleId: module.id,
 	templateUrl: 'explorer.html',
 	styleUrls: ['explorer.css', '../panel-menu.css'],
-	pipes: [SearchPipe],
-	directives: [Draggable]
+	pipes: [SearchPipe]
 })
 export class ExplorerComponent implements OnDestroy {
 
@@ -30,7 +29,10 @@ export class ExplorerComponent implements OnDestroy {
 
 	private filter: string = '';
 
-	constructor(private apiManagerService:APIManagerService) {
+	active:boolean[] = [];
+	hover:boolean[] = [];
+
+	constructor(private apiManagerService:APIManagerService, private errorService: ErrorService) {
 		this. activeActionSubscription = apiManagerService.activeAction.subscribe((activeAction: Action) => this.activeAction = activeAction);
 
 		this.activeOperationSubscription = apiManagerService.activeOperation.subscribe((activeOperation: Operation) => this.activeOperation = activeOperation);
@@ -44,12 +46,19 @@ export class ExplorerComponent implements OnDestroy {
 		return operation == this.activeOperation;
 	}
 
+	addOperationToActiveAction(operation: Operation) {
+		if (this.activeAction) {
+			if (this.activeAction.addOperation(operation)) {
+				this.selectOperation(operation);
+			}
+		} else {
+			this.errorService.showErrorMessage('To add an operation, please first select one action on the left sidebar');
+		}
+	}
+
 	changedSearch(value){
 		this.filter = value;
 	}
-
-	active:boolean[] = [];
-	hover:boolean[] = [];
 
 	onClickMenu(menu: string) {
 		this.active[menu] = !this.active[menu];
