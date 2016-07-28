@@ -11,7 +11,7 @@
     "postinstall": "typings install",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "typings": "typings",
+    "typings": "./node_modules/.bin/typings",
     "test": "live-server --open=unit-tests.html"
   },
   "dependencies": {
