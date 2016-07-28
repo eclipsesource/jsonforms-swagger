@@ -11,7 +11,8 @@
     "suppressImplicitAnyIndexErrors": true
   },
   "files": [
-    "app/main.ts"
+    "app/main.ts",
+    "typings/main.d.ts"
   ],
   "exclude": [
     "node_modules",
