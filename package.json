@@ -6,8 +6,8 @@
   "repository": "https://github.com/eclipsesource/jsonforms",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "deploy": "tsc && node ./bin/www",
+    "start": "tsc && node ./bin/www",
+    "dev": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "lite": "lite-server",
     "preinstall": "npm install typings -g",
     "postinstall": "typings install",
