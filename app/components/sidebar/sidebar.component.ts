@@ -48,6 +48,13 @@ export class SidebarComponent implements OnDestroy {
 		return action == this.activeAction;
 	}
 
+	addAction(entityType: EntityType, name: string) {
+		if (entityType.addAction(name)) {
+			let addedAction: Action = entityType.getActionByName(name);
+			this.apiManagerService.setActiveAction(addedAction);
+		}
+	}
+
 	removeAction(entityType: EntityType, action: Action) {
 		if (entityType.removeAction(action)) {
 			if (this.activeAction == action) {

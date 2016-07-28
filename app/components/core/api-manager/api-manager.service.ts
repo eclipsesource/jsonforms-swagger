@@ -18,10 +18,11 @@ export class APIManagerService {
 
 	private _api = new BehaviorSubject<API>(null);
 	api = this._api.asObservable();
-	currentAPI:API;
+	currentAPI: API;
 
 	private _activeAction = new Subject<Action>();
 	activeAction = this._activeAction.asObservable();
+	currentActiveAction: Action;
 
 	private _activeOperation = new Subject<Operation>();
 	activeOperation = this._activeOperation.asObservable();
@@ -50,6 +51,7 @@ export class APIManagerService {
 	}
 
 	setActiveAction(action: Action) {
+		this.currentActiveAction = action;
 		this._activeAction.next(action);
 		this.initialData = {};
 		if (action && action.operations.length > 0) {
@@ -60,8 +62,9 @@ export class APIManagerService {
 	}
 
 	setActiveOperation(operation: Operation, initialData: {}) {
-		if (operation) {
-			let action:Action = this.currentAPI.getActionByOperation(operation); // may be undefined
+		if (operation && this.currentActiveAction.operations.indexOf(operation) < 0) {
+			let action: Action = this.currentAPI.getActionByOperation(operation); // may be undefined
+			this.currentActiveAction = action;
 			this._activeAction.next(action);
 		}
 		this.initialData = initialData;
