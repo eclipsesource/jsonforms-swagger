@@ -66,6 +66,18 @@ export class QueryComponent implements OnDestroy {
         this.apiManagerService.setActiveOperation(operation, {});
     }
 
+	removeOperation(operation) {
+		if (this.activeAction.removeOperation(operation)) {
+			if (this.activeOperation == operation) {
+				let newActiveOperation: Operation = null;
+				if (this.activeAction.operations.length > 0) {
+					newActiveOperation = this.activeAction.operations[0];
+				}
+				this.apiManagerService.setActiveOperation(newActiveOperation, {});
+			}
+		}
+	}
+
     performOperation() {
         this.operationPerformerService.performOperation(this.activeOperation, this.data);
     }

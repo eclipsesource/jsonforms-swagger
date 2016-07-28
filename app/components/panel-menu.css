@@ -13,6 +13,7 @@
 }
 
 .tagOperation {
+    position: relative;
     padding: 5px;
     display: flex;
     flex-wrap: nowrap;
@@ -29,7 +30,9 @@
 }
 
 .action-icon {
-    position: relative;
-    right: 120px;
+    position: absolute;
+    right: 10px;
     left: initial;
+    top: 10px;
+    cursor: pointer;
 }

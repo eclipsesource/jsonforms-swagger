@@ -3,66 +3,7 @@
     {
       "name": "PetStore",
       "apiUrl": "http://petstore.swagger.io/v2/swagger.json",
-      "apiModel": {
-        "entityTypes": [{
-          "name": "Pet",
-          "actions": [{
-            "name": "Find Pet",
-            "operations": [{
-              "type": "get",
-              "path": "/pet/findByStatus"
-            }, {
-              "type": "get",
-              "path": "/pet/findByTags"
-            }, {
-              "type": "get",
-              "path": "/pet/{petId}"
-            }, {
-              "type": "delete",
-              "path": "/pet/{petId}"
-            }]
-          }, {
-            "name": "Create Pet",
-            "operations": [{
-              "type": "post",
-              "path": "/pet"
-            }]
-          }]
-        }, {
-          "name": "ApiResponse",
-          "actions": []
-        }, {
-          "name": "Order",
-          "actions": [{
-            "name": "Find Order",
-            "operations": [{
-              "type": "get",
-              "path": "/store/order/{orderId}"
-            }]
-          }, {
-            "name": "Create Order",
-            "operations": [{
-              "type": "post",
-              "path": "/store/order"
-            }]
-          }]
-        }, {
-          "name": "User",
-          "actions": [{
-            "name": "Find User",
-            "operations": [{
-              "type": "get",
-              "path": "/user/{username}"
-            }]
-          }, {
-            "name": "Create User",
-            "operations": [{
-              "type": "post",
-              "path": "/user"
-            }]
-          }]
-        }]
-      }
+      "apiModel": {}
     },
     {
       "name": "Buffer",
