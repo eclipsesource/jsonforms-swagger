@@ -1,2 +1,2 @@
-<button class="button-header" (click)="gotoProjects()">Projects List</button>
+<button *ngIf="selectedProjectName" class="button-header" (click)="gotoProjects()">Projects List</button>
 <auth></auth>

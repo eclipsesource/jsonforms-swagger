@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {AuthComponent} from "../auth/auth.component";
 import {APIManagerService} from "../core/api-manager/api-manager.service";
 
@@ -10,6 +10,8 @@ import {APIManagerService} from "../core/api-manager/api-manager.service";
     directives: [AuthComponent]
 })
 export class HeaderComponent {
+
+    @Input() selectedProjectName: string;
 
     @Output() onProjectsListClicked = new EventEmitter<any>();
 
