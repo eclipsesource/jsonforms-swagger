@@ -11,7 +11,7 @@
     "postinstall": "typings install",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "typings": "typings",
+    "typings": "./node_modules/.bin/typings",
     "test": "live-server --open=unit-tests.html"
   },
   "dependencies": {
@@ -22,7 +22,7 @@
     "@angular/http":  "2.0.0-rc.3",
     "@angular/platform-browser":  "2.0.0-rc.3",
     "@angular/platform-browser-dynamic":  "2.0.0-rc.3",
-    "@angular/router":  "3.0.0-alpha.6",
+    "@angular/router":  "latest",
     "@angular/upgrade":  "2.0.0-rc.3",
     "angular": "^1.5.5",
     "bootstrap": "^3.3.6",
