@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs/Subscription';
@@ -29,7 +29,9 @@ import { JsonFormsAdapter } from '../../adapters/jsonforms.adapter';
 })
 export class QueryComponent implements OnDestroy {
 
-    activeAction: Action;
+    @Input() devMode: boolean;
+
+	activeAction: Action;
     activeActionSubscription: Subscription;
 
     activeOperation: Operation;
