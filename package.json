@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "deploy": "tsc && node ./bin/www",
     "lite": "lite-server",
     "preinstall": "npm install typings -g",
     "postinstall": "typings install",
