@@ -1,6 +1,5 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 
-import { Draggable } from 'primeng/primeng';
 import { Subscription } from 'rxjs/Subscription';
 
 import {APIManagerService } from '../core/api-manager/api-manager.service';
@@ -15,8 +14,7 @@ import { SearchPipe } from '../common/search.pipe';
 	moduleId: module.id,
 	templateUrl: 'explorer.html',
 	styleUrls: ['explorer.css', '../panel-menu.css'],
-	pipes: [SearchPipe],
-	directives: [Draggable]
+	pipes: [SearchPipe]
 })
 export class ExplorerComponent implements OnDestroy {
 
@@ -29,6 +27,9 @@ export class ExplorerComponent implements OnDestroy {
 	activeOperationSubscription: Subscription;
 
 	private filter: string = '';
+
+	active:boolean[] = [];
+	hover:boolean[] = [];
 
 	constructor(private apiManagerService:APIManagerService) {
 		this. activeActionSubscription = apiManagerService.activeAction.subscribe((activeAction: Action) => this.activeAction = activeAction);
@@ -55,9 +56,6 @@ export class ExplorerComponent implements OnDestroy {
 	changedSearch(value){
 		this.filter = value;
 	}
-
-	active:boolean[] = [];
-	hover:boolean[] = [];
 
 	onClickMenu(menu: string) {
 		this.active[menu] = !this.active[menu];

@@ -18,10 +18,10 @@
                      class="ui-widget ui-panelmenu-header ui-state-default">
                     <span>{{entityType.name}}</span>
                 </div>
-                <div [style.display]="isActiveMenu(entityType.name) ? 'block' : 'none'" class="ui-panelmenu-content ui-widget-content" pDroppable="addOperation" (onDrop)="newOperationDropped($event)" (onDragEnter)="test()">
+                <div [style.display]="isActiveMenu(entityType.name) ? 'block' : 'none'" class="ui-panelmenu-content ui-widget-content">
                     <div (click)="selectAction(action)" [ngClass]="{'active': isActionActive(action)}" class="tagOperation"
-                         *ngFor="let action of entityType.actions" pDroppable="addOperation" (onDrop)="newOperationDropped($event)" (onDragEnter)="test()">
-                        <a pDroppable="addOperation" (onDrop)="newOperationDropped($event)" (onDragEnter)="test()">{{action.name}}</a>
+                         *ngFor="let action of entityType.actions">
+                        <a>{{action.name}}</a>
                         <div *ngIf="devMode" class="action-icon fa fa-trash" (click)="$event.stopPropagation(); removeAction(entityType, action)"></div>
                     </div>
                 </div>

@@ -9,7 +9,7 @@
             </div>
             <div [style.display]="isActiveMenu(tag) ? 'block' : 'none'" class="ui-panelmenu-content ui-widget-content">
                 <div (click)="selectOperation(operation)" [ngClass]="{'active': isOperationActive(operation)}" class="tagOperation"
-                     *ngFor="let operation of api.getOperationsByTag(tag) | search: searchFilter.value" pDraggable="addOperation">
+                     *ngFor="let operation of api.getOperationsByTag(tag) | search: searchFilter.value">
                     <a>{{operation.getTypeAndPath()}}</a>
                     <div class="action-icon fa fa-plus" (click)="$event.stopPropagation(); addOperationToActiveAction(operation)"></div>
                 </div>
