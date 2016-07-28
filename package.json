@@ -9,6 +9,7 @@
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "lite": "lite-server",
     "preinstall": "npm install typings -g && npm install typescript -g",
+    "postinstall": "typings install && tsc",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "./node_modules/.bin/typings",
@@ -47,7 +48,6 @@
     "concurrently": "^2.0.0",
     "jasmine-core": "2.4.1",
     "lite-server": "^2.2.0",
-    "live-server": "1.0.0",
-    "typings": "^0.8.1"
+    "live-server": "1.0.0"
   }
 }
