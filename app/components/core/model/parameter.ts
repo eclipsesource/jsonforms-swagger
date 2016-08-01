@@ -1,25 +1,25 @@
 export class Parameter {
 
-  properties: {} = {};
+	properties:{} = {};
 
-  getName(): string {
-    return this.properties['name'];
-  }
+	getName():string {
+		return this.properties['name'];
+	}
 
-  getIn(): string {
-    return this.properties['in'];
-  }
+	getIn():string {
+		return this.properties['in'];
+	}
 
-  getType(): string {
-    return this.properties['type'];
-  }
+	getType():string {
+		return this.properties['type'];
+	}
 
-  getSchema(): {} {
-    return this.properties['schema'];
-  }
+	getSchema():{} {
+		return this.properties['schema'];
+	}
 
-  getRequired() {
-    return this.properties['required'];
-  }
+	getRequired() {
+		return this.properties['required'];
+	}
 
 }

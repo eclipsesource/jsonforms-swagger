@@ -5,63 +5,72 @@ import { APIResponse } from './api-response';
 
 export class Operation {
 
-  properties: {} = {};
-  parameters: Parameter[] = [];
-  responses: APIResponse[] = [];
-  relatedOperations: Operation[] = [];
+	properties:{} = {};
+	parameters:Parameter[] = [];
+	responses:APIResponse[] = [];
+	relatedOperations:Operation[] = [];
 
-  getType(): string {
-    return this.properties['type'];
-  }
+	getType():string {
+		return this.properties['type'];
+	}
 
-  getPath(): string {
-    return this.properties['path'];
-  }
+	getPath():string {
+		return this.properties['path'];
+	}
 
-  getTypeAndPath(): string {
-    return this.getType() + ' - ' + this.getPath();
-  }
+	getTypeAndPath():string {
+		return this.getType() + ' - ' + this.getPath();
+	}
 
-  getTags(): string[] {
-    return this.properties['tags'] || [];
-  }
+	getTags():string[] {
+		return this.properties['tags'] || [];
+	}
 
-  getSummary(): string {
-    return this.properties['summary'] || this.getPath();
-  }
+	getSummary():string {
+		return this.properties['summary'] || this.getPath();
+	}
 
-  getUrl(): string {
-    return this.properties['baseUrl'] + this.properties['path'];
-  }
+	getUrl():string {
+		return this.properties['baseUrl'] + this.properties['path'];
+	}
 
-  getOperationId(): string {
-    return this.properties['operationId'];
-  }
+	getOperationId():string {
+		return this.properties['operationId'];
+	}
 
-  getParameters(): Parameter[] {
-    return this.parameters;
-  }
+	getConsumes(): string[] {
+		return this.properties['consumes'];
+	}
 
-  getParameterByName(name: string): Parameter {
-    return _.find(this.parameters, (parameter: Parameter) => {
-      return parameter.getName() == name;
-    });
-  }
+	getProduces(): string[] {
+		return this.properties['produces'];
+	}
 
-  getResponses(): APIResponse[] {
-    return this.responses;
-  }
+	getParameters():Parameter[] {
+		return this.parameters;
+	}
 
-  getResponseByCode(code: number): APIResponse {
-    return _.find(this.responses, (response: APIResponse) => {
-      return response.getCode() == code;
-    });
-  }
-  getLocks(): any{
-    var sec = this.properties['security'];
-    if(!sec){
-      return null;
-    }
-    return this.properties['security'][0];
-  }
+	getParameterByName(name:string):Parameter {
+		return _.find(this.parameters, (parameter:Parameter) => {
+			return parameter.getName() == name;
+		});
+	}
+
+	getResponses():APIResponse[] {
+		return this.responses;
+	}
+
+	getResponseByCode(code:number):APIResponse {
+		return _.find(this.responses, (response:APIResponse) => {
+			return response.getCode() == code;
+		});
+	}
+
+	getLocks():any {
+		var sec = this.properties['security'];
+		if (!sec) {
+			return null;
+		}
+		return this.properties['security'][0];
+	}
 }
