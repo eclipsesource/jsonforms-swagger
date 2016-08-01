@@ -20,6 +20,11 @@
     width:100%;
 }
 
+.center h2 {
+    font-weight: 800;
+    color: #696767;
+}
+
 .projects-list {
     display:flex;
     flex-wrap:wrap;
@@ -31,20 +36,32 @@
 }
 
 .project-box {
-    flex-basis: 300px;
+    position: relative;
+    flex-basis: 330px;
     height: 150px;
-    background-color: #186BA0;
+    background-color: #75A339;
     margin: 15px;
     flex-shrink: 1;
     flex-grow: 0.5;
-    transition: background-color 0.4s;
 
     color:white;
     text-align:center;
     font-size: large;
 }
 
-@media screen and (max-width: 438px) {
+.project-box .filter {
+    width:100%;
+    height:100%;
+    background-color:#186BA0;
+    z-index:100;
+    position:absolute;
+    display:block;
+}
+.project-box:hover .filter {
+    display:none;
+}
+
+@media screen and (max-width: 500px) {
     .project-box {
         flex-basis: 100%;
         margin-left:0;
@@ -57,13 +74,35 @@
     }
 }
 
-.project-box:hover {
-    background-color: #75A339;
+.project-box.new {
+    background-color:#61AB56;
 }
 
-.project-box.new {
-    position:relative;
-    background-color:#61AB56;
+.project-box h3 {
+    line-height:150px;
+}
+
+.options > div {
+    transition: background-color 0.4s;
+    border-radius: 50px;
+    border: 1px solid white;
+    color: white;
+    text-align: center;
+    height: 80px;
+    line-height:80px;
+    width: 80px;
+    cursor: pointer;
+}
+.options > div:hover {
+    background-color: white;
+    color:#75A339;
+}
+
+.options, .new-options {
+    display:flex;
+    flex-wrap:nowrap;
+    justify-content:space-around;
+    align-items: center;
 }
 
 .project-box.new .filter {
@@ -78,14 +117,28 @@
     display:none;
 }
 
-.project-box h3 {
-    line-height:150px;
-}
-
-.new-project-form {
+.project-box.new .inputs {
     display: flex;
     flex-direction: column;
     flex-wrap:nowrap;
     justify-content:space-around;
     align-items:center;
+    padding: 10px;
+}
+
+.project-box.new .button {
+    transition: background-color 0.4s;
+    border-radius: 50px;
+    border: 1px solid white;
+    color: white;
+    text-align: center;
+    height: 80px;
+    line-height:80px;
+    width: 80px;
+    cursor: pointer;
+}
+
+.project-box.new .button:hover {
+    background-color: white;
+    color:#61AB56;
 }
