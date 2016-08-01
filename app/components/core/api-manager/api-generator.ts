@@ -81,7 +81,7 @@ export class APIGenerator {
 
 	private generateOperation(api:API, baseUrl:string, path:string, type:string, jsonOperation:{}) {
 		let operation:Operation = new Operation();
-		operation.properties = _.pick(jsonOperation, ['tags', 'summary', 'description', 'operationId', 'security']);
+		operation.properties = _.pick(jsonOperation, ['tags', 'summary', 'description', 'operationId', 'security', 'consumes', 'produces']);
 		operation.properties['baseUrl'] = baseUrl;
 		operation.properties['path'] = path;
 		operation.properties['type'] = type;

@@ -31,8 +31,8 @@ export class OperationPerformerService {
         this.selectOperationPerformerType(operation);
 
         let url:string = operation.getUrl();
-        let headers:Headers = new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
-        let body:string;
+        let headers: Headers = this.setUpHeaders(operation);
+        let body:string = '';
 
         _.forEach(operation.getParameters(), (parameter:Parameter) => {
             switch (parameter.getIn()) {
@@ -46,7 +46,7 @@ export class OperationPerformerService {
                     this.addHeaderParameter(parameter, data, headers);
                     break;
                 case 'formData':
-                    // TODO
+                    body = this.addFormDataParameter(parameter, data, body);
                     break;
                 case 'body':
                     body = this.addBodyParameter(parameter, data); // we assume that only one parameter of type body is allowed
@@ -71,7 +71,7 @@ export class OperationPerformerService {
         );
     }
 
-    selectOperationPerformerType(operation:Operation) {
+    private selectOperationPerformerType(operation:Operation) {
         switch (operation.getType()) {
             case 'get':
                 this.operationPerformer = new GetPerformer();
@@ -86,6 +86,30 @@ export class OperationPerformerService {
                 this.operationPerformer = new DeletePerformer();
                 break;
         }
+    }
+
+    private setUpHeaders(operation: Operation): Headers {
+        let headers: Headers = new Headers();
+
+        let consumes: string[] = operation.getConsumes();
+        if (consumes) {
+            let contentType: string = consumes[0];
+            if (consumes.indexOf('application/json') >= 0) {
+                contentType = 'application/json';
+            }
+            headers.append('Content-Type', contentType);
+        }
+
+        let produces: string[] = operation.getProduces();
+        if (produces) {
+            let accept: string = produces[0];
+            if (produces.indexOf('application/json') >= 0) {
+                accept = 'application/json';
+            }
+            headers.append('Accept', accept);
+        }
+
+        return headers;
     }
 
     private addPathParameter(parameter:Parameter, data:{}, url:string):string {
@@ -120,6 +144,15 @@ export class OperationPerformerService {
                 headers.append(parameterName, parameterData);
             }
         }
+    }
+
+    private addFormDataParameter(parameter: Parameter, data: {}, body: string): string {
+		let parameterName: string = parameter.getName();
+		let parameterData = data[parameterName];
+		if (body) {
+			body += '&';
+		}
+		return body + parameterName + '=' + parameterData;
     }
 
     private addBodyParameter(parameter:Parameter, data:{}):string {

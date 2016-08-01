@@ -1,5 +1,6 @@
 <div *ngIf="activeOperation" class="tab-button-container">
     <div class="tab-button" [ngClass]="{'tab-button-active': operation == activeOperation}" *ngFor="let operation of getOperationsList()" (click)="selectOperation(operation)">
+        <div class="operation-type" [ngClass]="operation.getType()">{{operation.getType()}}</div>
         {{operation.getSummary()}}
         <div class="action-icon2 fa fa-lock" *ngIf="authService.hasLocks(operation)" (click)="authService.openDialogForOperation(operation)"></div>
         <div class="action-icon fa fa-trash" *ngIf="devMode" (click)="$event.stopPropagation(); removeOperation(operation)"></div>
