@@ -27,7 +27,7 @@ export class Operation {
   }
 
   getSummary(): string {
-    return this.properties['summary'] || this.getTypeAndPath();
+    return this.properties['summary'] || this.getPath();
   }
 
   getUrl(): string {
