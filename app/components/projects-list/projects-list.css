@@ -23,7 +23,7 @@
 .projects-list {
     display:flex;
     flex-wrap:wrap;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
     align-content: flex-start;
     padding: 15px;
@@ -31,17 +31,30 @@
 }
 
 .project-box {
-    width: 400px;
+    flex-basis: 300px;
     height: 150px;
     background-color: #186BA0;
     margin: 15px;
-    flex-shrink: 1.2;
-    flex-grow: 1.2;
+    flex-shrink: 1;
+    flex-grow: 0.5;
     transition: background-color 0.4s;
 
     color:white;
     text-align:center;
     font-size: large;
+}
+
+@media screen and (max-width: 438px) {
+    .project-box {
+        flex-basis: 100%;
+        margin-left:0;
+        margin-right:0;
+    }
+
+    .projects-list {
+        padding-left: 0;
+        padding-right: 0;
+    }
 }
 
 .project-box:hover {
