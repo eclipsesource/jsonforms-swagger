@@ -62,7 +62,7 @@ export class APIManagerService {
 	}
 
 	setActiveOperation(operation: Operation, initialData: {}) {
-		if (operation && this.currentActiveAction && this.currentActiveAction.operations.indexOf(operation) < 0) {
+		if (operation && (!this.currentActiveAction || this.currentActiveAction.operations.indexOf(operation) < 0)) {
 			let action: Action = this.currentAPI.getActionByOperation(operation); // may be undefined
 			this.currentActiveAction = action;
 			this._activeAction.next(action);
