@@ -6,30 +6,6 @@
     font-family: 'Open Sans', sans-serif;
 }
 
-.primary-bg-color {
-  background-color:#CFE9AD !important;
-}
-
-.soft-bg-color{
-  background-color:#DFEFCA !important;
-}
-
-.dark-bg-color {
-  background-color:#75A339 !important;
-}
-
-.accent-bg-color {
-  background-color:#61AB56 !important;
-}
-
-.accent-soft-bg-color{
-  background-color:#A4D39D !important;
-}
-
-.contrast-bg-color {
-  background-color:#186BA0 !important;
-}
-
 .bottom-border {
   border-bottom: 1px solid grey;
 }

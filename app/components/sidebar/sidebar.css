@@ -5,7 +5,8 @@
 .api-title h4 {
     text-align: center;
     background-color: #186BA0;
-    margin: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     padding: 10px;
     color: white;
     border-radius: 3px;

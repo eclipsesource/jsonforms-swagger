@@ -1,20 +1,21 @@
 :host {
-    display:flex;
-    flex-direction:row;
-    flex-wrap:nowrap;
-    justify-content: center;
-    align-items:center;
+    background-color: #166292;
 }
 
-.button-header {
-    background-color: #186BA0;
-    border-color: #186BA0;
+.button-project-list {
+    background-color: #75A339;
+    border:0;
+    border-radius: 5px;
     color: white;
-    padding: 2px;
-    border-radius: 3px;
-    border-style: solid;
+    padding: 5px;
     height: 28px;
     position: absolute;
     top: 11px;
     left: 15px;
+}
+
+auth {
+    position: absolute;
+    top: 11px;
+    right: 15px;
 }

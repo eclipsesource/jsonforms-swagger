@@ -1,8 +1,7 @@
 .section {
     margin: 10px;
-    border-radius: 10px;
     padding: 10px;
-    background-color: hsl(86, 27%, 70%);
+    background-color: white;
 }
 
 .res {
@@ -20,8 +19,8 @@
 }
 
 .response-button {
-    background-color: #186BA0;
-    border-color: #186BA0;
+    background-color: #75A339;
+    border-color: #75A339;
     color: white;
     padding: 2px;
     border-radius: 3px;
@@ -37,7 +36,6 @@
     align-items: stretch;
     align-content: stretch;
     height: 35px;
-    margin-top: 5px;
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -47,7 +45,6 @@
     text-align: center;
     line-height: 30px;
     border-radius: 3px;
-    border: 2px solid #DFEFCA;
     flex: 1;
     background-color: #186BA0;
     color: white;
@@ -55,13 +52,17 @@
 
 .tab-button:hover {
     background-color: white;
-    color: #186BA0;
+    color: #75A339;
 }
 
 .tab-button-active {
-    background-color: white;
-    color: #186BA0;
-    border: 2px solid #186BA0;
+    background-color: #75A339;
+    color: white;
+}
+
+.tab-button-active:hover {
+    background-color: #75A339;
+    color: white;
 }
 
 .action-icon {
@@ -88,8 +89,11 @@
     color: white;
     display: inline-block;
     width: 60px;
-    height: 31px;
+    height:100%;
     font-size: 0.7em;
+    background-color: #75A339;
+    border:0;
+    border-radius: 3px 0 0 3px;
 }
 
 .post {
