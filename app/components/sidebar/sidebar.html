@@ -25,7 +25,7 @@
                         <div *ngIf="devMode" class="action-icon fa fa-trash" (click)="$event.stopPropagation(); removeAction(entityType, action)"></div>
                     </div>
                     <div *ngIf="devMode" class="tagOperation">
-                        <input #actionName>
+                        <input #actionName (keydown.enter)="addAction(entityType, actionName.value); actionName.value = ''">
                         <div class="action-icon fa fa-check" (click)="addAction(entityType, actionName.value); actionName.value = ''"></div>
                     </div>
                 </div>
