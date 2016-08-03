@@ -1,14 +1,15 @@
 .button-auth {
-  background-color: #186BA0;
-  border-color: #186BA0;
+  background-color: #75A339;
+  border-color: #75A339;
   color: white;
   padding: 2px;
   border-radius: 3px;
   border-style: solid;
   height: 28px;
+
   position: absolute;
   top: 11px;
-  margin-left: 14px;
+  right: 15px;
 }
 
 .strategy-list-container{

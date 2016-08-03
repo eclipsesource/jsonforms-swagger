@@ -33,7 +33,7 @@ sidebar {
     flex-direction:column;
     justify-content:flex-start;
     align-items:stretch;
-    overflow-y: hidden;
+    overflow-y: auto;
     padding-top:10px;
     padding-bottom:10px;
 }

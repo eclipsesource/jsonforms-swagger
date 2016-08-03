@@ -48,7 +48,18 @@
     flex: 1;
     background-color: #186BA0;
     color: white;
+    margin-left: 5px;
+    margin-right: 5px;
 }
+
+.tab-button:first-child {
+    margin-left:0 !important;
+}
+
+.tab-button:last-child {
+    margin-right:0 !important;
+}
+
 
 .tab-button:hover {
     background-color: white;
