@@ -1,0 +1,6 @@
+<main>
+    <header *ngIf="selectedProjectName" (onProjectsListClicked)="onProjectsListClicked()" [selectedProjectName]="selectedProjectName"></header>
+    <projects-list *ngIf="!selectedProjectName" (onProjectSelected)="onProjectSelected($event)"></projects-list>
+    <project-detail *ngIf="selectedProjectName" [projectName]="selectedProjectName" [devMode]="selectedDevMode"></project-detail>
+    <error></error>
+</main>

@@ -1,0 +1,14 @@
+body {
+    overflow:hidden;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.bottom-border {
+    border-bottom: 1px solid grey;
+}
