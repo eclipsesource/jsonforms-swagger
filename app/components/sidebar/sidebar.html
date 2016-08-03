@@ -11,8 +11,8 @@
     <div #infoTarget class="info-overlay-target"></div>
 
     <div class="ui-panelmenu ui-widget panel-menu-sidebar">
-        <div class="ui-panelmenu-panel tagGroup" *ngFor="let entityType of api.entityTypes">
-            <div *ngIf="devMode || entityType.actions.length > 0">
+        <div class="ui-panelmenu-panel tagGroup" *ngFor="let entityType of api.entityTypes | entityTypeShouldShow:devMode">
+            <div>
                 <div [ngClass]="{'ui-corner-all':!isActiveMenu(entityType.name),'ui-state-active ui-corner-top':isActiveMenu(entityType.name),'ui-state-hover':isHoverMenu(entityType.name)}"
                      (click)="onClickMenu(entityType.name)" (mouseenter)="hoveringMenu(entityType.name, true)" (mouseleave)="hoveringMenu(entityType.name, false)"
                      class="ui-widget ui-panelmenu-header ui-state-default">

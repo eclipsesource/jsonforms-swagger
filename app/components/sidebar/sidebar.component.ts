@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, OnDestroy } from '@angular/core';
+import { Pipe, Component, ViewChild, Input, OnDestroy } from '@angular/core';
 
 import { OverlayPanel} from 'primeng/primeng';
 import Timer = NodeJS.Timer;
@@ -10,11 +10,26 @@ import { API } from '../core/model/api';
 import { EntityType } from '../core/model/entity-type';
 import { Action } from '../core/model/action';
 
+
+// *ngIf="devMode || entityType.actions.length > 0"
+@Pipe({
+	name: "entityTypeShouldShow"
+})
+class EntityTypeShouldShow {
+	transform(value, args?) {
+		let [devMode] = args;
+		return value.filter(entityType => {
+			return entityType.actions.length > 0 || devMode;
+		});
+	}
+}
+
 @Component({
 	selector: 'sidebar',
 	moduleId: module.id,
 	templateUrl: 'sidebar.html',
 	styleUrls: ['sidebar.css', '../panel-menu.css'],
+	pipes: [EntityTypeShouldShow],
 	directives: [OverlayPanel]
 })
 export class SidebarComponent implements OnDestroy {
