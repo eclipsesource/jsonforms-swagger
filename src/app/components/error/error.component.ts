@@ -17,7 +17,7 @@ export class ErrorComponent {
 		errorService.errorMessage.subscribe((errorMessage) => {
 			this.messages.push({ severity: 'error', summary: 'Error', detail: errorMessage });
 			setTimeout(() => {
-				this.messages.shift(); // take out last inserted message
+				this.messages.shift(); // FIFO
 			}, 3000);
 		});
 	}
