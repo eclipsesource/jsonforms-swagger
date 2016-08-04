@@ -51,6 +51,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 		// At this moment, this.api is null, so we use this.apiManagerService.getCurrentAPI() instead
-		this.project.apiModel = this.apiManagerService.getCurrentAPI().generateAPIModel();
+		if (this.apiManagerService.getCurrentAPI()) {
+			this.project.apiModel = this.apiManagerService.getCurrentAPI().generateAPIModel();
+		}
 	}
 }
