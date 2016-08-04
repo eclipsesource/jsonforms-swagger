@@ -36,9 +36,20 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
 	api:API;
 
+	nullAPIMessage: string = 'Loading...';
+	firstNullAPIReceived: boolean = false;
+
 	constructor(private projectsService:ProjectsManagerService, private apiManagerService:APIManagerService) {
 		apiManagerService.api.subscribe((api) => {
 			this.api = api;
+
+			if (!api) {
+				if (!this.firstNullAPIReceived) {
+					this.firstNullAPIReceived = true;
+				} else {
+					this.nullAPIMessage = 'Error loading API';
+				}
+			}
 		});
 	}
 

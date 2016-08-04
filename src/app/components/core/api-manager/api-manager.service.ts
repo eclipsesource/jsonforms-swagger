@@ -43,6 +43,7 @@ export class APIManagerService {
 				console.log(error);
 				this.errorService.showErrorMessage(error);
 				this.currentAPI = null;
+				this._api.next(null);
 			}
 		);
 	}

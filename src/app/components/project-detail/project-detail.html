@@ -6,6 +6,4 @@
   </div>
   <explorer *ngIf="devMode" [api]="api" class="soft-bg-color"></explorer>
 </div>
-<div *ngIf="!api">
-  Loading...
-</div>
+<div *ngIf="!api">{{nullAPIMessage}}</div>
