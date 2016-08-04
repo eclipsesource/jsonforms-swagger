@@ -4,6 +4,10 @@ This project integrates [JSONForms](http://github.eclipsesource.com/jsonforms/) 
 Given a RESTful service defined with the OpenAPI Specification, this project uses JSONForms
 for automatically building web forms capable of interacting with that service.
 
+## Demo
+
+Watch jsonforms-swagger in action on the [demo page](http://jsonforms-swagger.herokuapp.com/).
+
 ## Prerequisites
 
 This is an Angular 2 application, so it requires Node.js and npm.
