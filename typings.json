@@ -6,6 +6,7 @@
     "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
     "jquery": "registry:dt/jquery#1.10.0+20160704162008",
     "lodash": "registry:dt/lodash#4.14.0+20160802150749",
-    "node": "registry:dt/node#6.0.0+20160621231320"
+    "node": "registry:dt/node#6.0.0+20160621231320",
+    "tv4": "registry:dt/tv4#1.2.5+20160317120654"
   }
 }

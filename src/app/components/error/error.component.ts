@@ -18,7 +18,7 @@ export class ErrorComponent {
 			this.messages.push({ severity: 'error', summary: 'Error', detail: errorMessage });
 			setTimeout(() => {
 				this.messages.shift(); // FIFO
-			}, 3000);
+			}, 5000);
 		});
 	}
 

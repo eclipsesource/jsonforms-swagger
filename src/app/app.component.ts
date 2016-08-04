@@ -5,6 +5,7 @@ import { ProjectsManagerService } from './components/core/projects-manager/proje
 import { AuthService } from './components/auth/auth.service';
 import { APIManagerService } from './components/core/api-manager/api-manager.service';
 import { APIGenerator } from './components/core/api-manager/api-generator';
+import { APIValidator } from './components/core/api-manager/api-validator';
 import { ErrorService } from './components/error/error.service';
 
 import { HeaderComponent } from './components/header/header.component';
@@ -25,6 +26,7 @@ import '../../public/css/styles.css';
 		AuthService,
 		APIManagerService,
 		APIGenerator,
+		APIValidator,
 		ErrorService
 	],
 	directives: [

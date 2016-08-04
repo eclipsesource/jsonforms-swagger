@@ -16,3 +16,4 @@ import 'primeng/primeng';
 import 'lodash';
 import 'angular-ui-bootstrap';
 import 'jsonforms';
+import 'tv4';

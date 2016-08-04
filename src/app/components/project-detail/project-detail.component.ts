@@ -44,7 +44,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
 	constructor(private projectsService:ProjectsManagerService, private apiManagerService:APIManagerService) {
 		this.apiSubscription = apiManagerService.api.subscribe((api) => {
-			console.log(api == null);
 			this.api = api;
 
 			if (!api) {

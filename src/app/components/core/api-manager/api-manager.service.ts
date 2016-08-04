@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 
 import { APIGenerator } from './api-generator';
+import { APIValidator } from './api-validator';
 import { ErrorService } from '../../error/error.service';
 
 import { API } from '../model/api';
@@ -29,15 +30,21 @@ export class APIManagerService {
 
 	private initialData:{} = {};
 
-	constructor(private generator: APIGenerator, private errorService: ErrorService) {
+	constructor(private generator: APIGenerator, private validator: APIValidator, private errorService: ErrorService) {
 	}
 
 	generateAPI(url:string, apiModel: {}) {
 		this.generator.getJSONAPI(url).subscribe(
 			(jsonAPI) => {
-				this.jsonAPI = jsonAPI;
-				this.currentAPI = this.generator.generateAPI(this.jsonAPI, apiModel);
-				this._api.next(this.currentAPI);
+				if (this.validator.validateAPI(jsonAPI)) {
+					this.jsonAPI = jsonAPI;
+					this.currentAPI = this.generator.generateAPI(this.jsonAPI, apiModel);
+					this._api.next(this.currentAPI);
+				} else {
+					this.errorService.showErrorMessage('API definition not valid. See console log for details');
+					this.currentAPI = null;
+					this._api.next(null);
+				}
 			},
 			(error) => {
 				console.log(error);
