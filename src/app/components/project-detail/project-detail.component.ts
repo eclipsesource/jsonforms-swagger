@@ -1,5 +1,7 @@
 import {Component, Input, OnInit, OnDestroy } from '@angular/core';
 
+import { Subscription } from 'rxjs/Subscription';
+
 import { ProjectsManagerService } from '../core/projects-manager/projects-manager.service';
 import { APIManagerService } from '../core/api-manager/api-manager.service';
 import { OperationPerformerService } from '../core/operation-performer/operation-performer.service';
@@ -35,12 +37,14 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	project:Project;
 
 	api:API;
+	apiSubscription: Subscription;
 
 	nullAPIMessage: string = 'Loading...';
 	firstNullAPIReceived: boolean = false;
 
 	constructor(private projectsService:ProjectsManagerService, private apiManagerService:APIManagerService) {
-		apiManagerService.api.subscribe((api) => {
+		this.apiSubscription = apiManagerService.api.subscribe((api) => {
+			console.log(api == null);
 			this.api = api;
 
 			if (!api) {
@@ -61,6 +65,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
+		this.apiSubscription.unsubscribe();
+		this.apiManagerService.resetService();
 		// At this moment, this.api is null, so we use this.apiManagerService.getCurrentAPI() instead
 		if (this.apiManagerService.getCurrentAPI()) {
 			this.project.apiModel = this.apiManagerService.getCurrentAPI().generateAPIModel();

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {AuthComponent} from "../auth/auth.component";
-import {APIManagerService} from "../core/api-manager/api-manager.service";
+import { AuthComponent } from '../auth/auth.component';
 
 @Component({
     selector: 'header',
@@ -14,11 +13,11 @@ export class HeaderComponent {
 
     @Output() onProjectsListClicked = new EventEmitter<any>();
 
-	constructor(private apiManagerService: APIManagerService) {
+	constructor() {
 	}
 
     gotoProjects() {
-        this.apiManagerService.resetService();
+
         this.onProjectsListClicked.emit(null);
     }
 
