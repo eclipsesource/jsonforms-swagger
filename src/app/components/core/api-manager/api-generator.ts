@@ -38,10 +38,15 @@ export class APIGenerator {
 	}
 
 	generateAPI(jsonAPI:{}, apiModel:{}):API {
+		let resolvedJsonAPI: {};
+		JsonRefs.resolveRefs(jsonAPI, {}, function (err:any, res:any) {
+			resolvedJsonAPI = res;
+		});
+
 		let api = new API();
 		api.properties = _.pick(jsonAPI, ['schemes', 'info', 'host', 'basePath']);
 		this.generateTags(api, jsonAPI);
-		this.generateOperations(api, jsonAPI);
+		this.generateOperations(api, resolvedJsonAPI);
 		const definitionsUsages = this.computeDefinitionsUsages(jsonAPI);
 		this.generateRelatedOperations(api, definitionsUsages);
 		this.generateEntityTypes(api, definitionsUsages, apiModel);
@@ -66,13 +71,8 @@ export class APIGenerator {
 	}
 
 	private generateOperations(api:API, jsonAPI:{}) {
-		let resolvedJsonAPI:{};
-		JsonRefs.resolveRefs(jsonAPI, {}, function (err:any, res:any) {
-			resolvedJsonAPI = res;
-		});
-
 		let baseUrl = api.getBaseUrl();
-		_.forEach(resolvedJsonAPI['paths'], (jsonPath:{}, path:string) => {
+		_.forEach(jsonAPI['paths'], (jsonPath:{}, path:string) => {
 			_.forEach(jsonPath, (jsonOperation:{}, operationType:string) => {
 				this.generateOperation(api, baseUrl, path, operationType, jsonOperation);
 			});
