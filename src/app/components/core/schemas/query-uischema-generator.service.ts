@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 
 @Injectable()
-export class UischemaGeneratorService {
+export class QueryUischemaGeneratorService {
 
     generateUischema(dataschema: {}): {} {
         let uischema: {} = {
@@ -12,7 +12,7 @@ export class UischemaGeneratorService {
         };
 
         _.forEach(dataschema['properties'], (property: any, name: string) => {
-            this.addProperty(uischema['elements'], property, name, '#/properties/');
+			this.addProperty(uischema['elements'], property, name, '#/properties/');
         });
 
         return uischema;
@@ -22,7 +22,7 @@ export class UischemaGeneratorService {
         if (property['type'] == 'object') {
             let sublayout: {} = {
                 'type': 'Group',
-                'label': name,
+                'label': _.upperFirst(name),
                 'elements': []
             };
             _.forEach(property['properties'], (subproperty: any, subname: string) => {
@@ -30,9 +30,9 @@ export class UischemaGeneratorService {
             });
             layoutElements.push(sublayout);
         } else {
-            let control = {
+            let control: {} = {
                 'type': 'Control',
-                'label': name,
+                'label': _.upperFirst(name),
                 'scope': {
                     '$ref': path + name
                 }

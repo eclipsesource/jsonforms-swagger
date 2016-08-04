@@ -5,15 +5,20 @@ import * as _ from 'lodash';
 @Injectable()
 export class ResponseDataschemaGeneratorService {
 
-  generateDataschema(schema: {}): {} {
-    let dataschema: {} = {};
+	generateDataschema(schema:{}):{} {
+		let dataschema:{} = {};
 
-    if (schema['type'] == 'array') {
-      dataschema = schema['items']; // TODO: include property of type arrray when jsonforms array control implemented
-    } else {
-      dataschema = schema;
-    }
+		if (schema['type'] == 'array') {
+			dataschema = {
+				'type': 'object',
+				'properties': {
+					'table': schema
+				}
+			};
+		} else {
+			dataschema = schema;
+		}
 
-    return dataschema;
-  }
+		return dataschema;
+	}
 }

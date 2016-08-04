@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { APIManagerService } from '../core/api-manager/api-manager.service';
 import { QueryDataschemaGeneratorService } from '../core/schemas/query-dataschema-generator.service';
-import { UischemaGeneratorService } from '../core/schemas/uischema-generator.service';
+import { QueryUischemaGeneratorService } from '../core/schemas/query-uischema-generator.service.ts';
 import { DataGeneratorService } from '../core/schemas/data-generator.service';
 import { OperationPerformerService } from '../core/operation-performer/operation-performer.service';
 import { AuthService } from "../auth/auth.service";
@@ -21,7 +21,7 @@ import { JsonFormsAdapter } from '../../../adapters/jsonforms.adapter';
     styles: [require('../center-content.css')],
     providers: [
 		QueryDataschemaGeneratorService,
-		UischemaGeneratorService,
+		QueryUischemaGeneratorService,
 		DataGeneratorService
 	],
     directives: [JsonFormsAdapter]
@@ -41,7 +41,7 @@ export class QueryComponent implements OnDestroy {
     data: {};
 
     constructor(private dataschemaGeneratorService: QueryDataschemaGeneratorService,
-                private uischemaGeneratorService: UischemaGeneratorService,
+                private uischemaGeneratorService: QueryUischemaGeneratorService,
 				private dataGeneratorService: DataGeneratorService,
                 private apiManagerService: APIManagerService,
                 private operationPerformerService: OperationPerformerService,
