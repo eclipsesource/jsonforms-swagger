@@ -29,7 +29,7 @@ npm start
 
 The `npm start` command compiles the application and runs the `weppack-dev-server`.
 Both the compiler and the server watch for file changes.
-To see the result visit http://localhost:8080/.
+Results are served from localhost:8080.
 
 Shut it down manually with Ctrl-C.
 

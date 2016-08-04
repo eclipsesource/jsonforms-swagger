@@ -11,4 +11,4 @@ _temp
 
 !karma*.js
 !webpack*.js
-!typings/typings.d.ts
+!typings/index.d.ts
