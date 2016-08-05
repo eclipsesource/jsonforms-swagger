@@ -3,7 +3,7 @@
     flex-direction:column;
     flex-wrap:nowrap;
     align-items:stretch;
-    height:100vh;
+    height: calc(100vh - 50px);
     overflow:hidden;
     background-color: #DFEFCA;
 }
