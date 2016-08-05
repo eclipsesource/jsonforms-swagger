@@ -12,3 +12,5 @@ _temp
 !karma*.js
 !webpack*.js
 !typings/index.d.ts
+!config/**
+!public/lib/**

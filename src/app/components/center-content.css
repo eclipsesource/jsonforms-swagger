@@ -27,6 +27,7 @@
     border-style: solid;
     height: 28px;
     width: 80px;
+    cursor:pointer;
 }
 
 .tab-button-container {
