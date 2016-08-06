@@ -4,6 +4,7 @@ import { AppComponent } from './app/app.component.ts';
 import { upgradeAdapter } from './adapters/upgrade_adapter';
 
 import './jsonforms-extensions/table-control/table-control.ts';
+import './jsonforms-extensions/theme.css';
 
 declare var angular: any;
 
