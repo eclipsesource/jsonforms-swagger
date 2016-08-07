@@ -13,6 +13,9 @@ import 'rxjs';
 // You can import js, ts, css, sass, ...
 import 'angular';
 import 'primeng/primeng';
+import 'primeui/primeui-ng-all.min.css';
+import 'primeui/themes/omega/theme.css';
+
 import 'lodash';
 import 'angular-ui-bootstrap';
 import 'jsonforms';
