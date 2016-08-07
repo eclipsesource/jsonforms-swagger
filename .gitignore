@@ -16,3 +16,4 @@ dist
 !typings/index.d.ts
 !config/**
 !public/lib/**
+!backend/**
