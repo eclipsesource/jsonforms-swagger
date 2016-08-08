@@ -2,6 +2,7 @@ import {AbstractControl, PathResolver, Testers, schemaTypeIs, uiTypeIs, SchemaEl
 //import './table-control.css';
 import registerNewControl from '../extension';
 import 'lodash';
+import './table-control.css';
 
 export class TableController extends AbstractControl {
     static $inject = ['$scope'];
