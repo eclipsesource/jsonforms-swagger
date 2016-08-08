@@ -45,3 +45,53 @@ explorer {
     flex-grow: 0;
     flex-shrink: 0;
 }
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: 100%;
+}
+
+.loading-container h3 {
+    margin-top: 20px;
+    color: #166292;
+}
+
+@keyframes pulse {
+    50% {
+        background: #166292;
+    }
+}
+
+.loading-pulse {
+    position: relative;
+    width: 2.5em;
+    height: 10em;
+    background: white;
+    animation: pulse 1s infinite;
+    animation-delay: 0.3s;
+}
+
+.loading-pulse:before, .loading-pulse:after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 7.5em;
+    width: 2.5em;
+    background: white;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: pulse 1s infinite;
+}
+
+.loading-pulse:before {
+    left: -5em;
+}
+
+.loading-pulse:after {
+    left: 5em;
+    animation-delay: 750ms;
+}
