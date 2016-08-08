@@ -36,9 +36,8 @@
     flex-wrap: wrap;
     align-items: stretch;
     align-content: stretch;
-    height: 35px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .tab-button {
@@ -51,16 +50,10 @@
     color: white;
     margin-left: 5px;
     margin-right: 5px;
+    margin-bottom: 5px;
+    padding-left: 65px;
+    padding-right: 5px;
 }
-
-.tab-button:first-child {
-    margin-left:0 !important;
-}
-
-.tab-button:last-child {
-    margin-right:0 !important;
-}
-
 
 .tab-button:hover {
     background-color: white;
