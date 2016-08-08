@@ -1,5 +1,12 @@
 :host {
     background-color: #166292;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h3 {
+    color: white;
 }
 
 .button-project-list {
@@ -8,8 +15,7 @@
     border-radius: 5px;
     color: white;
     padding: 5px;
-    height: 28px;
-    position: absolute;
+    height: 28px;    position: absolute;
     top: 11px;
     left: 15px;
     cursor:pointer;
