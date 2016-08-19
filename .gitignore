@@ -9,6 +9,7 @@ link-checker-results.txt
 _test-output
 _temp
 dist
+firebase.conf.js
 
 !karma*.js
 !webpack*.js

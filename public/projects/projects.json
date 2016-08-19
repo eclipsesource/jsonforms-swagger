@@ -1,11 +1,6 @@
 {
   "data": [
     {
-      "name": "PetStore",
-      "apiUrl": "http://petstore.swagger.io/v2/swagger.json",
-      "apiModel": {}
-    },
-    {
       "name": "Buffer",
       "apiUrl": "https://api.apis.guru/v2/specs/bufferapp.com/1/swagger.json",
       "apiModel": {}
