@@ -12,8 +12,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 import { ErrorComponent } from './components/error/error.component';
-
+import {UserManagementService} from './components/core/user-management/user-management.service';
+import {FirebaseService} from './components/core/firebase/firebase.service';
 import '../../public/css/styles.css';
+
 
 @Component({
 	selector: 'app',
@@ -27,7 +29,9 @@ import '../../public/css/styles.css';
 		APIManagerService,
 		APIGenerator,
 		APIValidator,
-		ErrorService
+		ErrorService,
+		FirebaseService,
+		UserManagementService
 	],
 	directives: [
 		HeaderComponent,

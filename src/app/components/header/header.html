@@ -1,3 +1,8 @@
-<button *ngIf="selectedProjectName" class="button-project-list" (click)="gotoProjects()">Projects List</button>
-<h3>Jsonforms Swagger</h3>
+<button *ngIf="selectedProjectName" class="button-header button-project-list" (click)="gotoProjects()">Projects List</button>
 <auth></auth>
+<h3>Jsonforms Swagger</h3>
+<button *ngIf="!user" class="button-header button-login-github" (click)="loginWithGithub()">Login With Github</button>
+<div *ngIf="user" class="user-menu">
+    <h4>{{user.displayName}}</h4>
+    <img src="{{user.photoURL}}" (click)="logout()" />
+</div>

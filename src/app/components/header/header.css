@@ -3,20 +3,49 @@
     display:flex;
     justify-content: center;
     align-items: center;
+    position:relative;
 }
 
 h3 {
     color: white;
 }
 
-.button-project-list {
+.button-header {
     background-color: #75A339;
     border:0;
     border-radius: 5px;
     color: white;
     padding: 5px;
-    height: 28px;    position: absolute;
+    height: 28px;
+    position: absolute;
+    cursor:pointer;
+}
+
+.button-project-list {
     top: 11px;
     left: 15px;
-    cursor:pointer;
+}
+
+.button-login-github {
+    top: 11px;
+    right: 15px;
+}
+.user-menu {
+    position: absolute;
+    display: flex;
+    right: 15px;
+    justify-content: space-around;
+    height: 100%;
+    align-items: center;
+}
+
+.user-menu img {
+    height: 100%;
+    padding: 2px;
+}
+
+.user-menu h4 {
+    color: white;
+    margin-right: 10px;
+    white-space: nowrap;
 }
