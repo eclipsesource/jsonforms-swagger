@@ -6,7 +6,7 @@ for automatically building web forms capable of interacting with that service.
 
 ## Demo
 
-Watch jsonforms-swagger in action on the [demo page](http://jsonforms-swagger.herokuapp.com/).
+Watch jsonforms-swagger in action on the [demo page](https://jsonforms-swagger.firebaseapp.com/).
 
 ## Prerequisites
 
