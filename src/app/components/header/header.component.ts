@@ -10,7 +10,7 @@ import {UserManagementService} from "../core/user-management/user-management.ser
 })
 export class HeaderComponent {
 
-    @Input() selectedProjectName: string;
+    @Input() selectedProjectId: string;
 
     @Output() onProjectsListClicked = new EventEmitter<any>();
     private user: any;

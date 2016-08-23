@@ -42,16 +42,16 @@ import '../../public/css/styles.css';
 })
 export class AppComponent {
 
-	selectedProjectName:string;
+	selectedProjectId:string;
 	selectedDevMode:boolean;
 
-	onProjectSelected({name, devMode}) {
-		this.selectedProjectName = name;
+	onProjectSelected({id, devMode}) {
+		this.selectedProjectId = id;
 		this.selectedDevMode = devMode;
 	}
 
 	onProjectsListClicked() {
-		this.selectedProjectName = '';
+		this.selectedProjectId = '';
 	}
 
 }

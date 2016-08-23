@@ -1,14 +1,14 @@
 <div class="center">
     <h2>PROJECTS</h2>
     <ul class="projects-list">
-        <li class="project-box" *ngFor="let project of projects">
+        <li class="project-box" *ngFor="let projectKey of projectKeys()">
             <div class="filter">
-                <h3>{{project.name}}</h3>
+                <h3>{{getProject(projectKey).name}}</h3>
             </div>
             <div class="options">
-                <div (click)="selectProject(project.name)">View</div>
-                <h3>{{project.name}}</h3>
-                <div (click)="selectProjectDev(project.name)">Edit</div>
+                <div (click)="selectProject(projectKey)">View</div>
+                <h3>{{getProject(projectKey).name}}</h3>
+                <div (click)="selectProjectDev(projectKey)">Edit</div>
             </div>
         </li>
         <li class="project-box new">

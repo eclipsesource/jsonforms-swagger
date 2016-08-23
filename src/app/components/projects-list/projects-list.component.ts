@@ -11,7 +11,7 @@ import { Project } from '../core/model/project';
 })
 export class ProjectsListComponent implements OnInit {
 
-    projects: Project[] = [];
+    projects: {[id: string] : Project} = {};
 
     errorMessage: string;
 
@@ -35,18 +35,26 @@ export class ProjectsListComponent implements OnInit {
         this.projectsManagerService.createProject(name, apiUrl);
     }
 
-    selectProject(projectName: string) {
+    selectProject(projectId: string) {
         this.onProjectSelected.emit({
-            name: projectName,
+            id: projectId,
             devMode: false
         });
     }
 
-    selectProjectDev(projectName: string) {
+    selectProjectDev(projectId: string) {
         this.onProjectSelected.emit({
-            name: projectName,
+            id: projectId,
             devMode: true
         });
+    }
+
+    projectKeys(): string[] {
+        return _.keys(this.projects);
+    }
+
+    getProject(key: string): Project{
+        return this.projects[key];
     }
 
 }

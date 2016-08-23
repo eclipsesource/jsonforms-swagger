@@ -1,59 +1,79 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Headers, RequestOptions } from '@angular/http';
-
-import { Observable } from 'rxjs/Observable';
-import * as _ from 'lodash';
-
+import {FirebaseService} from "../firebase/firebase.service";
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import {UserManagementService} from "../user-management/user-management.service";
 import { Project } from '../model/project';
-
-import '../../../../../public/projects/projects.json';
 
 @Injectable()
 export class ProjectsManagerService {
+    private usersRef: any;
+    private projectsRef: any;
+    private user: any;
+    private projectsModel: {[key:string]:Project};
+    private _projects: BehaviorSubject<{[key:string]:Project}> = new BehaviorSubject(this.projectsModel);
 
-    constructor (private http: Http) { }
+    public projects = this._projects.asObservable();
 
-    private projectsUrl = '../../../../../public/projects/projects.json';
 
-    projects: Project[]; // TODO: projects as observable subject
+    private currentUserProjectsRef: any;
+    constructor (private firebaseService: FirebaseService, private userManagementService: UserManagementService) {
+        this.usersRef = firebaseService.database.ref('users/');
+        this.projectsRef = firebaseService.database.ref('projects/');
 
-    getProjects(): Observable<Project[]> {
-        if (!this.projects) {
-            return this.http.get(this.projectsUrl)
-                .map(res => {
-                    return this.extractData(res);
-                })
-                .catch(this.handleError);
-        } else {
-            return Observable.of(this.projects);
-        }
-    }
+        this.userManagementService.user.subscribe((user: any)=>{
+            this.user = user;
+            this.projectsModel = {};
+            this._projects.next(this.projectsModel);
 
-    getProject(name: string): Observable<Project> {
-        return this.getProjects()
-            .map(projects => {
-                return _.find(projects, (project: Project) => {
-                    return name == project.name;
+            if(!user){
+                this.currentUserProjectsRef = null;
+                return;
+            }
+
+            this.currentUserProjectsRef = this.usersRef.child(user.uid + '/projects/');
+
+            this.currentUserProjectsRef.on('child_added', (key: any)=>{
+                this.projectsRef.child(key.val() + '/').on('value', (projectSnap: any)=>{
+                    const projectConfig = projectSnap.val();
+                    if(!projectConfig){
+                        delete this.projectsModel[key.val()];
+                        this._projects.next(this.projectsModel);
+                        //TODO delete from database (user/[id]/projects)
+                        return;
+                    }
+                    const project = new Project(projectConfig.name, projectConfig.url);
+
+                    this.projectsModel[key.val()] = project;
+                    this._projects.next(this.projectsModel);
                 });
             });
+
+            this.currentUserProjectsRef.on('child_removed', (key: any)=>{
+                delete this.projectsModel[key.val()];
+                this._projects.next(this.projectsModel);
+            });
+        });
     }
 
-    createProject(name: string, apiUrl: string) {
-        this.projects.push(new Project(name, apiUrl));
-    }
-
-    private extractData(res: Response) {
-        let body = res.json();
-        this.projects = body.data;
+    getProjects(): Observable<{[id: string]: Project}> {
         return this.projects;
     }
 
-    private handleError(error: any) {
-        let errMsg = (error.message) ? error.message :
-            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-        console.error(errMsg); // log to console instead
-        return Observable.throw(errMsg);
+    createProject(name: string, apiUrl: string) {
+        let projectConfig = {
+            name: name,
+            url: apiUrl
+        };
+        this.projectsRef.push(projectConfig).then((ref:any)=>{
+            const key = ref.key;
+            this.currentUserProjectsRef.push(key);
+        });
     }
+
+    //TODO allow deletion of projects (delete from /projects/ and from /users/[id]/projects)
+    /*
+    deleteProject(id: string){
+
+    }*/
 
 }
