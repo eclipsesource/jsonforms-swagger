@@ -15,6 +15,7 @@ import { ErrorComponent } from './components/error/error.component';
 import {UserManagementService} from './components/core/user-management/user-management.service';
 import {FirebaseService} from './components/core/firebase/firebase.service';
 import '../../public/css/styles.css';
+import {Project} from "./components/core/model/project";
 
 
 @Component({
@@ -44,14 +45,42 @@ export class AppComponent {
 
 	selectedProjectId:string;
 	selectedDevMode:boolean;
+	selectedProject: Project;
+	projects: {[id: string] : Project} = {};
+	errorMessage: string;
+
+	constructor(private projectsManagerService: ProjectsManagerService){
+	}
+
+	ngOnInit() {
+		this.subscribeToProjects();
+	}
+
+	private subscribeToProjects() {
+		this.projectsManagerService.getProjects()
+				.subscribe(
+						(projects) => {
+							this.projects = projects;
+							if(this.selectedProjectId){
+								this.selectedProject = this.projects[this.selectedProjectId];
+							}
+							if(!this.selectedProject){
+								this.selectedProjectId = '';
+							}
+						},
+						error => this.errorMessage = <any>error
+				);
+	}
 
 	onProjectSelected({id, devMode}) {
 		this.selectedProjectId = id;
 		this.selectedDevMode = devMode;
+		this.selectedProject = this.projects[id];
 	}
 
 	onProjectsListClicked() {
 		this.selectedProjectId = '';
+		this.selectedProject = null;
 	}
 
 }

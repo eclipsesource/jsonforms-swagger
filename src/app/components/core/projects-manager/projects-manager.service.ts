@@ -33,6 +33,7 @@ export class ProjectsManagerService {
             this.currentUserProjectsRef = this.usersRef.child(user.uid + '/projects/');
 
             this.currentUserProjectsRef.on('child_added', (key: any)=>{
+
                 this.projectsRef.child(key.val() + '/').on('value', (projectSnap: any)=>{
                     const projectConfig = projectSnap.val();
                     if(!projectConfig){

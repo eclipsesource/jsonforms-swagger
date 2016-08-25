@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AuthComponent } from '../auth/auth.component';
 import {UserManagementService} from "../core/user-management/user-management.service";
+import {ProjectsManagerService} from "../core/projects-manager/projects-manager.service";
 
 @Component({
     selector: 'header',
@@ -10,15 +11,15 @@ import {UserManagementService} from "../core/user-management/user-management.ser
 })
 export class HeaderComponent {
 
-    @Input() selectedProjectId: string;
+    @Input() selectedProject: string;
 
     @Output() onProjectsListClicked = new EventEmitter<any>();
     private user: any;
-	constructor(private userManagementService: UserManagementService) {
+	constructor(private userManagementService: UserManagementService, private projectsManagerService: ProjectsManagerService) {
         userManagementService.user.subscribe((user: any)=>{
             this.user = user;
         });
-	}
+    }
 
     gotoProjects() {
         this.onProjectsListClicked.emit(null);

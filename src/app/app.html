@@ -1,6 +1,6 @@
 <main>
-    <header (onProjectsListClicked)="onProjectsListClicked()" [selectedProjectId]="selectedProjectId"></header>
-    <projects-list *ngIf="!selectedProjectId" (onProjectSelected)="onProjectSelected($event)"></projects-list>
-    <project-detail *ngIf="selectedProjectId" [projectId]="selectedProjectId" [devMode]="selectedDevMode"></project-detail>
+    <header (onProjectsListClicked)="onProjectsListClicked()" [selectedProject]="selectedProject"></header>
+    <projects-list *ngIf="!selectedProject" [projects]="projects" (onProjectSelected)="onProjectSelected($event)"></projects-list>
+    <project-detail *ngIf="selectedProject" [project]="selectedProject" [devMode]="selectedDevMode"></project-detail>
     <error></error>
 </main>

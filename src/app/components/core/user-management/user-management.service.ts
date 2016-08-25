@@ -11,7 +11,6 @@ export class UserManagementService {
 
 
     constructor(private firebaseService: FirebaseService){
-
         firebaseService.auth.onAuthStateChanged((user: any)=>{
             this._user.next(user);
         });

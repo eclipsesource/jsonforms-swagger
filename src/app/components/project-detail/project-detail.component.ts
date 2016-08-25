@@ -31,10 +31,8 @@ import { API } from '../core/model/api';
 })
 export class ProjectDetailComponent implements OnInit, OnDestroy {
 
-	@Input() projectId:string;
+	@Input() project:Project;
 	@Input() devMode: boolean;
-
-	project:Project;
 
 	api:API;
 	apiSubscription: Subscription;
@@ -57,10 +55,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.projectsService.getProjects().subscribe(projects => {
-			this.project = projects[this.projectId];
-			this.apiManagerService.generateAPI(this.project.apiUrl, this.project.apiModel);
-		});
+		this.apiManagerService.generateAPI(this.project.apiUrl, this.project.apiModel);
 	}
 
 	ngOnDestroy() {
