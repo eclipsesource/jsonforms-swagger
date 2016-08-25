@@ -42,10 +42,12 @@ h3 {
 .user-menu img {
     height: 100%;
     padding: 2px;
+    cursor: pointer;
 }
 
 .user-menu h4 {
     color: white;
     margin-right: 10px;
     white-space: nowrap;
+    cursor: pointer;
 }
